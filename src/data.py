@@ -3,6 +3,7 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
+from datetime import datetime
 from models import Tag, TransactionsByTagLevel, Transaction
 import database
 
@@ -91,8 +92,12 @@ def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
 
 
 class Filter:
+    """Collection of filter functions."""
+
     @staticmethod
-    def filter_by_tag(transactions, L1=None, L2=None, L3=None):
+    def filter_by_tag(
+        transactions: list[Transaction], L1: Tag = None, L2: Tag = None, L3: Tag = None
+    ) -> list[Transaction]:
         filter_L1 = lambda _: True
         filter_L2 = lambda _: True
         filter_L3 = lambda _: True
@@ -109,13 +114,17 @@ class Filter:
         return list(filter(_filter, transactions))
 
     @staticmethod
-    def filter_by_date(transactions, start_date, end_date) -> list:
+    def filter_by_date(
+        transactions: Transaction, start_date: datetime, end_date: datetime
+    ) -> list[Transaction]:
+        """Returns the transactions which occurred within `star_date` and `end_date`."""
         return list(
             filter(lambda t: t.date > start_date and t.date < end_date, transactions)
         )
 
     @staticmethod
     def filter_by_account(transactions, account: str) -> list:
+        """Returns the transactions which belong to the input `account` name."""
         return list(filter(lambda t: t.account == account, transactions))
 
 
