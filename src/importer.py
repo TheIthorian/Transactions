@@ -6,16 +6,11 @@
 from data import get_all_transactions
 from database import connect
 from models import Transaction
-from reader import read_from_file
+from reader import read_data
 
 
 def add_new_transactions():
-    reader = read_from_file("new_Transactions.csv")
-
-    transactions: list[Transaction] = []
-    for index, row in enumerate(reader):
-        if index > 0:  # Ignore header
-            transactions.append(Transaction.from_row(row))
+    _, transactions = read_data("new_Transactions.csv")
 
     existing_transactions = get_all_transactions()
 
