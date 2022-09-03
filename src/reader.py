@@ -4,28 +4,16 @@
 """
 
 import csv
+from io import TextIOWrapper
 from data import Transaction
 
 
-def read_data() -> list[Transaction]:
+def read_data(filename: str) -> list[Transaction]:
     transactions: list[Transaction] = []
     header = {}
-    file = "Transactions.csv"
 
-    with open(file, newline="") as csv_file:
-        reader = csv.DictReader(
-            csv_file,
-            fieldnames=[
-                "Account",
-                "Date",
-                "CurrentDescription",
-                "OriginalDescription",
-                "Amount",
-                "L1Tag",
-                "L2Tag",
-                "L3Tag",
-            ],
-        )
+    with open(filename, newline="") as csv_file:
+        reader = make_dict_reader(csv_file)
 
         for index, row in enumerate(reader):
             if index == 0:
@@ -34,3 +22,19 @@ def read_data() -> list[Transaction]:
                 transactions.append(Transaction.from_row(row))
 
     return header, transactions
+
+
+def make_dict_reader(csv_file: TextIOWrapper):
+    return csv.DictReader(
+        csv_file,
+        fieldnames=[
+            "Account",
+            "Date",
+            "CurrentDescription",
+            "OriginalDescription",
+            "Amount",
+            "L1Tag",
+            "L2Tag",
+            "L3Tag",
+        ],
+    )
