@@ -1,0 +1,38 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Web
+# dependencies
+web/transactions/node_modules
+web/transactions/.pnp
+.pnp.js
+
+# testing
+web/transactions/coverage
+
+# next.js
+web/transactions/.next/
+web/transactions/out/
+
+# production
+web/transactions/build
+
+# misc
+web/transactions/.DS_Store
+web/transactions/*.pem
+
+# debug
+web/transactions/npm-debug.log*
+web/transactions/yarn-debug.log*
+web/transactions/yarn-error.log*
+web/transactions/.pnpm-debug.log*
+
+# local env files
+web/transactions/**.env*.local
+
+# vercel
+.vercel
+
+# src
+__pycache__
+src/transactions.csv
+src/transactions.db
