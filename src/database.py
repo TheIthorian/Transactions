@@ -24,7 +24,7 @@ def init() -> None:
     cur = con.cursor()
 
     cur.execute(
-        """CREATE TABLE transactions
+        """CREATE TABLE IF NOT EXISTS TABLE_NAME transactions
                (account text, 
                date integer, 
                current_description text, 
