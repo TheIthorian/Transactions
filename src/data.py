@@ -62,9 +62,15 @@ class TagLists:
 
 
 def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
+    """Find all transactions that have at least one tag in each of the input `tag_lists` levels.
+    \n
+    E.g. if `tag_lists => L1=["Income"], L2=["Investments or Shares"], L3=[]`
+    then only transactions which match each of the tag levels will be returned, except L3 which will be ignored.
+    """
+
     query = "SELECT * FROM transactions WHERE"
-    conditions = []
-    inputs = []
+    conditions = []  # Query consitions
+    inputs = []  # Query inputs
 
     if tag_lists.L1 is not None:
         conditions.append(" l1 IN (%s)" % ",".join("?" for _ in tag_lists.L1))
