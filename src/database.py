@@ -40,7 +40,6 @@ def init() -> None:
 
 
 def insert(query: str, data: dict, con: sqlite3.Connection = None) -> int:
-
     auto_commit = False
     if con is None:
         con = connect()
@@ -52,6 +51,8 @@ def insert(query: str, data: dict, con: sqlite3.Connection = None) -> int:
     if auto_commit:
         con.commit()
         con.close()
+    else:
+        return con
 
 
 def select(query: str, inputs: dict = None) -> list:
