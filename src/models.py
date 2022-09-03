@@ -108,9 +108,14 @@ class Transaction:
 
 @dataclass
 class TransactionsByTagLevel:
-    L1: list[Transaction] = []
-    L2: list[Transaction] = []
-    L3: list[Transaction] = []
+    L1: list[Transaction]
+    L2: list[Transaction]
+    L3: list[Transaction]
+
+    def __init__(self):
+        self.L1 = []
+        self.L2 = []
+        self.L3 = []
 
     def __repr__(self) -> str:
         return "<TransactionsByTag L1: {}, L2: {}, L3: {}>".format(
