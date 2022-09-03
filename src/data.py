@@ -125,7 +125,7 @@ class Filter:
 
 
 class Aggregate:
-    """Collection of aggregate functions"""
+    """Collection of aggregate functions."""
 
     T = TypeVar("T")
 
