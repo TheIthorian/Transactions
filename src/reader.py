@@ -5,10 +5,11 @@
 
 import csv
 from io import TextIOWrapper
+from typing import Tuple
 from data import Transaction
 
 
-def read_data(filename: str) -> list[Transaction]:
+def read_data(filename: str) -> Tuple[dict, list[Transaction]]:
     transactions: list[Transaction] = []
     header = {}
 
@@ -21,7 +22,7 @@ def read_data(filename: str) -> list[Transaction]:
             else:
                 transactions.append(Transaction.from_row(row))
 
-    return header, transactions
+    return header, transactions  # Swap these
 
 
 def make_dict_reader(csv_file: TextIOWrapper):
