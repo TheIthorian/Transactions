@@ -18,14 +18,13 @@ def main():
     print("Aggregate: ", total_from_income / 100)
 
     # Queries
-    print("\n\nQueries: ")
+    print("\nQueries: ")
     data = database.select("""SELECT * FROM transactions Order by date desc LIMIT 1""")
     for row in data:
         print(Transaction.from_db(row))
-        print()
 
     # Filters
-    print("\n\nFilter: ")
+    print("\nFilter: ")
     tag_lists = TagLists(["Income"], ["Investments or Shares"], ["Interest income"])
     transactions = get_transactions_for_tags(tag_lists)
     transactions = Filter.filter_by_date(
@@ -36,8 +35,10 @@ def main():
     transactions = Filter.filter_by_account(transactions, "123 STUDENT CURRENT ACCOUNT")
     for transaction in transactions:
         print(transaction)
-        print()
 
+    # Misc functions
+    print("\nMisc Functions:")
+    print("\nget_all_tags:")
     for tag in get_all_tags():
         print(tag)
 
