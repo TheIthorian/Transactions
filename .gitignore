@@ -34,5 +34,6 @@ web/transactions/**.env*.local
 
 # src
 __pycache__
-src/transactions.csv
+src/Transactions.csv
+src/new_Transactions.csv
 src/transactions.db
