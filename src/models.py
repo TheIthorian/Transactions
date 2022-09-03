@@ -1,4 +1,7 @@
-"""Various data models for storing transactions"""
+"""Various data models for storing transactions.
+
+(C) 2022, TheIthorian, United Kingdom
+"""
 
 from datetime import datetime
 import json
