@@ -3,11 +3,11 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
-from models import TransactionsByTag, Transaction
+from models import Tag, TransactionsByTag, Transaction
 import database
 
 
-def get_tags(transaction_list: list) -> list[str]:
+def get_tags(transaction_list: list[Transaction]) -> list[Tag]:
     """Finds all unique tag names in a list of transactions."""
     tags = []
     for transaction in transaction_list:
