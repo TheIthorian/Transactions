@@ -5,9 +5,7 @@ from data import Filter, TagLists, get_all_tags, get_transactions_for_tags, Aggr
 import database
 
 
-def examples():
-    _, transactions = read_data()
-
+def aggregate(transactions: list[Transaction]):
     # Aggregate
     total_from_income = Aggregate.aggregate(
         transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
@@ -17,12 +15,16 @@ def examples():
     )
     print("Aggregate: ", total_from_income / 100)
 
+
+def queries():
     # Queries
     print("\nQueries: ")
     data = database.select("""SELECT * FROM transactions Order by date desc LIMIT 1""")
     for row in data:
         print(Transaction.from_db(row))
 
+
+def filters():
     # Filters
     print("\nFilter: ")
     tag_lists = TagLists(["Income"], ["Investments or Shares"], ["Interest income"])
@@ -36,8 +38,20 @@ def examples():
     for transaction in transactions:
         print(transaction)
 
+
+def misc():
     # Misc functions
     print("\nMisc Functions:")
     print("\nget_all_tags:")
     for tag in get_all_tags():
         print(tag)
+
+
+def examples():
+    """Function to demonstrate functionality."""
+
+    _, transactions = read_data()
+    aggregate(transactions)
+    queries()
+    filters()
+    misc()
