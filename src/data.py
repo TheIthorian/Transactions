@@ -131,8 +131,15 @@ class Filter:
 class Aggregate:
     """Collection of aggregate functions"""
 
+    T = TypeVar("T")
+
     @staticmethod
-    def aggregate(transactions: list[Transaction], condition, agg_function, seed=0):
+    def aggregate(
+        transactions: list[Transaction],
+        condition: function,
+        agg_function: function,
+        seed: T = 0,
+    ) -> T:
         summary = seed
         for transaction in transactions:
             if condition(transaction):
