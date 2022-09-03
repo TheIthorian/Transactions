@@ -77,10 +77,10 @@ class Transaction:
             "l3": tag["L3"],
         }
 
-    def to_json(self):
+    def to_json(self) -> str:
         return json.dumps(self.to_dict())
 
-    def insert(self):
+    def insert(self, conn=None):
         query = """INSERT INTO transactions VALUES 
             (:account, 
             :date, 
@@ -90,7 +90,8 @@ class Transaction:
             :l1,
             :l2,
             :l3)"""
-        database.insert(query, self.to_dict())
+
+        return database.insert(query, self.to_dict(), conn)
 
     @staticmethod
     def from_db(row):
