@@ -9,6 +9,8 @@ import database
 
 
 class Tag:
+    """In moneydashboard, a transaction can have up to 3 levels of tags. Increasing levels are more specific."""
+
     L1: str
     L2: str
     L3: str
@@ -19,7 +21,7 @@ class Tag:
         self.L3 = L3
 
     def __repr__(self) -> str:
-        return "Tag(L1: {}, L2: {}, L3: {})".format(self.L1, self.L2, self.L3)
+        return "<Tag L1: {}, L2: {}, L3: {}>".format(self.L1, self.L2, self.L3)
 
     def __eq__(self, other):
         return self.L1 == other.L1 and self.L2 == other.L2 and self.L3 == other.L3
@@ -27,8 +29,9 @@ class Tag:
     def to_dict(self):
         return {"L1": self.L1, "L2": self.L2, "L3": self.L3}
 
-    def is_in(self, existing_tags: list) -> bool:
-        for tag in existing_tags:
+    def is_in(self, other_tags: list) -> bool:
+        """Returns True if the current tag is in a lsit of `other_tags`."""
+        for tag in other_tags:
             if self == tag:
                 return True
         return False
