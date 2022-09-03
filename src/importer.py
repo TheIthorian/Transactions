@@ -15,7 +15,7 @@ def add_new_transactions():
 
     # Only add new transactions
     conn = connect()
-    count = 1
+    count = 0
     for transaction in transactions:
         if not transaction in existing_transactions:
             transaction.insert(conn)
