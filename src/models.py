@@ -99,12 +99,12 @@ class Transaction:
     @staticmethod
     def from_db(row):
         return Transaction(
-            row[0],
-            datetime.fromtimestamp(row[1]),
-            row[2],
-            row[3],
-            row[4],
-            Tag(row[5], row[6], row[7]),
+            account=row[0],
+            date=datetime.fromtimestamp(row[1]),
+            current_description=row[2],
+            original_description=row[3],
+            amount=row[4],
+            tag=Tag(row[5], row[6], row[7]),
         )
 
     @staticmethod
