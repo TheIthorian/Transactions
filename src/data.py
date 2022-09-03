@@ -47,6 +47,8 @@ def group_transaction_by_tag_level(
 
 
 class TagLists:
+    """Datastructure to store lists of tags, separated by tag level."""
+
     L1: list[str]
     L2: list[str]
     L3: list[str]
