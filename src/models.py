@@ -116,7 +116,7 @@ class Transaction:
         )
 
 
-class TransactionsByTag:
+class TransactionsByTagLevel:
     L1: list[Transaction]
     L2: list[Transaction]
     L3: list[Transaction]

@@ -3,7 +3,7 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
-from models import Tag, TransactionsByTag, Transaction
+from models import Tag, TransactionsByTagLevel, Transaction
 import database
 
 
@@ -29,18 +29,21 @@ def get_all_tags() -> list[Tag]:
     return get_tags(get_all_transactions())
 
 
-def get_tags_to_transactions_map(transactions):
-    transactions_by_tag = TransactionsByTag()
+def group_transaction_by_tag_level(
+    transactions: list[Transaction],
+) -> TransactionsByTagLevel:
+    """Groups each transaction in `transactions` according to their tag level."""
+    transactions_by_tag_level = TransactionsByTagLevel()
 
     for transaction in transactions:
         if transaction.tag.L1 != "":
-            transactions_by_tag.L1.append(transaction)
+            transactions_by_tag_level.L1.append(transaction)
         if transaction.tag.L2 != "":
-            transactions_by_tag.L2.append(transaction)
+            transactions_by_tag_level.L2.append(transaction)
         if transaction.tag.L3 != "":
-            transactions_by_tag.L3.append(transaction)
+            transactions_by_tag_level.L3.append(transaction)
 
-    return transactions_by_tag
+    return transactions_by_tag_level
 
 
 class TagLists:
