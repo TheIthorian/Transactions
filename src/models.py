@@ -127,4 +127,6 @@ class TransactionsByTag:
         self.L3 = []
 
     def __repr__(self) -> str:
-        return "\n(L1: {}, L2: {}, L3: {})".format(self.L1, self.L2, self.L3)
+        return "<TransactionsByTag L1: {}, L2: {}, L3: {}>".format(
+            self.L1, self.L2, self.L3
+        )
