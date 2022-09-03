@@ -5,7 +5,7 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import TypeVar
+from typing import Callable, TypeVar
 from models import Tag, TransactionsByTagLevel, Transaction
 import database
 
@@ -132,8 +132,8 @@ class Aggregate:
     @staticmethod
     def aggregate(
         transactions: list[Transaction],
-        condition: function,
-        agg_function: function,
+        condition: Callable,
+        agg_function: Callable,
         seed: T = 0,
     ) -> T:
         summary = seed
