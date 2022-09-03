@@ -1,3 +1,8 @@
+"""Functions to read and write data to the os.
+
+(C) 2022, TheIthorian, United Kingdom
+"""
+
 import csv
 from data import Transaction
 
