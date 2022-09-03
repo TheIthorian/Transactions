@@ -19,6 +19,7 @@ def connect() -> sqlite3.Connection:
 
 
 def init() -> None:
+    """Creates the database."""
     con = connect()
     cur = con.cursor()
 
