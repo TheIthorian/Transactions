@@ -1,4 +1,4 @@
-"""Module to interact with the SQLite database
+"""Module to interact with the SQLite database.
 
 (C) 2022, TheIthorian, United Kingdom
 """
