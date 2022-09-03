@@ -19,7 +19,7 @@ def get_tags(transaction_list: list[Transaction]) -> list[Tag]:
 
 
 def get_all_transactions() -> list[Transaction]:
-    """Gets all transactions from the database"""
+    """Gets all transactions from the database."""
     transactions = database.select("""SELECT * FROM transactions ORDER BY date desc""")
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
