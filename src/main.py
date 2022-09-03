@@ -1,7 +1,7 @@
 from datetime import datetime
 from models import Transaction
 from reader import read_data
-from data import Filters, TagLists, get_all_tags, get_transactions_for_tags, Aggregates
+from data import Filter, TagLists, get_all_tags, get_transactions_for_tags, Aggregates
 import database
 
 
@@ -26,14 +26,12 @@ def main():
     # Filters
     tag_lists = TagLists(["Income"], ["Investments or Shares"], ["Interest income"])
     transactions = get_transactions_for_tags(tag_lists)
-    transactions = Filters.filter_by_date(
+    transactions = Filter.filter_by_date(
         transactions,
         datetime.strptime("2019-01-01", "%Y-%m-%d"),
         datetime.strptime("2020-01-01", "%Y-%m-%d"),
     )
-    transactions = Filters.filter_by_account(
-        transactions, "123 STUDENT CURRENT ACCOUNT"
-    )
+    transactions = Filter.filter_by_account(transactions, "123 STUDENT CURRENT ACCOUNT")
     for transaction in transactions:
         print(transaction)
         print()

@@ -90,7 +90,7 @@ def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
 
-class Filters:
+class Filter:
     @staticmethod
     def filter_by_tag(transactions, L1=None, L2=None, L3=None):
         filter_L1 = lambda _: True
