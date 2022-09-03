@@ -97,12 +97,12 @@ class Transaction:
     @staticmethod
     def from_row(row):
         return Transaction(
-            row["Account"],
-            datetime.strptime(row["Date"], "%Y-%m-%d"),
-            row["CurrentDescription"],
-            row["OriginalDescription"],
-            int(float(row["Amount"]) * 100),
-            Tag(row["L1Tag"], row["L2Tag"], row["L3Tag"]),
+            account=row["Account"],
+            date=datetime.strptime(row["Date"], "%Y-%m-%d"),
+            current_description=row["CurrentDescription"],
+            original_description=row["OriginalDescription"],
+            amount=int(float(row["Amount"]) * 100),
+            tag=Tag(row["L1Tag"], row["L2Tag"], row["L3Tag"]),
         )
 
 
