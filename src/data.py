@@ -7,9 +7,10 @@ from models import TransactionsByTag, Transaction
 import database
 
 
-def get_tags(data):
+def get_tags(transaction_list: list) -> list[str]:
+    """Finds all unique tag names in a list of transactions."""
     tags = []
-    for transaction in data:
+    for transaction in transaction_list:
         tag = transaction.tag
         if not tag.is_in(tags):
             tags.append(tag)
