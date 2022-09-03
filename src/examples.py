@@ -19,9 +19,6 @@ def aggregate(transactions: list[Transaction]):
     total_from_income = Aggregate.aggregate(
         transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
     )
-    total_from_income = Aggregate.aggregate(
-        transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
-    )
     print("Aggregate: ", total_from_income / 100)
 
 
