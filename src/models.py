@@ -3,22 +3,19 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
+from dataclasses import dataclass
 from datetime import datetime
 import json
 import database
 
 
+@dataclass
 class Tag:
     """In moneydashboard, a transaction can have up to 3 levels of tags. Increasing levels are more specific."""
 
     L1: str
     L2: str
     L3: str
-
-    def __init__(self, L1, L2, L3):
-        self.L1 = L1
-        self.L2 = L2
-        self.L3 = L3
 
     def __repr__(self) -> str:
         return "<Tag L1: {}, L2: {}, L3: {}>".format(self.L1, self.L2, self.L3)
@@ -37,6 +34,7 @@ class Tag:
         return False
 
 
+@dataclass
 class Transaction:
     """A transaction as recorded by moneydashboard."""
 
@@ -46,22 +44,6 @@ class Transaction:
     original_description: str
     amount: float
     tag: Tag
-
-    def __init__(
-        self,
-        account: str,
-        date: datetime,
-        current_description: str,
-        original_description: str,
-        amount: int,
-        tag: Tag,
-    ):
-        self.account = account
-        self.date = date
-        self.current_description = current_description
-        self.original_description = original_description
-        self.amount = amount
-        self.tag = tag
 
     def __repr__(self) -> str:
         return "Transaction(acccount: {}, date: {}, current_description: {}, original_description: {}, amount: {}, tag: {})".format(
@@ -124,15 +106,11 @@ class Transaction:
         )
 
 
+@dataclass
 class TransactionsByTagLevel:
-    L1: list[Transaction]
-    L2: list[Transaction]
-    L3: list[Transaction]
-
-    def __init__(self):
-        self.L1 = []
-        self.L2 = []
-        self.L3 = []
+    L1: list[Transaction] = []
+    L2: list[Transaction] = []
+    L3: list[Transaction] = []
 
     def __repr__(self) -> str:
         return "<TransactionsByTag L1: {}, L2: {}, L3: {}>".format(

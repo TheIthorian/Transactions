@@ -3,7 +3,9 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
+from dataclasses import dataclass
 from datetime import datetime
+from typing import TypeVar
 from models import Tag, TransactionsByTagLevel, Transaction
 import database
 
@@ -47,19 +49,13 @@ def group_transaction_by_tag_level(
     return transactions_by_tag_level
 
 
+@dataclass
 class TagLists:
     """Datastructure to store lists of tags, separated by tag level."""
 
-    L1: list[str]
-    L2: list[str]
-    L3: list[str]
-
-    def __init__(
-        self, L1: list[str] = None, L2: list[str] = None, L3: list[str] = None
-    ):
-        self.L1 = L1
-        self.L2 = L2
-        self.L3 = L3
+    L1: list[str] = None
+    L2: list[str] = None
+    L3: list[str] = None
 
 
 def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
