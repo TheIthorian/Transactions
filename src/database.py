@@ -40,26 +40,30 @@ def init() -> None:
     con.close()
 
 
-def insert(query: str, data: dict, con: sqlite3.Connection = None) -> int:
+def insert(
+    query: str, data: dict, connection: sqlite3.Connection = None
+) -> sqlite3.Connection:
+    """Runs an insert query, returning the `connection` if one is provided."""
+
     auto_commit = False
-    if con is None:
-        con = connect()
+    if connection is None:
+        connection = connect()
         auto_commit = True
 
-    cur = con.cursor()
+    cur = connection.cursor()
     cur.execute(query, data)
 
     if auto_commit:
-        con.commit()
-        con.close()
+        connection.commit()
+        connection.close()
     else:
-        return con
+        return connection
 
 
 def select(query: str, inputs: dict = None) -> list:
-    con = connect()
-    con.row_factory = namedtuple_factory
-    cur = con.cursor()
+    connection = connect()
+    connection.row_factory = namedtuple_factory
+    cur = connection.cursor()
     if inputs is None:
         cur.execute(query)
     else:
