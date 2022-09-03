@@ -15,15 +15,17 @@ def main():
     total_from_income = Aggregate.aggregate(
         transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
     )
-    print(total_from_income / 100)
+    print("Aggregate: ", total_from_income / 100)
 
     # Queries
+    print("\n\nQueries: ")
     data = database.select("""SELECT * FROM transactions Order by date desc LIMIT 1""")
     for row in data:
         print(Transaction.from_db(row))
         print()
 
     # Filters
+    print("\n\nFilter: ")
     tag_lists = TagLists(["Income"], ["Investments or Shares"], ["Interest income"])
     transactions = get_transactions_for_tags(tag_lists)
     transactions = Filter.filter_by_date(
@@ -38,8 +40,6 @@ def main():
 
     for tag in get_all_tags():
         print(tag)
-
-    transactions = get()
 
 
 if __name__ == "__main__":
