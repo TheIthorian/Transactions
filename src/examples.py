@@ -2,13 +2,13 @@ from datetime import datetime
 from models import Transaction
 from reader import read_data
 from data import (
+    Aggregate,
     Filter,
     TagLists,
     get_all_tags,
     get_all_transactions,
     get_tags,
     get_transactions_for_tags,
-    Aggregate,
     group_transaction_by_tag_level,
 )
 import database
