@@ -1,4 +1,4 @@
-"""Contains functions to fetch and form data in a useable format.
+"""Module to fetch and form data in a useable format.
 
 (C) 2022, TheIthorian, United Kingdom
 """
