@@ -38,6 +38,8 @@ class Tag:
 
 
 class Transaction:
+    """A transaction as recorded by moneydashboard."""
+
     acccount: str
     date: datetime
     current_description: str
