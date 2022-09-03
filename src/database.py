@@ -7,14 +7,14 @@ from collections import namedtuple
 import sqlite3
 
 
-def namedtuple_factory(cursor, row):
+def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
     """Returns sqlite rows as named tuples."""
     fields = [col[0] for col in cursor.description]
     Row = namedtuple("Row", fields)
     return Row(*row)
 
 
-def connect():
+def connect() -> sqlite3.Connection:
     return sqlite3.connect("transactions.db")
 
 
@@ -39,7 +39,7 @@ def init() -> None:
     con.close()
 
 
-def insert(query: str, data: dict, con=None) -> int:
+def insert(query: str, data: dict, con: sqlite3.Connection = None) -> int:
 
     auto_commit = False
     if con is None:
