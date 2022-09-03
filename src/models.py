@@ -55,7 +55,16 @@ class Transaction:
             self.tag,
         )
 
-    def to_dict(self):
+    def __eq__(self, other: "Transaction") -> bool:
+        # Ignore tags, as they can be updated
+        return (
+            self.account == other.account
+            and self.date == other.date
+            and self.original_description == other.original_description
+            and self.amount == other.amount
+        )
+
+    def to_dict(self) -> dict[str, any]:
         tag = self.tag.to_dict()
         return {
             "account": self.account,
