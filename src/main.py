@@ -1,18 +1,18 @@
 from datetime import datetime
 from models import Transaction
 from reader import read_data
-from data import Filter, TagLists, get_all_tags, get_transactions_for_tags, Aggregates
+from data import Filter, TagLists, get_all_tags, get_transactions_for_tags, Aggregate
 import database
 
 
 def main():
     _, transactions = read_data()
 
-    # Aggregates
-    total_from_income = Aggregates.aggregate(
+    # Aggregate
+    total_from_income = Aggregate.aggregate(
         transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
     )
-    total_from_income = Aggregates.aggregate(
+    total_from_income = Aggregate.aggregate(
         transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
     )
     print(total_from_income / 100)

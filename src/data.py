@@ -128,7 +128,10 @@ class Filter:
         return list(filter(lambda t: t.account == account, transactions))
 
 
-class Aggregates:
+class Aggregate:
+    """Collection of aggregate functions"""
+
+    @staticmethod
     def aggregate(transactions: list[Transaction], condition, agg_function, seed=0):
         summary = seed
         for transaction in transactions:
