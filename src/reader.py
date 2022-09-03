@@ -7,8 +7,8 @@ import csv
 from data import Transaction
 
 
-def read_data():
-    data = []
+def read_data() -> list[Transaction]:
+    transactions: list[Transaction] = []
     header = {}
     file = "Transactions.csv"
 
@@ -26,10 +26,11 @@ def read_data():
                 "L3Tag",
             ],
         )
+
         for index, row in enumerate(reader):
             if index == 0:
                 header = row
             else:
-                data.append(Transaction.from_row(row))
+                transactions.append(Transaction.from_row(row))
 
-    return header, data
+    return header, transactions
