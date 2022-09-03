@@ -50,7 +50,7 @@ def misc():
 def examples():
     """Function to demonstrate functionality."""
 
-    _, transactions = read_data()
+    _, transactions = read_data("Transactions.csv")
     aggregate(transactions)
     queries()
     filters()
