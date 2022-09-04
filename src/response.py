@@ -2,6 +2,14 @@ class Response:
     pass
 
 
+def register_after_request(app):
+    # Called before response is output to web service.
+    @app.after_request
+    def after_request(response):
+        add_cors(response)
+        return response
+
+
 def add_cors(response):
     response.headers.set("Access-Control-Allow-Origin", "*")
     response.headers["Access-Control-Allow-Request-Headers"] = "*"
