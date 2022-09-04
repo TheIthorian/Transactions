@@ -9,6 +9,12 @@ flask-cors = "*"
 black = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.9"
+
+[scripts]
+examples = "py examples.py"
+test = "pytest"
