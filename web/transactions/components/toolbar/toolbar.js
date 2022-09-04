@@ -1,8 +1,9 @@
 import propTypes from 'prop-types';
 import { Space } from 'antd';
+
 import styles from './toolbar.module.css';
 
-function Toolbar({ title, children }) {
+export default function Toolbar({ title, children }) {
     return (
         <Space width='100%' align='end' className={styles.toolbar}>
             <h1>{title}</h1>
@@ -15,5 +16,3 @@ Toolbar.propTypes = {
     title: propTypes.string.isRequired,
     children: propTypes.element,
 };
-
-export default Toolbar;
