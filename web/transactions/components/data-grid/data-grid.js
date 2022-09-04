@@ -50,11 +50,11 @@ export function DataGrid({ children, dataSource, columns, onSelectRow, store }) 
     }
 
     return (
-        <Card bodyStyle={{ padding: 5 }}>
+        <>
             {children}
             <Divider style={{ margin: '0 0 10px' }} />
             <Table />
-        </Card>
+        </>
     );
 }
 
