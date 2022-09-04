@@ -6,7 +6,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 import json
-import database
+
+import transactions.database as database
 
 
 @dataclass

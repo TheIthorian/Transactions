@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from health import hello_world
+from transactions.http.health import hello_world
 
 
 def register_routes(app):

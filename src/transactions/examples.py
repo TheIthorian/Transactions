@@ -1,7 +1,9 @@
 from datetime import datetime
-from models import Transaction
-from reader import read_data
-from data import (
+import os
+
+from .models import Transaction
+from .reader import read_data
+from .data import (
     Aggregate,
     Filter,
     TagLists,
@@ -11,7 +13,7 @@ from data import (
     get_transactions_for_tags,
     group_transaction_by_tag_level,
 )
-import database
+import transactions.database as database
 
 
 def aggregate(transactions: list[Transaction]):
@@ -68,7 +70,10 @@ def misc():
 def examples():
     """Function to demonstrate functionality."""
 
-    _, transactions = read_data("Transactions.csv")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_path = os.path.join(dir_path, "..", "..", "Transactions.csv")
+
+    _, transactions = read_data(file_path)
     aggregate(transactions)
     queries()
     filters()

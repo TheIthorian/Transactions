@@ -6,7 +6,8 @@
 import csv
 from io import TextIOWrapper
 from typing import Tuple
-from data import Transaction
+
+from .data import Transaction
 
 
 def read_data(filename: str) -> Tuple[dict, list[Transaction]]:
