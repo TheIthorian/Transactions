@@ -1,12 +1,12 @@
 import propTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import { Card, Divider, Skeleton, Table as AntTable } from 'antd';
 
-import Empty from 'components/common/empty';
+import Empty from 'components/empty';
 
 import { makeHandleTableChange } from './eventHandlers';
 import { usePagination } from './hooks';
-import { useEffect, useState } from 'react';
 
 // Searching: https://ant.design/components/table/#components-table-demo-custom-filter-panel
 export function DataGrid({ children, dataSource, columns, onSelectRow, store }) {
@@ -63,11 +63,8 @@ DataGrid.defaultProps = {
 };
 
 DataGrid.propTypes = {
-    toolBar: propTypes.element.isRequired,
-    dataSource: propTypes.array.isRequired,
+    dataSource: propTypes.array,
     columns: propTypes.array.isRequired,
-    loading: propTypes.bool,
-    onRow: propTypes.func,
-    rowSelection: propTypes.array,
+    onSelectRow: propTypes.func,
     store: propTypes.object,
 };
