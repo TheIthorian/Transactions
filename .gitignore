@@ -37,3 +37,6 @@ __pycache__
 src/Transactions.csv
 src/new_Transactions.csv
 src/transactions.db
+
+# virtual environment
+src/venv
