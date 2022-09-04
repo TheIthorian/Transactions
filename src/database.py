@@ -40,9 +40,7 @@ def init() -> None:
     con.close()
 
 
-def insert(
-    query: str, data: dict, connection: sqlite3.Connection = None
-) -> sqlite3.Connection:
+def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int:
     """Runs an insert query, returning the `connection` if one is provided."""
 
     auto_commit = False
@@ -52,12 +50,14 @@ def insert(
 
     cur = connection.cursor()
     cur.execute(query, data)
+    id = cur.lastrowid
 
+    # Keep connection alive if a connection is provided
     if auto_commit:
         connection.commit()
         connection.close()
-    else:
-        return connection
+
+    return id
 
 
 def select(query: str, inputs: dict = None) -> list:

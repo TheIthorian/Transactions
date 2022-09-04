@@ -25,7 +25,9 @@ def aggregate(transactions: list[Transaction]):
 def queries():
     # Queries
     print("\nQueries: ")
-    data = database.select("""SELECT * FROM transactions Order by date desc LIMIT 1""")
+    data = database.select(
+        """SELECT rowid, * FROM transactions Order by date desc LIMIT 1"""
+    )
     for row in data:
         print(Transaction.from_db(row))
 

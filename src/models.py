@@ -44,9 +44,11 @@ class Transaction:
     original_description: str
     amount: float
     tag: Tag
+    id: int = None
 
     def __repr__(self) -> str:
-        return "Transaction(acccount: {}, date: {}, current_description: {}, original_description: {}, amount: {}, tag: {})".format(
+        return "Transaction(id: {}, acccount: {}, date: {}, current_description: {}, original_description: {}, amount: {}, tag: {})".format(
+            self.id,
             self.account,
             self.date,
             self.current_description,
@@ -67,6 +69,7 @@ class Transaction:
     def to_dict(self) -> dict[str, any]:
         tag = self.tag.to_dict()
         return {
+            "id": self.id,
             "account": self.account,
             "date": int(self.date.timestamp()),
             "current_description": self.current_description,
@@ -80,8 +83,16 @@ class Transaction:
     def to_json(self) -> str:
         return json.dumps(self.to_dict())
 
-    def insert(self, conn=None):
-        query = """INSERT INTO transactions VALUES 
+    def insert(self, conn=None) -> int:
+        query = """INSERT INTO transactions (
+            account, 
+            date, 
+            current_description, 
+            original_description, 
+            amount, 
+            l1, 
+            l2, 
+            l3) VALUES 
             (:account, 
             :date, 
             :current_description, 
@@ -91,21 +102,25 @@ class Transaction:
             :l2,
             :l3)"""
 
-        return database.insert(query, self.to_dict(), conn)
+        self.id = database.insert(query, self.to_dict(), conn)
+        return self.id
 
     @staticmethod
     def from_db(row):
+        """To load transaction from database."""
         return Transaction(
-            account=row[0],
-            date=datetime.fromtimestamp(row[1]),
-            current_description=row[2],
-            original_description=row[3],
-            amount=row[4],
-            tag=Tag(row[5], row[6], row[7]),
+            id=row[0],
+            account=row[1],
+            date=datetime.fromtimestamp(row[2]),
+            current_description=row[3],
+            original_description=row[4],
+            amount=row[5],
+            tag=Tag(row[6], row[7], row[8]),
         )
 
     @staticmethod
     def from_row(row):
+        """To load transaction from csv."""
         return Transaction(
             account=row["Account"],
             date=datetime.strptime(row["Date"], "%Y-%m-%d"),

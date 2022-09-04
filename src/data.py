@@ -23,7 +23,9 @@ def get_tags(transaction_list: list[Transaction]) -> list[Tag]:
 
 def get_all_transactions() -> list[Transaction]:
     """Gets all transactions from the database."""
-    transactions = database.select("""SELECT * FROM transactions ORDER BY date desc""")
+    transactions = database.select(
+        """SELECT rowid, * FROM transactions ORDER BY date desc"""
+    )
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
 
@@ -65,7 +67,7 @@ def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
     then only transactions which match each of the tag levels will be returned, except L3 which will be ignored.
     """
 
-    query = "SELECT * FROM transactions WHERE"
+    query = "SELECT rowid, * FROM transactions WHERE"
     conditions = []  # Query consitions
     inputs = []  # Query inputs
 
