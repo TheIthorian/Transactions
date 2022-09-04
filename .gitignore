@@ -34,9 +34,9 @@ web/transactions/**.env*.local
 
 # src
 __pycache__
-src/Transactions.csv
-src/new_Transactions.csv
-src/transactions.db
+Transactions.csv
+new_Transactions.csv
+src/assets/transactions.db
 
 # virtual environment
 src/venv
