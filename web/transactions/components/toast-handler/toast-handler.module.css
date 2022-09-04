@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    width: 100%;
+    z-index: 10000;
+}
+
+.toast-handler {
+    position: fixed;
+    width: 50%;
+    min-width: 200px;
+    z-index: 10000;
+    top: 40px;
+}
