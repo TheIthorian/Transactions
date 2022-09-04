@@ -1,4 +1,5 @@
 export const LABELS = {
+    id: 'Id',
     transactionListGridTitle: 'Transactions',
     accountName: 'Account',
     transactionDate: 'Date',
