@@ -4,7 +4,7 @@
 """
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from typing import Callable, TypeVar
 
 from transactions.models.transactions import Tag, TransactionsByTagLevel, Transaction
@@ -120,14 +120,14 @@ class Filter:
     @staticmethod
     def filter_by_date(
         transactions: list[Transaction],
-        start_date: datetime = None,
-        end_date: datetime = None,
+        start_date: date = None,
+        end_date: date = None,
     ) -> list[Transaction]:
         """Returns the transactions which occurred within `star_date` and `end_date`."""
         return list(
             filter(
-                lambda t: (start_date is None or t.date > start_date)
-                and (end_date is None or t.date < end_date),
+                lambda t: (start_date is None or t.date >= start_date)
+                and (end_date is None or t.date <= end_date),
                 transactions,
             )
         )
@@ -146,8 +146,8 @@ class Filter:
         """Returns the transactions which have their value within the given range."""
         return list(
             filter(
-                lambda t: (min_value is None or t.amount > min_value)
-                and (max_value is None or t.amount < max_value),
+                lambda t: (min_value is None or t.amount >= min_value)
+                and (max_value is None or t.amount <= max_value),
                 transactions,
             )
         )
