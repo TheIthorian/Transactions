@@ -6,7 +6,7 @@
 from datetime import datetime
 import os
 
-from .models import Transaction
+from .models.transactions import Transaction
 from .reader import read_data
 from .data import (
     Aggregate,
