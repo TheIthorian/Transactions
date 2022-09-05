@@ -33,9 +33,11 @@ class Request:
         return data
 
 
-def invoke(fn: Callable, request_schema: Schema, response_schema: Schema) -> str:
+def invoke(
+    fn: Callable, request_schema: Schema, response_schema: Schema
+) -> tuple[any, int, dict]:
     """Validates the flask request against the input `request_schema`,
-    invokes the `fn` and outputs an object conforming to `response_schema`."""
+    invokes the `fn`, and outputs an object conforming to `response_schema`."""
     req = Request(request)
 
     if not req.authenticate():
@@ -50,4 +52,4 @@ def invoke(fn: Callable, request_schema: Schema, response_schema: Schema) -> str
 
     response_data = fn(body)
 
-    return response_schema.dumps(response_data)
+    return Response.resolve(response_schema.dumps(response_data))

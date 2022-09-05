@@ -1,4 +1,11 @@
+from typing import Tuple
+
+
 class Response:
+    @staticmethod
+    def resolve(data: any, code: int = 200) -> tuple[any, int, dict]:
+        return data, code, {"Content-Type": "application/json"}
+
     @staticmethod
     def authentication_error():
         return {"Error": "Authentication Error"}
