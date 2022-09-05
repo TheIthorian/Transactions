@@ -1,6 +1,6 @@
 from flask import jsonify, request
 
-from transactions.http import health, transactions
+from transactions.routes import health, transactions
 
 # https://stackoverflow.com/questions/17129573/can-i-use-external-methods-as-route-decorators-in-python-flask
 def register_routes(app):

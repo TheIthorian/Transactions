@@ -1,4 +1,5 @@
-from transactions.http import routes, app
+from transactions import routes
+from transactions.http import app
 
 if __name__ == "__main__":
     routes.register_routes(app.app)
