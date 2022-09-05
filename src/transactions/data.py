@@ -42,12 +42,12 @@ def group_transaction_by_tag_level(
     transactions_by_tag_level = TransactionsByTagLevel()
 
     for transaction in transactions:
-        if transaction.tag.L1 != "":
-            transactions_by_tag_level.L1.append(transaction)
-        if transaction.tag.L2 != "":
-            transactions_by_tag_level.L2.append(transaction)
-        if transaction.tag.L3 != "":
-            transactions_by_tag_level.L3.append(transaction)
+        if transaction.tag.l1 != "":
+            transactions_by_tag_level.l1.append(transaction)
+        if transaction.tag.l2 != "":
+            transactions_by_tag_level.l2.append(transaction)
+        if transaction.tag.l3 != "":
+            transactions_by_tag_level.l3.append(transaction)
 
     return transactions_by_tag_level
 
@@ -56,33 +56,33 @@ def group_transaction_by_tag_level(
 class TagLists:
     """Datastructure to store lists of tags, separated by tag level."""
 
-    L1: list[str] = None
-    L2: list[str] = None
-    L3: list[str] = None
+    l1: list[str] = None
+    l2: list[str] = None
+    l3: list[str] = None
 
 
 def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
     """Find all transactions that have at least one tag in each of the input `tag_lists` levels.
     \n
-    E.g. if `tag_lists => L1=["Income"], L2=["Investments or Shares"], L3=[]`
-    then only transactions which match each of the tag levels will be returned, except L3 which will be ignored.
+    E.g. if `tag_lists => l1=["Income"], l2=["Investments or Shares"], l3=[]`
+    then only transactions which match each of the tag levels will be returned, except l3 which will be ignored.
     """
 
     query = "SELECT rowid, * FROM transactions WHERE"
     conditions = []  # Query consitions
     inputs = []  # Query inputs
 
-    if tag_lists.L1 is not None:
-        conditions.append(" l1 IN (%s)" % ",".join("?" for _ in tag_lists.L1))
-        inputs.extend(tag_lists.L1)
+    if tag_lists.l1 is not None:
+        conditions.append(" l1 IN (%s)" % ",".join("?" for _ in tag_lists.l1))
+        inputs.extend(tag_lists.l1)
 
-    if tag_lists.L2 is not None:
-        conditions.append(" l2 IN (%s)" % ",".join("?" for _ in tag_lists.L2))
-        inputs.extend(tag_lists.L2)
+    if tag_lists.l2 is not None:
+        conditions.append(" l2 IN (%s)" % ",".join("?" for _ in tag_lists.l2))
+        inputs.extend(tag_lists.l2)
 
-    if tag_lists.L3 is not None:
-        conditions.append(" l3 IN (%s)" % ",".join("?" for _ in tag_lists.L3))
-        inputs.extend(tag_lists.L3)
+    if tag_lists.l3 is not None:
+        conditions.append(" l3 IN (%s)" % ",".join("?" for _ in tag_lists.l3))
+        inputs.extend(tag_lists.l3)
 
     query += " AND".join(conditions) + " ORDER BY date desc"
 
@@ -95,18 +95,18 @@ class Filter:
 
     @staticmethod
     def filter_by_tag(
-        transactions: list[Transaction], L1: Tag = None, L2: Tag = None, L3: Tag = None
+        transactions: list[Transaction], l1: Tag = None, l2: Tag = None, l3: Tag = None
     ) -> list[Transaction]:
         filter_L1 = lambda _: True
         filter_L2 = lambda _: True
         filter_L3 = lambda _: True
 
-        if L1 is not None:
-            filter_L1 = lambda t: t.tag.L1 == L1
-        if L2 is not None:
-            filter_L2 = lambda t: t.tag.L2 == L2
-        if L3 is not None:
-            filter_L3 = lambda t: t.tag.L3 == L3
+        if l1 is not None:
+            filter_L1 = lambda t: t.tag.l1 == l1
+        if l2 is not None:
+            filter_L2 = lambda t: t.tag.l2 == l2
+        if l3 is not None:
+            filter_L3 = lambda t: t.tag.l3 == l3
 
         _filter = lambda t: filter_L1(t) and filter_L2(t) and filter_L3(t)
 

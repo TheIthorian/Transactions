@@ -14,18 +14,18 @@ import transactions.database as database
 class Tag:
     """In moneydashboard, a transaction can have up to 3 levels of tags. Increasing levels are more specific."""
 
-    L1: str
-    L2: str
-    L3: str
+    l1: str
+    l2: str
+    l3: str
 
     def __repr__(self) -> str:
-        return "<Tag L1: {}, L2: {}, L3: {}>".format(self.L1, self.L2, self.L3)
+        return "<Tag l1: {}, l2: {}, l3: {}>".format(self.l1, self.l2, self.l3)
 
     def __eq__(self, other):
-        return self.L1 == other.L1 and self.L2 == other.L2 and self.L3 == other.L3
+        return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
 
     def to_dict(self):
-        return {"L1": self.L1, "L2": self.L2, "L3": self.L3}
+        return {"l1": self.l1, "l2": self.l2, "l3": self.l3}
 
     def is_in(self, other_tags: list) -> bool:
         """Returns True if the current tag is in a lsit of `other_tags`."""
@@ -76,9 +76,9 @@ class Transaction:
             "current_description": self.current_description,
             "original_description": self.original_description,
             "amount": self.amount,
-            "l1": tag["L1"],
-            "l2": tag["L2"],
-            "l3": tag["L3"],
+            "l1": tag["l1"],
+            "l2": tag["l2"],
+            "l3": tag["l3"],
         }
 
     def to_json(self) -> str:
@@ -134,16 +134,16 @@ class Transaction:
 
 @dataclass
 class TransactionsByTagLevel:
-    L1: list[Transaction]
-    L2: list[Transaction]
-    L3: list[Transaction]
+    l1: list[Transaction]
+    l2: list[Transaction]
+    l3: list[Transaction]
 
     def __init__(self):
-        self.L1 = []
-        self.L2 = []
-        self.L3 = []
+        self.l1 = []
+        self.l2 = []
+        self.l3 = []
 
     def __repr__(self) -> str:
-        return "<TransactionsByTag L1: {}, L2: {}, L3: {}>".format(
-            self.L1, self.L2, self.L3
+        return "<TransactionsByTag l1: {}, l2: {}, l3: {}>".format(
+            self.l1, self.l2, self.l3
         )

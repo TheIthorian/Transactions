@@ -17,9 +17,9 @@ def test_get_all_transactions(mocker):
     current_description = "current_description"
     original_description = "original_description"
     amount = 10
-    l1 = "L1"
-    l2 = "L2"
-    l3 = "L3"
+    l1 = "l1"
+    l2 = "l2"
+    l3 = "l3"
 
     mock_select_results = [
         [

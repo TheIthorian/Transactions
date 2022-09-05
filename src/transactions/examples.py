@@ -24,7 +24,7 @@ import transactions.database as database
 def aggregate(transactions: list[Transaction]):
     # Aggregate
     total_from_income = Aggregate.aggregate(
-        transactions, lambda t: t.tag.L1 == "Income", lambda t: t.amount
+        transactions, lambda t: t.tag.l1 == "Income", lambda t: t.amount
     )
     print("Aggregate: ", total_from_income / 100)
 
@@ -67,9 +67,9 @@ def misc():
 
     print("\ngroup_transaction_by_tag_level(first 10 transactions)")
     groups = group_transaction_by_tag_level(get_all_transactions()[0:10])
-    print("L1: ", [transaction.original_description for transaction in groups.L1])
-    print("L2: ", [transaction.original_description for transaction in groups.L2])
-    print("L3: ", [transaction.original_description for transaction in groups.L3])
+    print("l1: ", [transaction.original_description for transaction in groups.l1])
+    print("l2: ", [transaction.original_description for transaction in groups.l2])
+    print("l3: ", [transaction.original_description for transaction in groups.l3])
 
 
 def examples():
