@@ -61,14 +61,16 @@ class TagLists:
     l3: list[str] = None
 
 
-def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
+def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     """Find all transactions that have at least one tag in each of the input `tag_lists` levels.
     \n
     E.g. if `tag_lists => l1=["Income"], l2=["Investments or Shares"], l3=[]`
     then only transactions which match each of the tag levels will be returned, except l3 which will be ignored.
     """
 
-    query = "SELECT rowid, * FROM transactions WHERE"
+    tag_lists = tag_lists or TagLists()
+
+    query = "SELECT rowid, * FROM transactions "
     conditions = []  # Query consitions
     inputs = []  # Query inputs
 
@@ -84,7 +86,12 @@ def get_transactions_for_tags(tag_lists: TagLists) -> list[Transaction]:
         conditions.append(" l3 IN (%s)" % ",".join("?" for _ in tag_lists.l3))
         inputs.extend(tag_lists.l3)
 
-    query += " AND".join(conditions) + " ORDER BY date desc"
+    if len(conditions) != 0:
+        query += " WHERE " + " AND".join(conditions)
+
+    query += " ORDER BY date desc LIMIT 1"
+
+    print(query)
 
     transactions = database.select(query, inputs)
     return list(map(lambda t: Transaction.from_db(t), transactions))
@@ -114,17 +121,38 @@ class Filter:
 
     @staticmethod
     def filter_by_date(
-        transactions: Transaction, start_date: datetime, end_date: datetime
+        transactions: list[Transaction],
+        start_date: datetime = None,
+        end_date: datetime = None,
     ) -> list[Transaction]:
         """Returns the transactions which occurred within `star_date` and `end_date`."""
         return list(
-            filter(lambda t: t.date > start_date and t.date < end_date, transactions)
+            filter(
+                lambda t: (start_date is None or t.date > start_date)
+                and (end_date is None or t.date < end_date),
+                transactions,
+            )
         )
 
     @staticmethod
-    def filter_by_account(transactions, account: str) -> list:
+    def filter_by_account(transactions: list[Transaction], account: str = None) -> list:
         """Returns the transactions which belong to the input `account` name."""
-        return list(filter(lambda t: t.account == account, transactions))
+        return list(
+            filter(lambda t: account is None or t.account == account, transactions)
+        )
+
+    @staticmethod
+    def filter_by_value(
+        transactions: list[Transaction], min_value: int = None, max_value: int = None
+    ) -> list:
+        """Returns the transactions which have their value within the given range."""
+        return list(
+            filter(
+                lambda t: (min_value is None or t.amount > min_value)
+                and (max_value is None or t.amount < max_value),
+                transactions,
+            )
+        )
 
 
 class Aggregate:
