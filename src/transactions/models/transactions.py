@@ -43,7 +43,7 @@ class Transaction:
     date: datetime
     current_description: str
     original_description: str
-    amount: float
+    amount: int
     tag: Tag
     id: int = None
 
