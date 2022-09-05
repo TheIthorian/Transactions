@@ -3,7 +3,7 @@ from typing import Callable, Union
 from flask import Request as FlaskRequest, request
 from marshmallow import Schema, EXCLUDE, ValidationError
 
-from transactions.authentication import is_key_valid
+from transactions.http.authentication import is_key_valid
 from transactions.http.response import Response
 
 
