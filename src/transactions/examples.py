@@ -46,8 +46,8 @@ def filters():
     transactions = get_transactions_for_tags(tag_lists)
     transactions = Filter.filter_by_date(
         transactions,
-        datetime.strptime("2019-01-01", "%Y-%m-%d"),
-        datetime.strptime("2020-01-01", "%Y-%m-%d"),
+        datetime.strptime("2019-01-01", "%Y-%m-%d").date(),
+        datetime.strptime("2020-01-01", "%Y-%m-%d").date(),
     )
     transactions = Filter.filter_by_account(transactions, "123 STUDENT CURRENT ACCOUNT")
     for transaction in transactions:
