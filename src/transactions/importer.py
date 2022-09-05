@@ -5,9 +5,9 @@
 
 import os
 
-from .data import get_all_transactions
-from .database import connect
-from .reader import read_data
+from transactions.data import get_all_transactions
+from transactions.database import connect
+from transactions.reader import read_data
 
 
 def add_new_transactions():
