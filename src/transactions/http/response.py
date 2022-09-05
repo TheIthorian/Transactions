@@ -2,13 +2,15 @@ from typing import Tuple
 
 
 class Response:
-    @staticmethod
-    def resolve(data: any, code: int = 200) -> tuple[any, int, dict]:
-        return data, code, {"Content-Type": "application/json"}
+    content_type = {"Content-Type": "application/json"}
 
-    @staticmethod
-    def authentication_error():
-        return {"Error": "Authentication Error"}
+    @classmethod
+    def resolve(cls, data: any, code: int = 200) -> tuple[any, int, dict]:
+        return data, code, cls.content_type
+
+    @classmethod
+    def authentication_error(cls) -> tuple[any, int, dict]:
+        return {"Error": "Authentication Error"}, 400, cls.content_type
 
 
 def register_after_request(app):

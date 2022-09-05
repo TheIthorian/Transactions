@@ -41,7 +41,7 @@ def invoke(
     req = Request(request)
 
     if not req.authenticate():
-        return Response.authentication_error(), 400
+        return Response.authentication_error()
 
     print(fn.__name__)
 
