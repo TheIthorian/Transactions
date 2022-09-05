@@ -1,12 +1,11 @@
 from flask import jsonify, request
 
-from transactions.http.health import hello_world
+from transactions.http import health, transactions
 
-
+# https://stackoverflow.com/questions/17129573/can-i-use-external-methods-as-route-decorators-in-python-flask
 def register_routes(app):
-    @app.route("/hello-world", methods=["GET"])
-    def _hello_world():
-        return hello_world()
+    health.register_routes(app)
+    transactions.register_routes(app)
 
     @app.errorhandler(404)
     def _not_found(error=None):
