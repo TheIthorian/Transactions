@@ -1,6 +1,3 @@
-from typing import Tuple
-
-
 class Response:
     content_type = {"Content-Type": "application/json"}
 
@@ -34,4 +31,4 @@ def add_cors(response):
     response.headers.add(
         "Access-Control-Allow-Headers", "Access-Control-Request-Headers"
     )
-    response.headers.add("Access-Control-Allow-Headers", "apikey")
+    response.headers.add("Access-Control-Allow-Headers", "api_key")
