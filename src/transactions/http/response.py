@@ -3,19 +3,20 @@ class Response:
 
     @classmethod
     def resolve(cls, data: any, code: int = 200) -> tuple[any, int, dict]:
+        """All controllers should call this function to maintain consistent responses."""
         return data, code, cls.content_type
 
     @classmethod
     def authentication_error(cls) -> tuple[any, int, dict]:
+        """Creates an authentication error response"""
         return {"Error": "Authentication Error"}, 400, cls.content_type
 
 
 def register_after_request(app):
-    # Called before response is output to web service.
     @app.after_request
     def after_request(response):
-        add_cors(response)
-        return response
+        # Called before response is output to web service.
+        return add_cors(response)
 
 
 def add_cors(response):
@@ -32,3 +33,5 @@ def add_cors(response):
         "Access-Control-Allow-Headers", "Access-Control-Request-Headers"
     )
     response.headers.add("Access-Control-Allow-Headers", "api_key")
+
+    return response
