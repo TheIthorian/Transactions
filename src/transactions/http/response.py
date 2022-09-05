@@ -1,5 +1,7 @@
 class Response:
-    pass
+    @staticmethod
+    def authentication_error():
+        return {"Error": "Authentication Error"}
 
 
 def register_after_request(app):
