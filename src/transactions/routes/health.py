@@ -8,10 +8,5 @@ def status():
 
 
 def register_routes(app):
-    @app.route("/hello-world", methods=["GET"])
-    def _hello_world():
-        return hello_world()
-
-    @app.route("/health", methods=["GET", "POST"])
-    def _health():
-        return status()
+    app.add_url_rule("/hello-world", view_func=hello_world, methods=["GET"])
+    app.add_url_rule("/health", view_func=status, methods=["GET", "POST"])
