@@ -3,7 +3,7 @@ class Response:
 
     @classmethod
     def resolve(cls, data: any, code: int = 200) -> tuple[any, int, dict]:
-        """All controllers should call this function to maintain consistent responses."""
+        """Used by `Request` to make consistent responses."""
         return data, code, cls.content_type
 
     @classmethod
