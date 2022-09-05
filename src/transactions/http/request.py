@@ -1,4 +1,5 @@
 from typing import Callable, Union
+
 from flask import Request as FlaskRequest, request
 from marshmallow import Schema, EXCLUDE, ValidationError
 
@@ -51,6 +52,6 @@ def invoke(
     except ValidationError as error:
         return error.messages, 400
 
-    response_data = fn(body)
+    response_data = fn(body, req)
 
     return Response.resolve(response_schema.dumps(response_data))
