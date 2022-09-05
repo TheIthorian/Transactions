@@ -89,7 +89,7 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     if len(conditions) != 0:
         query += " WHERE " + " AND".join(conditions)
 
-    query += " ORDER BY date desc LIMIT 1"
+    query += " ORDER BY date desc"
 
     transactions = database.select(query, inputs)
     return list(map(lambda t: Transaction.from_db(t), transactions))
