@@ -91,8 +91,6 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
 
     query += " ORDER BY date desc LIMIT 1"
 
-    print(query)
-
     transactions = database.select(query, inputs)
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
