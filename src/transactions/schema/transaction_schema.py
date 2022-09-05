@@ -17,8 +17,8 @@ class GetTransactionsRequestSchema(Schema):
     account = fields.String(required=False, allow_none=True)
     date_from = fields.Date(required=False, allow_none=True)
     date_to = fields.Date(required=False, allow_none=True)
-    min_value = fields.Float(required=False, allow_none=True)
-    max_value = fields.Float(required=False, allow_none=True)
+    min_value = fields.Integer(required=False, allow_none=True)
+    max_value = fields.Integer(required=False, allow_none=True)
     tags = fields.Nested(Tags, many=True)
 
     @post_load
@@ -32,7 +32,7 @@ class GetTransactionsResponseSchema(Schema):
     date = fields.Date()
     current_description = fields.String()
     original_description = fields.String()
-    amount = fields.Float()
+    amount = fields.Integer()
     tag = Tags()
 
     class Meta:
@@ -51,6 +51,6 @@ class TransactionFilter:
     account: date = None
     date_from: date = None
     date_to: date = None
-    min_value: float = None
-    max_value: float = None
+    min_value: int = None
+    max_value: int = None
     tags: FilterTags = None
