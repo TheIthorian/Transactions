@@ -4,7 +4,7 @@
 """
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 import json
 
 import transactions.database as database
@@ -40,7 +40,7 @@ class Transaction:
     """A transaction as recorded by moneydashboard."""
 
     account: str
-    date: datetime
+    date: date
     current_description: str
     original_description: str
     amount: int
@@ -72,7 +72,7 @@ class Transaction:
         return {
             "id": self.id,
             "account": self.account,
-            "date": int(self.date.timestamp()),
+            "date": int(self.date.strftime()),
             "current_description": self.current_description,
             "original_description": self.original_description,
             "amount": self.amount,
@@ -112,7 +112,7 @@ class Transaction:
         return Transaction(
             id=row[0],
             account=row[1],
-            date=datetime.fromtimestamp(row[2]),
+            date=date.fromtimestamp(row[2]),
             current_description=row[3],
             original_description=row[4],
             amount=row[5],
@@ -124,7 +124,7 @@ class Transaction:
         """To load transaction from csv."""
         return Transaction(
             account=row["Account"],
-            date=datetime.strptime(row["Date"], "%Y-%m-%d"),
+            date=datetime.strptime(row["Date"], "%Y-%m-%d").date(),
             current_description=row["CurrentDescription"],
             original_description=row["OriginalDescription"],
             amount=int(float(row["Amount"]) * 100),
