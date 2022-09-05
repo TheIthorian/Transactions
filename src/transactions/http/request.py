@@ -13,7 +13,7 @@ class Request:
         self.request = request
 
     def authenticate(self) -> bool:
-        """Returns true if the request `api_key` is valid."""
+        """Returns true if the request `api_key` header is valid."""
 
         key = self.request.headers.get("api_key", None)
         return is_key_valid(key)
@@ -38,6 +38,7 @@ def invoke(
 ) -> tuple[any, int, dict]:
     """Validates the flask request against the input `request_schema`,
     invokes the `fn`, and outputs an object conforming to `response_schema`."""
+
     req = Request(request)
 
     if not req.authenticate():
