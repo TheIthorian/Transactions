@@ -5,8 +5,6 @@ from transactions.data import get_transactions_for_tags, Filter
 
 
 def get_transactions(filter: TransactionFilter, request: Request) -> list:
-    print(filter)
-
     filtered_transactions = get_transactions_for_tags(filter.tags)
     filtered_transactions = Filter.filter_by_date(
         filtered_transactions, start_date=filter.date_from, end_date=filter.date_to
