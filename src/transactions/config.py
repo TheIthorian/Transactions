@@ -1,5 +1,5 @@
-from argparse import ArgumentParser
 import os
+from argparse import ArgumentParser
 
 
 def get_arguments() -> ArgumentParser:
@@ -28,7 +28,7 @@ args = get_arguments()
 
 
 class CONFIG:
-    DEV = args.dev
+    DEV: bool = args.dev
     HOST = "0.0.0.0" if not args.dev else None
     DATABASE_PATH = get_database_path()
     ROOT_DIR = get_root_directory()
