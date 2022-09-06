@@ -4,8 +4,9 @@
 """
 
 from collections import namedtuple
-import os
 import sqlite3
+
+from transactions.config import CONFIG
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
@@ -16,9 +17,7 @@ def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
 
 
 def connect() -> sqlite3.Connection:
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(dir_path, "..", "assets", "transactions.db")
-    return sqlite3.connect(file_path)
+    return sqlite3.connect(CONFIG.DATABASE_PATH)
 
 
 def init() -> None:

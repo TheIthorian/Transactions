@@ -17,7 +17,8 @@ pytest-mock = "*"
 python_version = "3.9"
 
 [scripts]
-dev = "py main.py"
+dev = "py main.py --dev"
+serve = "py main.py"
 examples = "py examples.py"
-migrate = "py ./transactions/database.py"
+migrate = "py transactions/database.py"
 test = "pytest"

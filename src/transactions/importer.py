@@ -4,15 +4,14 @@
 """
 
 import os
-
+from transactions.config import CONFIG
 from transactions.data import get_all_transactions
 from transactions.database import connect
 from transactions.reader import read_data
 
 
 def add_new_transactions():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(dir_path, "..", "..", "new_Transactions.csv")
+    file_path = os.path.join(CONFIG.ROOT_DIR, "new_Transactions.csv")
 
     _, transactions = read_data(file_path)
 
