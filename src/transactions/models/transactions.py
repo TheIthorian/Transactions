@@ -3,7 +3,7 @@
 (C) 2022, TheIthorian, United Kingdom
 """
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import date, datetime
 import json
 
@@ -34,16 +34,13 @@ class Tag:
     l1: str
     l2: str
     l3: str
-    color: str = None
-
-    def __repr__(self) -> str:
-        return "<Tag l1: {}, l2: {}, l3: {}>".format(self.l1, self.l2, self.l3)
+    color: str = "None"
 
     def __eq__(self, other):
         return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
 
     def to_dict(self):
-        return {"l1": self.l1, "l2": self.l2, "l3": self.l3}
+        return asdict(self)
 
     def is_in(self, other_tags: list) -> bool:
         """Returns True if the current tag is in a lsit of `other_tags`."""
@@ -68,17 +65,6 @@ class Transaction:
     tag: Tag
     id: int = None
 
-    def __repr__(self) -> str:
-        return "Transaction(id: {}, acccount: {}, date: {}, current_description: {}, original_description: {}, amount: {}, tag: {})".format(
-            self.id,
-            self.account,
-            self.date,
-            self.current_description,
-            self.original_description,
-            self.amount / 100,
-            self.tag,
-        )
-
     def __eq__(self, other: "Transaction") -> bool:
         # Ignore tags, as they can be updated
         return (
@@ -89,11 +75,12 @@ class Transaction:
         )
 
     def to_dict(self) -> dict[str, any]:
-        tag = self.tag.to_dict()
+        tag = self.tag.to_dict()  # consider using asdict for this method
         return {
             "id": self.id,
             "account": self.account,
-            "date": int(self.date.strftime()),
+            # "date": int(self.date.strftime()),
+            "date": self.date,
             "current_description": self.current_description,
             "original_description": self.original_description,
             "amount": self.amount,
