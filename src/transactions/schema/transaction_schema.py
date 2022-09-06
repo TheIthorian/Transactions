@@ -3,14 +3,31 @@ from datetime import date
 from marshmallow import Schema, fields, post_load
 
 
-class Tag(Schema):
-    l1 = fields.String(required=False)
-    l2 = fields.String(required=False)
-    l3 = fields.String(required=False)
+@dataclass
+class TagFilter:
+    l1: list[str] = None
+    l2: list[str] = None
+    l3: list[str] = None
+
+
+class TagFilterSchema(Schema):
+    l1 = fields.List(fields.String(required=False))
+    l2 = fields.List(fields.String(required=False))
+    l3 = fields.List(fields.String(required=False))
 
     @post_load
-    def make_tag(self, data):
-        return FilterTags(**data)
+    def make_tag(self, data, **kwargs):
+        return TagFilter(**data)
+
+
+@dataclass
+class TransactionFilter:
+    account: date = None
+    date_from: date = None
+    date_to: date = None
+    min_value: int = None
+    max_value: int = None
+    tags: TagFilter = None
 
 
 class GetTransactionsRequestSchema(Schema):
@@ -19,11 +36,20 @@ class GetTransactionsRequestSchema(Schema):
     date_to = fields.Date(required=False, allow_none=True)
     min_value = fields.Integer(required=False, allow_none=True)
     max_value = fields.Integer(required=False, allow_none=True)
-    tags = fields.Nested(Tag, many=True)
+    tags = fields.Nested(TagFilterSchema, allow_none=True)
 
     @post_load
     def make_filter(self, data, **kwargs):
         return TransactionFilter(**data)
+
+
+class Tag(Schema):
+    l1 = fields.String()
+    l2 = fields.String()
+    l3 = fields.String()
+
+    class Meta:
+        ordered = True
 
 
 class GetTransactionsResponseSchema(Schema):
@@ -39,21 +65,11 @@ class GetTransactionsResponseSchema(Schema):
         ordered = True
 
 
-@dataclass
-class FilterTags:
-    l1: list[str] = None
-    l2: list[str] = None
-    l3: list[str] = None
+class GetAllTagsResponse(Schema):
+    l1 = fields.String()
+    l2 = fields.String()
+    l3 = fields.String()
+    color: fields.String()
 
-
-@dataclass
-class TransactionFilter:
-    account: date = None
-    date_from: date = None
-    date_to: date = None
-    min_value: int = None
-    max_value: int = None
-    tags: FilterTags = None
-
-
-GetAllTagsResponse = Tag
+    class Meta:
+        ordered = True
