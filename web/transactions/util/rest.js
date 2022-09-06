@@ -3,10 +3,16 @@ import { makeCustomError } from './error';
 async function handleHTTPError(response) {
     const responseData = await response.json();
     let error;
-    if (response.status < 500) {
+    if (response.status === 400) {
         error = makeCustomError({
-            title: responseData.error.name,
-            message: responseData.error.message,
+            title: 'Bad request',
+            message: responseData._schema,
+            detail: '',
+        });
+    } else if (response.status < 500) {
+        error = makeCustomError({
+            title: responseData.error?.name,
+            message: responseData.error?.message,
             detail: responseData,
         });
     } else {
@@ -28,4 +34,12 @@ async function handleResponse(response) {
     throw await handleHTTPError(response);
 }
 
-export { handleHTTPError, handleResponse };
+function convertFromApi(transaction) {
+    return {
+        ...transaction,
+        description: transaction.original_description ?? transaction.current_description,
+        amount: transaction.amount / 100,
+    };
+}
+
+export { handleHTTPError, handleResponse, convertFromApi };
