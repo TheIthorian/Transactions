@@ -1,25 +1,24 @@
-import { delay } from 'util/delay';
+import { API_URL } from '../../config';
+import { handleResponse, convertFromApi } from 'util/rest';
 
-export async function getAllTransactions() {
-    await delay(1000);
-    return [
-        {
-            id: 1,
-            key: 1,
-            account: 'Some account',
-            date: new Date(),
-            description: 'Some description',
-            amount: 100,
-            tag: null,
+export async function getAllTransactions({ account, dateFrom, dateTo, minValue, maxValue, tags }) {
+    console.log('getAllTransactions');
+    const response = await fetch(API_URL + '/getTransactions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         },
-        {
-            id: 2,
-            key: 2,
-            account: 'Some account 2',
-            date: new Date(),
-            description: 'Some description 2',
-            amount: 102,
-            tag: null,
-        },
-    ];
+        body: JSON.stringify({
+            account,
+            date_from: dateFrom,
+            date_to: dateTo,
+            min_value: minValue,
+            max_vaule: maxValue,
+        }),
+    });
+
+    const data = await handleResponse(response);
+    console.log(data);
+
+    return data.map(convertFromApi);
 }
