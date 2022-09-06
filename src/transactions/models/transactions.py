@@ -12,18 +12,18 @@ import transactions.database as database
 
 TAG_COLOR_MAP = {
     "Insurance": "orange",
-    "Transfers": "turquoise",
-    "Appearance": "light-blue",
-    "Bills": "light-green",
+    "Transfers": "cyan",
+    "Appearance": "cyan",
+    "Bills": "green",
     "Unknown": "gray",
-    "Transport": "dark-blue",
+    "Transport": "blue",
     "Family": "purple",
-    "Enjoyment": "pink",
+    "Enjoyment": "magenta",
     "Home": "green",
-    "Savings": "light-pink",
-    "Repayments": "light-blue",
-    "One-off or Other": "dark-blue",
-    "Income": "light-green",
+    "Savings": "magenta",
+    "Repayments": "cyan",
+    "One-off or Other": "geekblue",
+    "Income": "lime",
 }
 
 
@@ -34,7 +34,13 @@ class Tag:
     l1: str
     l2: str
     l3: str
-    color: str = "None"
+    color: str = None
+
+    def __init__(self, l1, l2, l3):
+        self.l1 = l1
+        self.l2 = l2
+        self.l3 = l3
+        self.color = TAG_COLOR_MAP[self.l1] if self.l1 is not None else None
 
     def __eq__(self, other):
         return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
@@ -48,9 +54,6 @@ class Tag:
             if self == tag:
                 return True
         return False
-
-    def set_color(self):
-        self.color = TAG_COLOR_MAP[self.l1] if self.l1 is not None else ""
 
 
 @dataclass
