@@ -10,6 +10,23 @@ import json
 import transactions.database as database
 
 
+TAG_COLOR_MAP = {
+    "Insurance": "xxx",
+    "Transfers": "xxx",
+    "Appearance": "xxx",
+    "Bills": "xxx",
+    "Unknown": "xxx",
+    "Transport": "xxx",
+    "Family": "xxx",
+    "Enjoyment": "xxx",
+    "Home": "xxx",
+    "Savings": "xxx",
+    "Repayments": "xxx",
+    "One-off or Other": "xxx",
+    "Income": "xxx",
+}
+
+
 @dataclass
 class Tag:
     """In moneydashboard, a transaction can have up to 3 levels of tags. Increasing levels are more specific."""
@@ -17,6 +34,7 @@ class Tag:
     l1: str
     l2: str
     l3: str
+    color: str = None
 
     def __repr__(self) -> str:
         return "<Tag l1: {}, l2: {}, l3: {}>".format(self.l1, self.l2, self.l3)
@@ -33,6 +51,9 @@ class Tag:
             if self == tag:
                 return True
         return False
+
+    def set_color(self):
+        self.color = TAG_COLOR_MAP[self.l1] if self.l1 is not None else ""
 
 
 @dataclass
