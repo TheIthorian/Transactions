@@ -39,6 +39,7 @@ function convertFromApi(transaction) {
         ...transaction,
         description: transaction.original_description ?? transaction.current_description,
         amount: transaction.amount / 100,
+        tags: [transaction.tag.l1, transaction.tag.l2, transaction.tag.l3],
     };
 }
 

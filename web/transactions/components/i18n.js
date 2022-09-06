@@ -5,6 +5,6 @@ export const LABELS = {
     transactionDate: 'Date',
     transactionDescription: 'Description',
     transactionAmount: 'Amount',
-    transactionTag: 'Tag',
+    transactionTag: 'Tags',
     transactionListGridTitle: 'Transactions',
 };

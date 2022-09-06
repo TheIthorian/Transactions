@@ -13,28 +13,20 @@ export function makeTransactionDateRenderer() {
     };
 }
 
-export function makeTagRenderer(allTaskTypes) {
+export function makeTagRenderer(allTags = []) {
     return (_, record) => {
-        const tagById = getAllTagsById(allTaskTypes);
         return (
             <Space size={4} wrap>
-                {record.taskTypes?.map(tagId => {
-                    const tag = tagById[tagId];
+                {record.tags?.map(tagName => {
                     return (
-                        <Tag margin={0} color={tag?.color} key={tag.value}>
-                            {tag?.label}
-                        </Tag>
+                        tagName && (
+                            <Tag margin={0} key={tagName}>
+                                {tagName}
+                            </Tag>
+                        )
                     );
                 })}
             </Space>
         );
     };
-}
-
-function getAllTagsById(allTaskTypes) {
-    const byId = allTaskTypes.reduce(function (map, obj) {
-        map[obj.value] = { ...obj };
-        return map;
-    }, {});
-    return byId;
 }

@@ -1,5 +1,5 @@
 import { LABELS } from 'components/i18n';
-import { makeTransactionDateRenderer } from './renderers';
+import { makeTransactionDateRenderer, makeTagRenderer } from './renderers';
 
 export function buildColumns(store) {
     return [
@@ -31,10 +31,10 @@ export function buildColumns(store) {
         },
         {
             title: LABELS.transactionTag,
-            dataIndex: 'tag',
-            key: 'tag',
+            dataIndex: 'tags',
+            key: 'tags',
             // defaultFilteredValue: store.get('filters')?.tags,
-            // render: makeTagRenderer(allTaskTypes),
+            render: makeTagRenderer(),
         },
     ];
 }
