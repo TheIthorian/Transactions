@@ -11,7 +11,13 @@ def get_arguments() -> ArgumentParser:
 
 def add_arguments(parser: ArgumentParser):
     parser.add_argument(
-        "-d", "--dev", help="Runs in development mode", action="store_true"
+        "-d",
+        "--dev",
+        help="Runs in development mode",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-ro", "--rquestOrigin", help="Sets the allowed request origin", type=str
     )
 
 
@@ -32,3 +38,5 @@ class CONFIG:
     HOST = "0.0.0.0" if not args.dev else None
     DATABASE_PATH = get_database_path()
     ROOT_DIR = get_root_directory()
+    # REQUEST_ORIGIN: str = args.requestOrigin
+    REQUEST_ORIGIN: str = "*"
