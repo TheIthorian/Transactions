@@ -5,6 +5,7 @@ import { Button, Card } from 'antd';
 import { DataGrid } from 'components/data-grid';
 import Toolbar from 'components/toolbar';
 import { LABELS } from 'components/i18n';
+import { Error } from 'components/error';
 import { makeStore } from 'util/store';
 
 import { TRANSACTIONS_GRID_STORE_ID } from './constants';
@@ -21,7 +22,7 @@ export function TransactionList() {
     const columns = buildColumns(store);
 
     useEffect(() => {
-        getAllTransactions().then(setTransactions).catch(setError);
+        getAllTransactions({}).then(setTransactions).catch(setError);
     }, [reload]);
 
     function handleReload() {
