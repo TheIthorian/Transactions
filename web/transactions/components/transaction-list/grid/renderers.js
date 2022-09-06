@@ -4,7 +4,11 @@ export function makeTransactionDateRenderer() {
     return text => {
         if (text) {
             const date = new Date(text);
-            return date?.toLocaleString('en-GB', { timeZone: 'UTC' });
+            return date?.toLocaleString(
+                'en-GB',
+                { timeZone: 'UTC' },
+                { year: 'numeric', month: 'numeric', day: 'numeric' }
+            );
         }
     };
 }
