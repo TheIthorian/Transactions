@@ -33,7 +33,8 @@ def get_all_transactions() -> list[Transaction]:
 @lru_cache(1)
 def get_all_tags() -> list[Tag]:
     """Finds all unique tags in used by any transaction."""
-    return get_tags(get_all_transactions())
+    # This can be done in sql too?
+    return sorted(get_tags(get_all_transactions()), key=lambda t: (t.l1, t.l2, t.l3))
 
 
 def group_transaction_by_tag_level(
