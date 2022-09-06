@@ -2,17 +2,17 @@ from argparse import ArgumentParser
 import os
 
 
-def add_arguments(parser):
-    parser.add_argument(
-        "-d", "--dev", help="Runs in development mode", action="store_true"
-    )
-
-
 def get_arguments() -> ArgumentParser:
     parser = ArgumentParser()
     add_arguments(parser)
 
     return parser.parse_args()
+
+
+def add_arguments(parser: ArgumentParser):
+    parser.add_argument(
+        "-d", "--dev", help="Runs in development mode", action="store_true"
+    )
 
 
 def get_database_path():
