@@ -47,6 +47,7 @@ class Tag(Schema):
     l1 = fields.String()
     l2 = fields.String()
     l3 = fields.String()
+    color = fields.String()
 
     class Meta:
         ordered = True
