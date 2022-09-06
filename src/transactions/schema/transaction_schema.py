@@ -33,7 +33,7 @@ class GetTransactionsResponseSchema(Schema):
     current_description = fields.String()
     original_description = fields.String()
     amount = fields.Integer()
-    tag = Tags()
+    tag = fields.Nested(Tags)
 
     class Meta:
         ordered = True
