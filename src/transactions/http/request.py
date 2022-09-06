@@ -39,6 +39,7 @@ def invoke(
 ) -> tuple[any, int, dict]:
     """Validates the flask request against the input `request_schema`,
     invokes the `fn`, and outputs an object conforming to `response_schema`."""
+    has_input = request_schema is not None
 
     req = Request(request)
 
@@ -48,10 +49,14 @@ def invoke(
     print(fn.__name__)
 
     try:
-        body = req.parse(request_schema)
+        if has_input:
+            body = req.parse(request_schema)
     except ValidationError as error:
         return error.messages, 400
 
-    response_data = fn(body, req)
+    if has_input:
+        response_data = fn(body, req)
+    else:
+        response_data = fn(req)
 
     return Response.resolve(response_schema.dumps(response_data))
