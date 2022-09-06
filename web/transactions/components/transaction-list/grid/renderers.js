@@ -20,7 +20,7 @@ export function makeTagRenderer(allTags = []) {
                 {record.tags?.map(tagName => {
                     return (
                         tagName && (
-                            <Tag margin={0} key={tagName}>
+                            <Tag margin={0} key={tagName} color={record.tagColor}>
                                 {tagName}
                             </Tag>
                         )
