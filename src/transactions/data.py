@@ -2,7 +2,7 @@
 
 (C) 2022, TheIthorian, United Kingdom
 """
-
+from functools import lru_cache
 from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Callable, TypeVar
@@ -30,6 +30,7 @@ def get_all_transactions() -> list[Transaction]:
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
 
+@lru_cache(1)
 def get_all_tags() -> list[Tag]:
     """Finds all unique tags in used by any transaction."""
     return get_tags(get_all_transactions())
