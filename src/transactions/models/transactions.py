@@ -11,19 +11,19 @@ import transactions.database as database
 
 
 TAG_COLOR_MAP = {
-    "Insurance": "xxx",
-    "Transfers": "xxx",
-    "Appearance": "xxx",
-    "Bills": "xxx",
-    "Unknown": "xxx",
-    "Transport": "xxx",
-    "Family": "xxx",
-    "Enjoyment": "xxx",
-    "Home": "xxx",
-    "Savings": "xxx",
-    "Repayments": "xxx",
-    "One-off or Other": "xxx",
-    "Income": "xxx",
+    "Insurance": "orange",
+    "Transfers": "turquoise",
+    "Appearance": "light-blue",
+    "Bills": "light-green",
+    "Unknown": "gray",
+    "Transport": "dark-blue",
+    "Family": "purple",
+    "Enjoyment": "pink",
+    "Home": "green",
+    "Savings": "light-pink",
+    "Repayments": "light-blue",
+    "One-off or Other": "dark-blue",
+    "Income": "light-green",
 }
 
 
