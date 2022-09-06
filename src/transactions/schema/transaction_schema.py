@@ -3,7 +3,7 @@ from datetime import date
 from marshmallow import Schema, fields, post_load
 
 
-class Tags(Schema):
+class Tag(Schema):
     l1 = fields.String(required=False)
     l2 = fields.String(required=False)
     l3 = fields.String(required=False)
@@ -19,7 +19,7 @@ class GetTransactionsRequestSchema(Schema):
     date_to = fields.Date(required=False, allow_none=True)
     min_value = fields.Integer(required=False, allow_none=True)
     max_value = fields.Integer(required=False, allow_none=True)
-    tags = fields.Nested(Tags, many=True)
+    tags = fields.Nested(Tag, many=True)
 
     @post_load
     def make_filter(self, data, **kwargs):
@@ -33,7 +33,7 @@ class GetTransactionsResponseSchema(Schema):
     current_description = fields.String()
     original_description = fields.String()
     amount = fields.Integer()
-    tag = fields.Nested(Tags)
+    tag = fields.Nested(Tag)
 
     class Meta:
         ordered = True
@@ -54,3 +54,6 @@ class TransactionFilter:
     min_value: int = None
     max_value: int = None
     tags: FilterTags = None
+
+
+GetAllTagsResponse = Tag
