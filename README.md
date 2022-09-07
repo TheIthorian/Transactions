@@ -29,3 +29,11 @@ To install this application, clone the repo and following these steps
    * `cd web/transactions`
    * `npm run start`
 
+## What is this?
+
+**Transactions** is a tool to analyse data from Moneydashborad [https://www.moneydashboard.com](https://www.moneydashboard.com). 
+
+I found their app isn't great at exploring transaction data in depth, so I created my own api to add more filter and aggregation functionality.
+
+## How to use
+
