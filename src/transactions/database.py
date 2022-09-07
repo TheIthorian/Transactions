@@ -4,10 +4,9 @@
 """
 
 from collections import namedtuple
-import os
 import sqlite3
 
-from config import CONFIG
+from transactions.config import CONFIG
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
@@ -77,7 +76,3 @@ def select(query: str, inputs: dict = None) -> list:
     cur.close()
 
     return data
-
-
-if __name__ == "__main__":
-    init()
