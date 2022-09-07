@@ -22,12 +22,12 @@ def add_arguments(parser: ArgumentParser):
 
 
 def get_database_path():
-    return os.path.join(get_root_directory(), "src", "assets", "transactions.db")
+    return os.path.normpath(os.path.join(get_root_directory(), "src", "assets", "transactions.db"))
 
 
 def get_root_directory():
     dir_path = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(dir_path, "..", "..")
+    return os.path.normpath(os.path.join(dir_path, "..", ".."))
 
 
 args = get_arguments()
