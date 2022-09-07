@@ -4,9 +4,10 @@
 """
 
 from collections import namedtuple
+import os
 import sqlite3
 
-from transactions.config import CONFIG
+from config import CONFIG
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
@@ -22,11 +23,12 @@ def connect() -> sqlite3.Connection:
 
 def init() -> None:
     """Creates the database."""
+    print("Creating database at: ", CONFIG.DATABASE_PATH)
     con = connect()
     cur = con.cursor()
 
     cur.execute(
-        """CREATE TABLE IF NOT EXISTS TABLE_NAME transactions
+        """CREATE TABLE IF NOT EXISTS transactions
                (account text, 
                date integer, 
                current_description text, 
