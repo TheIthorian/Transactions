@@ -7,4 +7,6 @@ export const LABELS = {
     transactionAmount: 'Amount',
     transactionTag: 'Tags',
     transactionListGridTitle: 'Transactions',
+
+    breakdownTitle: 'Breakdown',
 };
