@@ -1,4 +1,19 @@
-export async function getBreakdown() {
+import { API_URL } from 'config';
+import { handleResponse, convertFromApi } from 'util/rest';
+
+export async function getBreakdown(filter) {
+    const response = await fetch(API_URL + '/getTransactions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...filter }),
+    });
+
+    const data = await handleResponse(response);
+
+    // return data.map(convertFromApi);
+
     return {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [
