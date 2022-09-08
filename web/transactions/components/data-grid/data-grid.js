@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-import { Card, Divider, Skeleton, Table as AntTable } from 'antd';
+import { Divider, Skeleton, Table as AntTable } from 'antd';
 
 import Empty from 'components/empty';
 
