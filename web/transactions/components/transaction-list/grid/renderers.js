@@ -13,6 +13,13 @@ export function makeTransactionDateRenderer() {
     };
 }
 
+export function makeAmountRenderer() {
+    return (_, record) => {
+        const { amount } = record;
+        return amount < 0 ? `-£${-record.amount.toFixed(2)}` : `£${record.amount.toFixed(2)}`;
+    };
+}
+
 export function makeTagRenderer(allTags = []) {
     return (_, record) => {
         return (
