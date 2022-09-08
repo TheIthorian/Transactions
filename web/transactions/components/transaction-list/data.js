@@ -1,8 +1,7 @@
-import { API_URL } from '../../config';
+import { API_URL } from 'config';
 import { handleResponse, convertFromApi } from 'util/rest';
 
 export async function getAllTransactions({ account, dateFrom, dateTo, minValue, maxValue, tags }) {
-    console.log('getAllTransactions');
     const response = await fetch(API_URL + '/getTransactions', {
         method: 'POST',
         headers: {
@@ -18,7 +17,5 @@ export async function getAllTransactions({ account, dateFrom, dateTo, minValue, 
     });
 
     const data = await handleResponse(response);
-    console.log(data);
-
     return data.map(convertFromApi);
 }
