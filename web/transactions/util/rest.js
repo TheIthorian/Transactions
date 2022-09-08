@@ -34,15 +34,4 @@ async function handleResponse(response) {
     throw await handleHTTPError(response);
 }
 
-function convertFromApi(transaction) {
-    return {
-        ...transaction,
-        description: transaction.original_description ?? transaction.current_description,
-        amount: transaction.amount / 100,
-        tags: [transaction.tag.l1, transaction.tag.l2, transaction.tag.l3],
-        tagColor: transaction.tag.color,
-        key: transaction.id,
-    };
-}
-
-export { handleHTTPError, handleResponse, convertFromApi };
+export { handleHTTPError, handleResponse };
