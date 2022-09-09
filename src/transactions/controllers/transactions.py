@@ -1,3 +1,4 @@
+from typing import Tuple
 from transactions.http.request import Request
 from transactions.models.transactions import Tag, Transaction
 from transactions.schema.transaction_schema import TransactionFilter
