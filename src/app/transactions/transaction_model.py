@@ -42,7 +42,7 @@ class Tag:
         self.l3 = l3
         self.color = TAG_COLOR_MAP[self.l1] if self.l1 in TAG_COLOR_MAP else None
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Tag"):
         return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
 
     def to_dict(self):
@@ -149,12 +149,7 @@ class TransactionsByTagLevel:
     l2: list[Transaction]
     l3: list[Transaction]
 
-    def __init__(self):
-        self.l1 = []
-        self.l2 = []
-        self.l3 = []
-
-    def __repr__(self) -> str:
-        return "<TransactionsByTag l1: {}, l2: {}, l3: {}>".format(
-            self.l1, self.l2, self.l3
-        )
+    def __init__(self, l1=[], l2=[], l3=[]):
+        self.l1 = l1
+        self.l2 = l2
+        self.l3 = l3
