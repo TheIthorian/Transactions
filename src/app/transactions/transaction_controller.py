@@ -1,5 +1,6 @@
 from typing import Tuple
 from app.http.request import Request
+from app.transactions.filter import filter_transactions
 from app.transactions.transaction_model import Tag, Transaction
 from app.transactions.transaction_schema import TransactionFilter
 
@@ -9,18 +10,8 @@ from app.transactions import data
 def get_transactions(
     filter: TransactionFilter, request: Request = None
 ) -> list[Transaction]:
-    filtered_transactions = data.get_transactions_for_tags(filter.tags)
-    filtered_transactions = data.Filter.filter_by_date(
-        filtered_transactions, start_date=filter.date_from, end_date=filter.date_to
-    )
-    filtered_transactions = data.Filter.filter_by_account(
-        filtered_transactions, filter.account
-    )
-    filtered_transactions = data.Filter.filter_by_value(
-        filtered_transactions, filter.min_value, filter.max_value
-    )
-
-    return filtered_transactions
+    transactions = data.get_transactions_for_tags(filter.tags)
+    return filter_transactions(transactions, filter)
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
