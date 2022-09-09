@@ -1,6 +1,7 @@
 from typing import Tuple
 from app.http.request import Request
-from app.transactions.filter import filter_transactions
+from app.transactions.aggregate import aggregate
+from app.transactions.filter import filter_tags_by_l1, filter_transactions
 from app.transactions.transaction_model import Tag, Transaction
 from app.transactions.transaction_schema import TransactionFilter
 
@@ -15,28 +16,55 @@ def get_transactions(
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
-    def get_l1_tag_amounts(*args) -> list[Tuple[Tag, int]]:
-        pass
+    transactions_by_tag_level = data.get_transactions_by_tag_level()
 
-    def get_l2_tag_amounts(*args) -> list[Tuple[Tag, int]]:
-        pass
+    l1_data = []
+    l1_tags = data.get_tags_from_transactions(transactions_by_tag_level.l1)
+    unique_l1_tag_names = set(map(lambda t: t.l1, l1_tags))
+    for tag_name in unique_l1_tag_names:
+        tag_amount = aggregate(
+            transactions_by_tag_level.l1,
+            lambda t: t.tag.l1 == tag_name,
+            lambda t: t.amount,
+            0,
+        )
+        l1_data.append(tuple([tag_name, tag_amount]))
 
-    def get_l3_tag_amounts(*args) -> list[Tuple[Tag, int]]:
-        pass
+    l2_data: list[set] = []  # all l2 tags, split by their l1 parent
+    l2_tags = data.get_tags_from_transactions(transactions_by_tag_level.l2)
+    for l1_tag in unique_l1_tag_names:
+        l2_tags_for_l1 = set()
+        unique_l2_tag_names = set(
+            map(lambda t: t.l2, filter_tags_by_l1(l2_tags, l1_tag))
+        )
+        for tag in unique_l2_tag_names:
+            tag_amount = aggregate(
+                transactions_by_tag_level.l2,
+                lambda t: t.tag.l2 == tag and t.tag.l2 != "",
+                lambda t: t.amount,
+                0,
+            )
+            l2_tags_for_l1.add(tuple([tag, tag_amount]))
 
-    transactions = get_transactions(filter)
+        l2_data.append(l2_tags_for_l1)
 
-    print(filter)
-    # [(tag1, total amount), (tag2, total amount)]
-    l1_data = get_l1_tag_amounts(transactions)
+    # l3_data: list[set] = []
+    # l3_tags = data.get_tags_from_transactions(transactions_by_tag_level.l3)
+    # for l1_tag in l2_tags:
+    #     l3_tags_for_l2 = set()
+    #     for tag in filter_tags_by_l1(l3_tags, l1_tag):
+    #         tag_amount = aggregate(
+    #             transactions_by_tag_level.l3,
+    #             lambda t: t.tag.l3 == tag.l3,
+    #             lambda t: t.amount,
+    #             0,
+    #         )
+    #         l3_tags_for_l2.add(tuple([tag.l3, tag_amount]))
+    #     l3_data.append(l3_tags_for_l2)
 
-    # [(tag1.1, total amount), (tag2.1, total amount)]
-    l2_data = get_l2_tag_amounts(transactions)
-
-    # [(tag1.1.1, total amount), (tag2.1.1, total amount)]
-    l3_data = get_l3_tag_amounts(transactions)
-
-    # total_number_of_tags = len(l1_data) + len(l2_data) + len(l3_data)
+    print()
+    print(l1_data, end="\n\n")
+    print(l2_data, end="\n\n")
 
     l1_dataset = []
     x = """
