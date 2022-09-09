@@ -5,7 +5,9 @@ from transactions.schema.transaction_schema import TransactionFilter
 from transactions import data
 
 
-def get_transactions(filter: TransactionFilter, request: Request) -> list[Transaction]:
+def get_transactions(
+    filter: TransactionFilter, request: Request = None
+) -> list[Transaction]:
     filtered_transactions = data.get_transactions_for_tags(filter.tags)
     filtered_transactions = data.Filter.filter_by_date(
         filtered_transactions, start_date=filter.date_from, end_date=filter.date_to
