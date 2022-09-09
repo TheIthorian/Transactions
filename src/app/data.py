@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Callable, TypeVar
 
-from app.models.transactions import Tag, TransactionsByTagLevel, Transaction
+from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database
 
 

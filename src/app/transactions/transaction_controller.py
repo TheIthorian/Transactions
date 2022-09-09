@@ -1,7 +1,7 @@
 from typing import Tuple
 from app.http.request import Request
-from app.models.transactions import Tag, Transaction
-from app.schema.transaction_schema import TransactionFilter
+from app.transactions.transaction_model import Tag, Transaction
+from app.transactions.transaction_schema import TransactionFilter
 
 from app import data
 

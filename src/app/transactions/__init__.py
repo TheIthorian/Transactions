@@ -1,6 +1,6 @@
 import app.http.request as request
-import app.controllers.transactions as transactions
-from app.schema.transaction_schema import (
+import app.transactions.transaction_controller as transactions
+from app.transactions.transaction_schema import (
     GetAllTagsResponse,
     GetTransactionBreakdownRequestSchema,
     GetTransactionBreakdownResponseSchema,
