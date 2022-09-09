@@ -17,7 +17,7 @@ from app.transactions.data import (
     get_transactions_for_tags,
     group_transaction_by_tag_level,
 )
-from app.transactions.filter import Filter
+from app.transactions import filter
 from app.transactions.aggregate import aggregate
 import app.database as database
 
@@ -45,12 +45,12 @@ def filters():
     print("\nFilter: ")
     tag_lists = TagLists(["Income"], ["Investments or Shares"], ["Interest income"])
     transactions = get_transactions_for_tags(tag_lists)
-    transactions = Filter.filter_by_date(
+    transactions = filter.filter_by_date(
         transactions,
         datetime.strptime("2019-01-01", "%Y-%m-%d").date(),
         datetime.strptime("2020-01-01", "%Y-%m-%d").date(),
     )
-    transactions = Filter.filter_by_account(transactions, "123 STUDENT CURRENT ACCOUNT")
+    transactions = filter.filter_by_account(transactions, "123 STUDENT CURRENT ACCOUNT")
     for transaction in transactions:
         print(transaction)
 
