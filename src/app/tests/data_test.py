@@ -11,9 +11,11 @@ def test_get_tags_correctly_finds_tags():
 
 def test_get_all_transactions(mocker):
     # Given
+    transaction_date = datetime(2022, 9, 9)
+
     id = 1
     account_name = "account"
-    date = int(datetime.now().timestamp())
+    date = int(transaction_date.timestamp())
     current_description = "current_description"
     original_description = "original_description"
     amount = 10
@@ -35,12 +37,12 @@ def test_get_all_transactions(mocker):
         ]
     ]
 
-    mocker.patch("transactions.database.select", return_value=mock_select_results)
+    mocker.patch("app.database.select", return_value=mock_select_results)
 
-    expected_transaction = Transaction(
+    expected_transactions = Transaction(
         id=1,
         account=account_name,
-        date=datetime.fromtimestamp(date),
+        date=transaction_date.date(),
         current_description=current_description,
         original_description=original_description,
         amount=amount,
@@ -50,7 +52,7 @@ def test_get_all_transactions(mocker):
     # When
     result = get_all_transactions()
     print(result)
-    print(expected_transaction)
+    print(expected_transactions)
 
     # Then
-    assert result == [expected_transaction]
+    assert result[0] == expected_transactions
