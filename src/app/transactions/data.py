@@ -30,6 +30,10 @@ def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]
     return tags
 
 
+def get_all_l1_transactions():
+    pass
+
+
 def group_transaction_by_tag_level(
     transactions: list[Transaction],
 ) -> TransactionsByTagLevel:
@@ -98,64 +102,6 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
 
     transactions = database.select(query, inputs)
     return list(map(lambda t: Transaction.from_db(t), transactions))
-
-
-class Filter:
-    """Collection of filter functions."""
-
-    @staticmethod
-    def filter_by_tag(
-        transactions: list[Transaction], l1: Tag = None, l2: Tag = None, l3: Tag = None
-    ) -> list[Transaction]:
-        filter_L1 = lambda _: True
-        filter_L2 = lambda _: True
-        filter_L3 = lambda _: True
-
-        if l1 is not None:
-            filter_L1 = lambda t: t.tag.l1 == l1
-        if l2 is not None:
-            filter_L2 = lambda t: t.tag.l2 == l2
-        if l3 is not None:
-            filter_L3 = lambda t: t.tag.l3 == l3
-
-        _filter = lambda t: filter_L1(t) and filter_L2(t) and filter_L3(t)
-
-        return list(filter(_filter, transactions))
-
-    @staticmethod
-    def filter_by_date(
-        transactions: list[Transaction],
-        start_date: date = None,
-        end_date: date = None,
-    ) -> list[Transaction]:
-        """Returns the transactions which occurred within `star_date` and `end_date`."""
-        return list(
-            filter(
-                lambda t: (start_date is None or t.date >= start_date)
-                and (end_date is None or t.date <= end_date),
-                transactions,
-            )
-        )
-
-    @staticmethod
-    def filter_by_account(transactions: list[Transaction], account: str = None) -> list:
-        """Returns the transactions which belong to the input `account` name."""
-        return list(
-            filter(lambda t: account is None or t.account == account, transactions)
-        )
-
-    @staticmethod
-    def filter_by_value(
-        transactions: list[Transaction], min_value: int = None, max_value: int = None
-    ) -> list:
-        """Returns the transactions which have their value within the given range."""
-        return list(
-            filter(
-                lambda t: (min_value is None or t.amount >= min_value)
-                and (max_value is None or t.amount <= max_value),
-                transactions,
-            )
-        )
 
 
 class Aggregate:
