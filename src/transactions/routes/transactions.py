@@ -2,6 +2,8 @@ import transactions.http.request as request
 import transactions.controllers.transactions as transactions
 from transactions.schema.transaction_schema import (
     GetAllTagsResponse,
+    GetTransactionBreakdownRequestSchema,
+    GetTransactionBreakdownResponseSchema,
     GetTransactionsRequestSchema,
     GetTransactionsResponseSchema,
 )
@@ -14,6 +16,14 @@ def register_routes(app):
             transactions.get_transactions,
             GetTransactionsRequestSchema(),
             GetTransactionsResponseSchema(many=True),
+        )
+
+    @app.route("/getTransactionBreakdown", methods=["POST"])
+    def _get_transaction_breakdown():
+        return request.invoke(
+            transactions.get_transaction_breakdown,
+            GetTransactionBreakdownRequestSchema(),
+            GetTransactionBreakdownResponseSchema(),
         )
 
     @app.route("/getAllTags", methods=["POST"])
