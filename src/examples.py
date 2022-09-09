@@ -11,7 +11,6 @@ from app.transactions.transaction_model import Transaction
 from app.file_handler.reader import read_data
 from app.transactions.data import (
     Aggregate,
-    Filter,
     TagLists,
     get_all_tags,
     get_all_transactions,
@@ -19,6 +18,7 @@ from app.transactions.data import (
     get_transactions_for_tags,
     group_transaction_by_tag_level,
 )
+from app.transactions.filter import Filter
 import app.database as database
 
 
