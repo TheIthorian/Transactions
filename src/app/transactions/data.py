@@ -19,7 +19,7 @@ def get_all_transactions() -> list[Transaction]:
     return list(map(lambda t: Transaction.from_db(t), transactions))
 
 
-def get_tags(transaction_list: list[Transaction]) -> list[Tag]:
+def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]:
     """Finds all unique tag names in a list of transactions."""
     tags = []
     for transaction in transaction_list:
@@ -60,7 +60,10 @@ class TagLists:
 def get_all_tags() -> list[Tag]:
     """Finds all unique tags in used by any transaction."""
     # This can be done in sql too?
-    return sorted(get_tags(get_all_transactions()), key=lambda t: (t.l1, t.l2, t.l3))
+    return sorted(
+        get_tags_from_transactions(get_all_transactions()),
+        key=lambda t: (t.l1, t.l2, t.l3),
+    )
 
 
 def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:

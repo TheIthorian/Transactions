@@ -15,7 +15,7 @@ from app.transactions.data import (
     TagLists,
     get_all_tags,
     get_all_transactions,
-    get_tags,
+    get_tags_from_transactions,
     get_transactions_for_tags,
     group_transaction_by_tag_level,
 )
@@ -63,7 +63,7 @@ def misc():
         print(tag)
 
     print("\nget_all_tags(first 10 transactions)")
-    for tag in get_tags(get_all_transactions()[0:10]):
+    for tag in get_tags_from_transactions(get_all_transactions()[0:10]):
         print(tag)
 
     print("\ngroup_transaction_by_tag_level(first 10 transactions)")
