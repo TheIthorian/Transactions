@@ -7,7 +7,7 @@ import csv
 from io import TextIOWrapper
 from typing import Tuple
 
-from app.data import Transaction
+from app.transactions.transaction_model import Transaction
 
 
 def read_data(filename: str) -> Tuple[dict, list[Transaction]]:

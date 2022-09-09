@@ -7,7 +7,7 @@ import os
 from app.config import CONFIG
 from app.data import get_all_transactions
 from app.database import connect
-from app.reader import read_data
+from app.file_handler.reader import read_data
 
 
 def add_new_transactions():
