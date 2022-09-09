@@ -10,7 +10,6 @@ from app.config import CONFIG
 from app.transactions.transaction_model import Transaction
 from app.file_handler.reader import read_data
 from app.transactions.data import (
-    Aggregate,
     TagLists,
     get_all_tags,
     get_all_transactions,
@@ -19,12 +18,13 @@ from app.transactions.data import (
     group_transaction_by_tag_level,
 )
 from app.transactions.filter import Filter
+from app.transactions.aggregate import aggregate
 import app.database as database
 
 
-def aggregate(transactions: list[Transaction]):
+def aggregate_example(transactions: list[Transaction]):
     # Aggregate
-    total_from_income = Aggregate.aggregate(
+    total_from_income = aggregate(
         transactions, lambda t: t.tag.l1 == "Income", lambda t: t.amount
     )
     print("Aggregate: ", total_from_income / 100)
@@ -78,7 +78,7 @@ def examples():
     file_path = os.path.join(CONFIG.ROOT_DIR, "Transactions.csv")
 
     _, transactions = read_data(file_path)
-    aggregate(transactions)
+    aggregate_example(transactions)
     queries()
     filters()
     misc()

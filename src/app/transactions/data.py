@@ -4,8 +4,6 @@
 """
 from functools import lru_cache
 from dataclasses import dataclass
-from datetime import date
-from typing import Callable, TypeVar
 
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database
@@ -102,23 +100,3 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
 
     transactions = database.select(query, inputs)
     return list(map(lambda t: Transaction.from_db(t), transactions))
-
-
-class Aggregate:
-    """Collection of aggregate functions."""
-
-    T = TypeVar("T")
-
-    @staticmethod
-    def aggregate(
-        transactions: list[Transaction],
-        condition: Callable,
-        agg_function: Callable,
-        seed: T = 0,
-    ) -> T:
-        summary = seed
-        for transaction in transactions:
-            if condition(transaction):
-                summary += agg_function(transaction)
-
-        return summary
