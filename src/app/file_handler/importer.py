@@ -5,7 +5,7 @@
 
 import os
 from app.config import CONFIG
-from app.data import get_all_transactions
+from app.transactions.data import get_all_transactions
 from app.database import connect
 from app.file_handler.reader import read_data
 

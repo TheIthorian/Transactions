@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.data import get_all_transactions
+from app.transactions.data import get_all_transactions
 from app.transactions.transaction_model import Tag, Transaction
 
 # https://www.freblogg.com/pytest-functions-mocking-1

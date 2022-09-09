@@ -3,7 +3,7 @@ from app.http.request import Request
 from app.transactions.transaction_model import Tag, Transaction
 from app.transactions.transaction_schema import TransactionFilter
 
-from app import data
+from app.transactions import data
 
 
 def get_transactions(

@@ -7,9 +7,9 @@ from datetime import datetime
 import os
 from app.config import CONFIG
 
-from app.models.transactions import Transaction
-from app.reader import read_data
-from app.data import (
+from app.transactions.transaction_model import Transaction
+from app.file_handler.reader import read_data
+from app.transactions.data import (
     Aggregate,
     Filter,
     TagLists,
