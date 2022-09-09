@@ -28,8 +28,22 @@ def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]
     return tags
 
 
-def get_all_l1_transactions():
-    pass
+def get_transactions_by_tag_level():
+    all_transactions = get_all_transactions()
+
+    transactions_by_tag_level = TransactionsByTagLevel(
+        l1=list(
+            filter(lambda t: t.tag.l1 is not None and t.tag.l1 != "", all_transactions)
+        ),
+        l2=list(
+            filter(lambda t: t.tag.l1 is not None and t.tag.l2 != "", all_transactions)
+        ),
+        l3=list(
+            filter(lambda t: t.tag.l3 is not None and t.tag.l3 != "", all_transactions)
+        ),
+    )
+
+    return transactions_by_tag_level
 
 
 def group_transaction_by_tag_level(
