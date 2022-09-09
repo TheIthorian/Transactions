@@ -1,6 +1,6 @@
 from datetime import datetime
-from transactions.data import get_all_transactions
-from transactions.models.transactions import Tag, Transaction
+from app.data import get_all_transactions
+from app.models.transactions import Tag, Transaction
 
 # https://www.freblogg.com/pytest-functions-mocking-1
 

@@ -5,11 +5,11 @@
 
 from datetime import datetime
 import os
-from transactions.config import CONFIG
+from app.config import CONFIG
 
-from transactions.models.transactions import Transaction
-from transactions.reader import read_data
-from transactions.data import (
+from app.models.transactions import Transaction
+from app.reader import read_data
+from app.data import (
     Aggregate,
     Filter,
     TagLists,
@@ -19,7 +19,7 @@ from transactions.data import (
     get_transactions_for_tags,
     group_transaction_by_tag_level,
 )
-import transactions.database as database
+import app.database as database
 
 
 def aggregate(transactions: list[Transaction]):

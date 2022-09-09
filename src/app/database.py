@@ -6,7 +6,7 @@
 from collections import namedtuple
 import sqlite3
 
-from transactions.config import CONFIG
+from app.config import CONFIG
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):

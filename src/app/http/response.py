@@ -1,4 +1,4 @@
-from transactions.config import CONFIG
+from app.config import CONFIG
 
 
 class Response:

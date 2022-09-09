@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Callable, TypeVar
 
-from transactions.models.transactions import Tag, TransactionsByTagLevel, Transaction
-import transactions.database as database
+from app.models.transactions import Tag, TransactionsByTagLevel, Transaction
+import app.database as database
 
 
 def get_tags(transaction_list: list[Transaction]) -> list[Tag]:

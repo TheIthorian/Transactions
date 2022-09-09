@@ -1,9 +1,9 @@
 from typing import Tuple
-from transactions.http.request import Request
-from transactions.models.transactions import Tag, Transaction
-from transactions.schema.transaction_schema import TransactionFilter
+from app.http.request import Request
+from app.models.transactions import Tag, Transaction
+from app.schema.transaction_schema import TransactionFilter
 
-from transactions import data
+from app import data
 
 
 def get_transactions(

@@ -4,10 +4,10 @@
 """
 
 import os
-from transactions.config import CONFIG
-from transactions.data import get_all_transactions
-from transactions.database import connect
-from transactions.reader import read_data
+from app.config import CONFIG
+from app.data import get_all_transactions
+from app.database import connect
+from app.reader import read_data
 
 
 def add_new_transactions():

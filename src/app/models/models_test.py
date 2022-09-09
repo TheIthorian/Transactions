@@ -1,4 +1,4 @@
-from transactions.models.transactions import Tag
+from app.models.transactions import Tag
 
 # https://docs.pytest.org/en/7.1.x/getting-started.html#get-started
 def test_Tag():

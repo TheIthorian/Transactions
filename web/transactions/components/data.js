@@ -2,7 +2,7 @@ import { API_URL } from 'config';
 import { handleResponse } from 'util/rest';
 
 export async function getBreakdown(filter) {
-    const response = await fetch(API_URL + '/getTransactions', {
+    const response = await fetch(API_URL + '/getTransactionBreakdown', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -11,32 +11,59 @@ export async function getBreakdown(filter) {
     });
 
     const data = await handleResponse(response);
+    console.log(data);
 
+    return data;
     // return data.map(convertFromApi);
 
+    const colors = [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        '#ffffff',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        '#ffffff',
+    ];
+
     return {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: [
+            'Red:1',
+            'Red:2.1',
+            'Red:2.2',
+            'Red:3.1',
+            'Red:3.2',
+            'Red:3.3',
+            'Red:none',
+            'Blue:1',
+            'Blue:2.1',
+            'Blue:2.2',
+            'Blue:2.3',
+            'Blue:3.1',
+            'Blue:none',
+        ],
         datasets: [
             {
-                label: 'Amount per Tag',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
+                label: 'Amount per Tag level 1',
+                data: [120, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0],
+                backgroundColor: colors,
+            },
+            {
+                label: 'Amount per Tag level 2',
+                data: [0, 70, 40, 0, 0, 0, 10, 0, 15, 5, 10, 0, 0],
+                backgroundColor: colors,
+            },
+            {
+                label: 'Amount per Tag level 3',
+                data: [0, 0, 0, 10, 20, 0, 90, 0, 0, 0, 0, 10, 0, 20],
+                backgroundColor: colors,
             },
         ],
     };

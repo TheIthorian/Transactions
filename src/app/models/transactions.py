@@ -7,7 +7,7 @@ from dataclasses import asdict, dataclass
 from datetime import date, datetime
 import json
 
-import transactions.database as database
+import app.database as database
 
 
 TAG_COLOR_MAP = {
