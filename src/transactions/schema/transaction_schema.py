@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import date
 from marshmallow import Schema, fields, post_load
 
+### Get Transactions ###
+
 
 @dataclass
 class TagFilter:
@@ -64,6 +66,26 @@ class GetTransactionsResponseSchema(Schema):
 
     class Meta:
         ordered = True
+
+
+### Get Transaction Breakdown ###
+
+
+GetTransactionBreakdownRequestSchema = GetTransactionsRequestSchema
+
+
+class DatasetSchema(Schema):
+    label = fields.String()
+    data = fields.List(fields.Float())
+    color = fields.List(fields.String())
+
+
+class GetTransactionBreakdownResponseSchema(Schema):
+    labels = fields.List(fields.String())
+    datasets = fields.List(fields.Nested(DatasetSchema))
+
+
+### Get All Tags ###
 
 
 class GetAllTagsResponse(Schema):
