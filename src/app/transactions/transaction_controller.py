@@ -93,9 +93,4 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
 
 def get_all_tags(request: Request = None) -> list[Tag]:
     # print(data.get_all_tags.cache_info())
-    tags = data.get_all_tags()
-
-    for tag in tags:
-        tag.set_color()
-
-    return tags
+    return data.get_all_tags()
