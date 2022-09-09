@@ -4,7 +4,7 @@
 """
 from functools import lru_cache
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 from typing import Callable, TypeVar
 
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
