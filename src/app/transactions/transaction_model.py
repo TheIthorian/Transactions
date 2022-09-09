@@ -40,7 +40,7 @@ class Tag:
         self.l1 = l1
         self.l2 = l2
         self.l3 = l3
-        self.color = TAG_COLOR_MAP[self.l1] if self.l1 is not None else None
+        self.color = TAG_COLOR_MAP[self.l1] if self.l1 in TAG_COLOR_MAP else None
 
     def __eq__(self, other):
         return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
