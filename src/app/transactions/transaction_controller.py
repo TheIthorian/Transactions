@@ -17,11 +17,12 @@ def get_transactions(
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
     transactions = data.get_transactions_for_tags(filter.tags)
     transactions_by_tag_level = data.group_transactions_by_tag_level(transactions)
-    [l1_data, l2_data] = get_breakdown_by_tag(transactions_by_tag_level)
+    l1_data, l2_data, l3_data = get_breakdown_by_tag(transactions_by_tag_level)
 
     print()
-    print(l1_data, end="\n\n")
-    print(l2_data, end="\n\n")
+    print(l1_data, end="\n")
+    print(l2_data, end="\n")
+    print(l3_data, end="\n")
 
     l1_dataset = []
     x = """
@@ -41,7 +42,7 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
     # For each l2 group, do the same as above
     """
 
-    return {"datasets": [l1_data, l2_data]}
+    return {"datasets": [l1_data, l2_data, l3_data]}
 
     return {
         "labels": [],
