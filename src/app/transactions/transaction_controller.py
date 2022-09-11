@@ -16,9 +16,10 @@ def get_transactions(
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
-    transactions_by_tag_level = data.get_transactions_by_tag_level()
+    transactions = data.get_transactions_for_tags(filter.tags)
+    transactions_by_tag_level = data.group_transactions_by_tag_level(transactions)
 
-    l1_data = []
+    l1_data: list[Tuple(str, int)] = []
     l1_tags = data.get_tags_from_transactions(transactions_by_tag_level.l1)
     unique_l1_tag_names = set(map(lambda t: t.l1, l1_tags))
     for tag_name in unique_l1_tag_names:
@@ -83,6 +84,8 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
     z = """
     # For each l2 group, do the same as above
     """
+
+    return {"datasets": [l1_data, l2_data]}
 
     return {
         "labels": [],

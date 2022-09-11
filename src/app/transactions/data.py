@@ -28,18 +28,17 @@ def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]
     return tags
 
 
-def get_transactions_by_tag_level():
-    all_transactions = get_all_transactions()
-
+def group_transactions_by_tag_level(transactions: list[Transaction]):
+    """Groups all transactions by whether they have an l1, l2, or l3 tag"""
     transactions_by_tag_level = TransactionsByTagLevel(
         l1=list(
-            filter(lambda t: t.tag.l1 is not None and t.tag.l1 != "", all_transactions)
+            filter(lambda t: t.tag.l1 is not None and t.tag.l1 != "", transactions)
         ),
         l2=list(
-            filter(lambda t: t.tag.l1 is not None and t.tag.l2 != "", all_transactions)
+            filter(lambda t: t.tag.l1 is not None and t.tag.l2 != "", transactions)
         ),
         l3=list(
-            filter(lambda t: t.tag.l3 is not None and t.tag.l3 != "", all_transactions)
+            filter(lambda t: t.tag.l3 is not None and t.tag.l3 != "", transactions)
         ),
     )
 
