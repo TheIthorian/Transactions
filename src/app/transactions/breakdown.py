@@ -7,7 +7,7 @@ from app.util.list import unique
 
 
 def get_breakdown_by_tag(transactions_by_tag_level: TransactionsByTagLevel) -> list:
-    l1_data: list[Tuple(str, int)] = []
+    l1_data: list[Tuple] = []
     l1_tags = data.get_tags_from_transactions(transactions_by_tag_level.l1)
     unique_l1_tag_names = unique(map(lambda t: t.l1, l1_tags))
     for tag_name in unique_l1_tag_names:
@@ -19,10 +19,10 @@ def get_breakdown_by_tag(transactions_by_tag_level: TransactionsByTagLevel) -> l
         )
         l1_data.append((tag_name, tag_amount))
 
-    l2_data: list[set] = []  # all l2 tags, split by their l1 parent
+    l2_data: list[list] = []  # all l2 tags, split by their l1 parent
     l2_tags = data.get_tags_from_transactions(transactions_by_tag_level.l2)
     for l1_tag in unique_l1_tag_names:
-        l2_tags_for_l1 = set()
+        l2_tags_for_l1: list[Tuple] = []
         unique_l2_tag_names = unique(
             map(lambda t: t.l2, filter_tags_by_l1(l2_tags, l1_tag))
         )
@@ -33,7 +33,7 @@ def get_breakdown_by_tag(transactions_by_tag_level: TransactionsByTagLevel) -> l
                 lambda t: t.amount,
                 0,
             )
-            l2_tags_for_l1.add((tag, tag_amount))
+            l2_tags_for_l1.append((tag, tag_amount))
 
         l2_data.append(l2_tags_for_l1)
 
