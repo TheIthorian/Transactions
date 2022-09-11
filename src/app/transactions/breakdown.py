@@ -44,6 +44,9 @@ def get_breakdown_by_tag(
     for l1_tags in l2_data:
         l3_tag_data: list[list] = []
 
+        if len(l1_tags) == 0:
+            l3_tag_data = [[]]
+
         for l2_tag, _ in l1_tags:
             l3_tags_for_l2: list[Tuple] = []
             for l3_tag in unique(
@@ -58,6 +61,7 @@ def get_breakdown_by_tag(
                 l3_tags_for_l2.append((l3_tag, tag_amount))
 
             l3_tag_data.append(l3_tags_for_l2)
+
         l3_data.append(l3_tag_data)
 
     return l1_data, l2_data, l3_data
