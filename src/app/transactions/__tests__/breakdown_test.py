@@ -9,6 +9,7 @@ class Test_get_transaction_breakdown:
         transactions = [
             Transaction.make(amount=2000, tag=Tag("Income", "", "")),
             Transaction.make(amount=200, tag=Tag("Home", "Bills", "")),
+            Transaction.make(amount=100, tag=Tag("Home", "Bills", "Other")),
             Transaction.make(amount=800, tag=Tag("Home", "Rent", "")),
         ]
 
@@ -19,8 +20,6 @@ class Test_get_transaction_breakdown:
 
         result = TC.get_transaction_breakdown(TransactionFilter())
 
-        assert result["datasets"][0] == [("Income", 2000), ("Home", 1000)]
-        assert result["datasets"][1] == [
-            set(),
-            set([("Bills", 200), ("Rent", 800)]),
-        ]
+        assert result["datasets"][0] == [("Income", 2000), ("Home", 1100)]
+        assert result["datasets"][1] == [[], [("Bills", 300), ("Rent", 800)]]
+        assert result["datasets"][2] == [[[]], [("Other", 100)]]
