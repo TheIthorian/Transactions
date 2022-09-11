@@ -95,6 +95,26 @@ class Transaction:
     def to_json(self) -> str:
         return json.dumps(self.to_dict())
 
+    @staticmethod
+    def make(
+        account=None,
+        date=None,
+        current_description=None,
+        original_description=None,
+        amount=None,
+        tag=None,
+        id=None,
+    ) -> "Transaction":
+        return Transaction(
+            account=account,
+            date=date,
+            current_description=current_description,
+            original_description=original_description,
+            amount=amount,
+            tag=tag,
+            id=id,
+        )
+
     def insert(self, conn=None) -> int:
         query = """INSERT INTO transactions (
             account, 
