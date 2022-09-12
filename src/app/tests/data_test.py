@@ -1,6 +1,6 @@
 from datetime import datetime
-from app.transactions.data import get_all_transactions
-from app.transactions.transaction_model import Tag, Transaction
+from app.transactions.data import get_all_transactions, group_transactions_by_tag_level
+from app.transactions.transaction_model import Tag, Transaction, TransactionsByTagLevel
 
 # https://www.freblogg.com/pytest-functions-mocking-1
 
@@ -56,3 +56,22 @@ def test_get_all_transactions(mocker):
 
     # Then
     assert result[0] == expected_transactions
+
+
+class Test_group_transactions_by_tag_level:
+    def test_returns_grouped_tags(self):
+        # given
+        transactions = [
+            Transaction.make(amount=2000, tag=Tag("Income", "", "")),
+            Transaction.make(amount=200, tag=Tag("Home", "Bills", "")),
+            Transaction.make(amount=800, tag=Tag("Home", "Rent", "")),
+        ]
+
+        expected_result = TransactionsByTagLevel(
+            l1=[transactions[0], transactions[1], transactions[2]],
+            l2=[transactions[1], transactions[2]],
+        )
+
+        result = group_transactions_by_tag_level(transactions)
+
+        assert expected_result == result
