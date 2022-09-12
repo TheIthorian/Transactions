@@ -21,10 +21,10 @@ def get_breakdown_by_tag(
         )
         l1_data.append((tag_name, tag_amount))
 
-    l2_data: list[list] = []  # all l2 tags, split by their l1 parent
+    l2_data: list[Tuple] = []  # all l2 tags, split by their l1 parent
     all_l2_tags = data.get_tags_from_transactions(transactions_by_tag_level.l2)
-    for l1_tag in unique_l1_tag_names:
-        l2_tags_for_l1: list[Tuple] = []
+    for l1_tag, l1_total_amount in l1_data:
+        l1_sum = 0
         unique_l2_tag_names = unique(
             map(lambda t: t.l2, filter_tags_by_l1(all_l2_tags, l1_tag))
         )
@@ -35,9 +35,10 @@ def get_breakdown_by_tag(
                 lambda t: t.amount,
                 0,
             )
-            l2_tags_for_l1.append((tag, tag_amount))
+            l1_sum += tag_amount
+            l2_data.append((tag, tag_amount))
 
-        l2_data.append(l2_tags_for_l1)
+        l2_data.append(("None", l1_total_amount - l1_sum))
 
     l3_data: list[list[list]] = []  # all l3 tags, split by their l2 parent
     all_l3_tags = data.get_tags_from_transactions(transactions_by_tag_level.l3)
