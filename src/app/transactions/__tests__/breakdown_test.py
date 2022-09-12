@@ -20,6 +20,14 @@ class Test_get_transaction_breakdown:
 
         result = TC.get_transaction_breakdown(TransactionFilter())
 
+        print(result)
+
         assert result["datasets"][0] == [("Income", 2000), ("Home", 1100)]
-        assert result["datasets"][1] == [[], [("Bills", 300), ("Rent", 800)]]
-        assert result["datasets"][2] == [[[]], [("Other", 100)]]
+        assert result["datasets"][1] == [
+            ("None", 2000),
+            ("Bills", 300),
+            ("Rent", 800),
+            ("None", 0),
+        ]
+        # assert result["datasets"][2] == [("None", 2000), ("None") ("Other", 100)]
+        # [2000, 0, ]
