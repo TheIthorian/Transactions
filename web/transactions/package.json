@@ -1,25 +1,24 @@
 {
-  "name": "transactions",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "prod": "next build && next start",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@ant-design/icons": "^4.7.0",
-    "antd": "^4.21.3",
-    "next": "12.1.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "chart.js": "^3.8.0",
-    "eslint": "8.18.0",
-    "eslint-config-next": "12.1.6",
-    "react-chartjs-2": "^4.2.0"
-  }
+    "name": "transactions",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "prod": "next build && next start",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@ant-design/icons": "^4.7.0",
+        "antd": "^4.21.3",
+        "chart.js": "^3.9.1",
+        "next": "12.1.6",
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+    },
+    "devDependencies": {
+        "eslint": "8.18.0",
+        "eslint-config-next": "12.1.6"
+    }
 }
