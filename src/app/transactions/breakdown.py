@@ -1,14 +1,28 @@
 from typing import Tuple
+from app import database
 from app.transactions import data
 from app.transactions.aggregate import aggregate
-from app.transactions.filter import filter_tags_by_l1, filter_tags_by_l2
+from app.transactions.filter import filter_tags_by_l1
 from app.transactions.transaction_model import TransactionsByTagLevel
 from app.util.list import unique
+
+
+def get_transaction_amounts_by_tag_level(level: int):
+    if level == 1:
+        query = """SELECT SUM(amount) AS amount, l1 FROM transactions GROUP BY l1 ORDER BY l1"""
+    elif level == 2:
+        query = """SELECT SUM(amount) AS amount, l1, l2 FROM transactions GROUP BY l1, l2 ORDER BY l1, l2"""
+    elif level == 3:
+        query = """SELECT SUM(amount) AS amount, l1, l2, l3 FROM transactions GROUP BY l1, l2, l3 ORDER BY l1, l2, l3"""
+
+    result = database.select(query)
+    return [(r[level], r[0]) for r in result]
 
 
 def get_breakdown_by_tag(
     transactions_by_tag_level: TransactionsByTagLevel,
 ) -> Tuple[list, list, list]:
+    print(transactions_by_tag_level)
     l1_data: list[Tuple] = []
     all_l1_tags = data.get_tags_from_transactions(transactions_by_tag_level.l1)
     unique_l1_tag_names = unique(map(lambda t: t.l1, all_l1_tags))
