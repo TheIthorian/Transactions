@@ -1,5 +1,8 @@
 from datetime import datetime
-from app.transactions.data import get_all_transactions, group_transactions_by_tag_level
+from app.transactions.data import (
+    get_all_transactions,
+    group_transactions_by_tag_level,
+)
 from app.transactions.transaction_model import Tag, Transaction, TransactionsByTagLevel
 
 # https://www.freblogg.com/pytest-functions-mocking-1
@@ -51,8 +54,6 @@ def test_get_all_transactions(mocker):
 
     # When
     result = get_all_transactions()
-    print(result)
-    print(expected_transactions)
 
     # Then
     assert result[0] == expected_transactions
