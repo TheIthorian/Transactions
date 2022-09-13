@@ -1,33 +1,71 @@
-from app.transactions.transaction_model import Tag, Transaction
-from app.transactions import transaction_controller as TC
-from app.transactions.transaction_schema import TransactionFilter
+from app.transactions.breakdown import (
+    get_transaction_amounts_by_tag_level,
+)
 
 
-class Test_get_transaction_breakdown:
-    def test_returns_grouped_tags(self, mocker):
+class Test_get_breakdown_by_tag:
+    def test_returns_grouped_l1_tags(self, mocker):
         # given
-        transactions = [
-            Transaction.make(amount=2000, tag=Tag("Income", "", "")),
-            Transaction.make(amount=200, tag=Tag("Home", "Bills", "")),
-            Transaction.make(amount=100, tag=Tag("Home", "Bills", "Other")),
-            Transaction.make(amount=800, tag=Tag("Home", "Rent", "")),
+        mock_query_results = [
+            [20_000, "Income"],
+            [-15_000, "Home"],
+            [-7_000, "Appearance"],
+            [-2_000, "Enjoyment"],
         ]
 
-        mocker.patch(
-            "app.transactions.data.get_transactions_for_tags",
-            return_value=transactions,
-        )
+        mocker.patch("app.database.select", return_value=mock_query_results)
 
-        result = TC.get_transaction_breakdown(TransactionFilter())
+        result = get_transaction_amounts_by_tag_level(1)
 
-        print(result)
-
-        assert result["datasets"][0] == [("Income", 2000), ("Home", 1100)]
-        assert result["datasets"][1] == [
-            ("None", 2000),
-            ("Bills", 300),
-            ("Rent", 800),
-            ("None", 0),
+        assert result == [
+            ("Income", 20_000),
+            ("Home", -15_000),
+            ("Appearance", -7_000),
+            ("Enjoyment", -2_000),
         ]
-        # assert result["datasets"][2] == [("None", 2000), ("None") ("Other", 100)]
-        # [2000, 0, ]
+
+    def test_returns_grouped_l2_tags(self, mocker):
+        # given
+        mock_query_results = [
+            [20_000, "Income", ""],
+            [-10_000, "Home", "Bills"],
+            [-5_000, "Home", "Other"],
+            [-7_000, "Appearance", "Clothes"],
+            [-2_000, "Enjoyment", "Eating Out"],
+        ]
+
+        mocker.patch("app.database.select", return_value=mock_query_results)
+
+        result = get_transaction_amounts_by_tag_level(2)
+
+        assert result == [
+            ("", 20_000),
+            ("Bills", -10_000),
+            ("Other", -5_000),
+            ("Clothes", -7_000),
+            ("Eating Out", -2_000),
+        ]
+
+    def test_returns_grouped_l3_tags(self, mocker):
+        # given
+        mock_query_results = [
+            [20_000, "Income", "", ""],
+            [-10_000, "Home", "Bills", ""],
+            [-5_000, "Home", "Other", ""],
+            [-4_000, "Appearance", "Clothes", "Everyday"],
+            [-3_000, "Appearance", "Clothes", "Work"],
+            [-2_000, "Enjoyment", "Eating Out", "Everyday"],
+        ]
+
+        mocker.patch("app.database.select", return_value=mock_query_results)
+
+        result = get_transaction_amounts_by_tag_level(3)
+
+        assert result == [
+            ("", 20_000),
+            ("", -10_000),
+            ("", -5_000),
+            ("Everyday", -4_000),
+            ("Work", -3_000),
+            ("Everyday", -2_000),
+        ]
