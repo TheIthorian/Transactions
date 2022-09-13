@@ -77,7 +77,7 @@ GetTransactionBreakdownRequestSchema = GetTransactionsRequestSchema
 class DatasetSchema(Schema):
     label = fields.String()
     data = fields.List(fields.Float())
-    color = fields.List(fields.String())
+    backgroundColor = fields.List(fields.String())
 
 
 class GetTransactionBreakdownResponseSchema(Schema):
