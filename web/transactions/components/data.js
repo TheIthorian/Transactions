@@ -13,60 +13,63 @@ export async function getBreakdown(filter) {
     const data = await handleResponse(response);
     console.log(data);
 
-    return data;
-    // return data.map(convertFromApi);
-
-    const colors = [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 99, 132, 0.2)',
-        '#ffffff',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        '#ffffff',
-    ];
+    return {
+        type: 'doughnut',
+        data,
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: ({ dataset, dataIndex }) => {
+                            return dataset.labels[dataIndex] + ': ' + dataset.data[dataIndex];
+                        },
+                    },
+                },
+            },
+        },
+    };
 
     return {
-        labels: [
-            'Red:1',
-            'Red:2.1',
-            'Red:2.2',
-            'Red:3.1',
-            'Red:3.2',
-            'Red:3.3',
-            'Red:none',
-            'Blue:1',
-            'Blue:2.1',
-            'Blue:2.2',
-            'Blue:2.3',
-            'Blue:3.1',
-            'Blue:none',
-        ],
-        datasets: [
-            {
-                label: 'Amount per Tag level 1',
-                data: [120, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0],
-                backgroundColor: colors,
+        type: 'doughnut',
+        data: {
+            labels: ['Green', 'Yellow', 'Red', 'Purple', 'Blue'],
+            datasets: [
+                {
+                    data: [1, 2, 3, 4, 5],
+                    backgroundColor: ['green', 'yellow', 'red', 'purple', 'blue'],
+                    labels: ['green', 'yellow', 'red', 'purple', 'blue'],
+                },
+                {
+                    data: [6, 7, 8],
+                    backgroundColor: ['black', 'grey', 'lightgrey'],
+                    labels: ['black', 'grey', 'lightgrey'],
+                },
+            ],
+        },
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: ({ dataset, dataIndex }) => {
+                            return dataset.labels[dataIndex] + ': ' + dataset.data[dataIndex];
+                        },
+                    },
+                },
             },
-            {
-                label: 'Amount per Tag level 2',
-                data: [0, 70, 40, 0, 0, 0, 10, 0, 15, 5, 10, 0, 0],
-                backgroundColor: colors,
-            },
-            {
-                label: 'Amount per Tag level 3',
-                data: [0, 0, 0, 10, 20, 0, 90, 0, 0, 0, 0, 10, 0, 20],
-                backgroundColor: colors,
-            },
-        ],
+        },
     };
+}
+
+export async function getAllTags() {
+    const response = await fetch(API_URL + '/getAllTags', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    const data = await handleResponse(response);
+    return Array.from(new Set(data.map(t => t.l1)));
 }
 
 function convertFromApi(transaction) {
