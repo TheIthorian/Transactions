@@ -1,7 +1,9 @@
 from app.http.request import Request
-from app.transactions.breakdown import get_breakdown_by_tag
+from app.transactions.breakdown import (
+    get_transaction_amounts_by_tag_level,
+)
 from app.transactions.filter import filter_transactions
-from app.transactions.transaction_model import Tag, Transaction
+from app.transactions.transaction_model import TAG_COLOR_MAP, Tag, Transaction
 from app.transactions.transaction_schema import TransactionFilter
 
 from app.transactions import data
@@ -15,55 +17,32 @@ def get_transactions(
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
-    transactions = data.get_transactions_for_tags(filter.tags)
-    transactions_by_tag_level = data.group_transactions_by_tag_level(transactions)
-    l1_data, l2_data, l3_data = get_breakdown_by_tag(transactions_by_tag_level)
+    l1_data = get_transaction_amounts_by_tag_level(1)
+    l2_data = get_transaction_amounts_by_tag_level(2)
+    l3_data = get_transaction_amounts_by_tag_level(3)
 
-    print()
-    print(l1_data, end="\n")
-    print(l2_data, end="\n")
-    print(l3_data, end="\n")
-
-    l1_dataset = []
-    x = """
-    # add each l1 tag
-        # pad other indeces
-    """
-
-    l2_dataset = [[]]
-    y = """ 
-    # add a list of tags for each l1 tag
-        # between each group, add the difference between the sum of the group and the total for the corresponding l1
-    # 
-    """
-
-    l3_dataset = [[[]]]
-    z = """
-    # For each l2 group, do the same as above
-    """
-
-    return {"datasets": [l1_data, l2_data, l3_data]}
+    # return {"datasets": [l1_data, l2_data, l3_data]}
 
     return {
-        "labels": [],
+        "labels": [t[0] for t in l1_data],
         "datasets": [
             {
-                "label": "Amount per Tag",
-                "data": [100, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0],
-                "backgroundColor": ["rgba(255, 99, 132, 0.2)"],
+                "labels": [t[0] for t in l1_data],
+                "data": [t[1] / 100 for t in l1_data],
+                "backgroundColor": [TAG_COLOR_MAP[t[0]] for t in l1_data],
             },
             {
-                "label": "Amount per Tag",
-                "data": [0, 20, 30, 0, 0, 0, 0, 0, 5, 5, 0, 0],
+                "labels": [t[0] for t in l2_data],
+                "data": [t[1] / 100 for t in l2_data],
                 "backgroundColor": [
-                    "rgba(255, 99, 132, 0.2)",
+                    "#096dd9" if len(t[0]) > 0 else "lightgrey" for t in l2_data
                 ],
             },
             {
-                "label": "Amount per Tag",
-                "data": [0, 0, 0, 5, 25, 0, 0, 0, 0, 0, 0, 5, 5],
+                "labels": [t[0] for t in l3_data],
+                "data": [t[1] / 100 for t in l3_data],
                 "backgroundColor": [
-                    "rgba(255, 99, 132, 0.2)",
+                    "#096dd9" if len(t[0]) > 0 else "lightgrey" for t in l3_data
                 ],
             },
         ],
