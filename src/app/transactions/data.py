@@ -74,11 +74,10 @@ class TagLists:
 @lru_cache(1)
 def get_all_tags() -> list[Tag]:
     """Finds all unique tags in used by any transaction."""
-    # This can be done in sql too?
-    return sorted(
-        get_tags_from_transactions(get_all_transactions()),
-        key=lambda t: (t.l1, t.l2, t.l3),
-    )
+    query = """SELECT DISTINCT l1, l2, l3 FROM Transactions ORDER BY l1, l2, l3"""
+    result = database.select(query)
+
+    return [Tag(l1=row[0], l2=row[1], l3=row[2]) for row in result]
 
 
 def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
