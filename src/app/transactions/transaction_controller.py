@@ -23,8 +23,6 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
     l2_data = get_transaction_amounts_by_tag_level(2)
     l3_data = get_transaction_amounts_by_tag_level(3)
 
-    # return {"datasets": [l1_data, l2_data, l3_data]}
-
     return {
         "labels": [t[0] for t in l1_data],
         "datasets": [
@@ -37,14 +35,14 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
                 "labels": [t[0] for t in l2_data],
                 "data": [t[1] / 100 for t in l2_data],
                 "backgroundColor": [
-                    "#096dd9" if len(t[0]) > 0 else "lightgrey" for t in l2_data
+                    "#096dd9" if len(t[0]) > 0 else "transparent" for t in l2_data
                 ],
             },
             {
                 "labels": [t[0] for t in l3_data],
                 "data": [t[1] / 100 for t in l3_data],
                 "backgroundColor": [
-                    "#096dd9" if len(t[0]) > 0 else "lightgrey" for t in l3_data
+                    "#096dd9" if len(t[0]) > 0 else "transparent" for t in l3_data
                 ],
             },
         ],
