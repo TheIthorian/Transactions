@@ -46,7 +46,8 @@ class GetTransactionsResponseSchema(Schema):
 ### Get Transaction Breakdown ###
 
 
-GetTransactionBreakdownRequestSchema = GetTransactionsRequestSchema
+class GetTransactionBreakdownRequestSchema(GetTransactionsRequestSchema):
+    pass
 
 
 class DatasetSchema(Schema):
