@@ -2,9 +2,7 @@
 
 (C) 2022, TheIthorian, United Kingdom
 """
-from functools import lru_cache
-from dataclasses import dataclass
-
+from app.tags.tag_model import TagLists
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database
 from app import util
@@ -55,25 +53,6 @@ def group_transaction_by_tag_level(
             transactions_by_tag_level.l3.append(transaction)
 
     return transactions_by_tag_level
-
-
-@dataclass
-class TagLists:
-    """Datastructure to store lists of tags, separated by tag level."""
-
-    l1: list[str] = None
-    l2: list[str] = None
-    l3: list[str] = None
-
-
-@lru_cache(1)
-def get_all_tags() -> list[Tag]:
-    """Finds all unique tags in used by any transaction."""
-    result = database.select(
-        "SELECT DISTINCT l1, l2, l3 FROM Transactions ORDER BY l1, l2, l3"
-    )
-
-    return [Tag(l1=row[0], l2=row[1], l3=row[2]) for row in result]
 
 
 def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:

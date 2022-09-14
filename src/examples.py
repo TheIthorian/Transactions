@@ -9,9 +9,11 @@ from app.config import CONFIG
 
 from app.transactions.transaction_model import Transaction
 from app.file_handler.reader import read_data
+
+from app.tags.data import get_all_tags
+
 from app.transactions.data import (
     TagLists,
-    get_all_tags,
     get_all_transactions,
     get_tags_from_transactions,
     get_transactions_for_tags,

@@ -1,12 +1,14 @@
 from app.http.request import Request
+
+from app.tags.tag_model import TAG_COLOR_MAP
+
+from app.transactions import data
 from app.transactions.breakdown import (
     get_transaction_amounts_by_tag_level,
 )
 from app.transactions.filter import filter_transactions
-from app.transactions.transaction_model import TAG_COLOR_MAP, Tag, Transaction
+from app.transactions.transaction_model import Transaction
 from app.transactions.transaction_schema import TransactionFilter
-
-from app.transactions import data
 
 
 def get_transactions(
@@ -47,8 +49,3 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
             },
         ],
     }
-
-
-def get_all_tags(request: Request = None) -> list[Tag]:
-    # print(data.get_all_tags.cache_info())
-    return data.get_all_tags()

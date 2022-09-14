@@ -2,7 +2,7 @@ from typing import Tuple
 from app import database
 from app.transactions import data
 from app.transactions.aggregate import aggregate
-from app.transactions.filter import filter_tags_by_l1
+from app.tags.filter import filter_tags_by_l1
 from app.transactions.transaction_model import TransactionsByTagLevel
 from app.util.list import unique
 
