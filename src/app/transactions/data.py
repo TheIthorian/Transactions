@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database
+from app import util
 
 
 def get_all_transactions() -> list[Transaction]:
@@ -18,14 +19,8 @@ def get_all_transactions() -> list[Transaction]:
 
 
 def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]:
-    """Finds all unique tag names in a list of transactions."""
-    tags = []
-    for transaction in transaction_list:
-        tag = transaction.tag
-        if not tag.is_in(tags):
-            tags.append(tag)
-
-    return tags
+    """Finds all unique tag in a list of transactions."""
+    return util.list.unique([transaction.tag for transaction in transaction_list])
 
 
 def group_transactions_by_tag_level(transactions: list[Transaction]):
