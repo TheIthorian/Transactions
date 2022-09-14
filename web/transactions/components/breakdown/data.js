@@ -26,6 +26,8 @@ export async function getBreakdown(filter) {
                     },
                 },
             },
+            responsive: true,
+            maintainAspectRatio: false,
         },
     };
 

@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Select, Option, DatePicker } from 'antd';
+import { Button, Card, Divider, Select, Option, DatePicker, Skeleton, Space } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { ReloadOutlined } from '@ant-design/icons';
@@ -7,23 +7,8 @@ import Toolbar from 'components/toolbar';
 import { getAllTags, getBreakdown } from './data';
 import { LABELS } from 'components/i18n';
 
-import Chart from 'chart.js/auto';
-import { plugins } from 'chart.js';
-import { makeHandleLegendClick } from './eventHandlers';
-
+import 'chart.js/auto';
 import { Doughnut } from 'react-chartjs-2';
-
-// function Doughnut({ id, width, height, data }) {
-//     useEffect(() => {
-//         // onload(id);
-//         try {
-//             const ctx = document.querySelector('#breakdown-chart');
-//             new Chart(ctx, data);
-//         } catch {}
-//     }, []);
-
-//     return <canvas {...{ id, width, height }}></canvas>;
-// }
 
 export default function Breakdown() {
     const [loaded, setLoaded] = useState(true);
@@ -60,12 +45,16 @@ export default function Breakdown() {
         setFilter(filter => ({ ...filter, date_to: value?.format('YYYY-MM-DD') }));
     }
 
-    if (!allTags.length || !data || !loaded) {
+    function isLoading() {
+        return !allTags.length || !data || !loaded;
+    }
+
+    if (isLoading()) {
         return <em>Loading...</em>;
     }
 
     return (
-        <Card loading={!loaded} style={{ marginTop: 10, maxWidth: '50vw' }}>
+        <Card loading={!loaded} maxHeight='300px' maxWidth='100vw' marginTop={10}>
             <Toolbar title={LABELS.breakdownTitle}>
                 <DatePicker onChange={handleChangeDateFrom}>From</DatePicker>
                 <DatePicker onChange={handleChangeDateTo}>To</DatePicker>
@@ -90,7 +79,16 @@ export default function Breakdown() {
                 </Button>
             </Toolbar>
             <Divider style={{ margin: '0 0 10px' }} />
-            <Doughnut width='400' height='400' data={data.data} options={data.options} />
+            <Skeleton loading={isLoading()}>
+                <div
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    style={{ height: '500px' }}
+                >
+                    <Doughnut data={data.data} options={data.options} />
+                </div>
+            </Skeleton>
         </Card>
     );
 }
