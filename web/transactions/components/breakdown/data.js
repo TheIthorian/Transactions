@@ -13,6 +13,9 @@ export async function getBreakdown(filter) {
     const data = await handleResponse(response);
     console.log(data);
 
+    // const oldOnClick = Chart.defaults.legend.onClick;
+    // console.log(oldOnClick)
+
     return {
         type: 'doughnut',
         data,
@@ -25,9 +28,24 @@ export async function getBreakdown(filter) {
                         },
                     },
                 },
+                legend: {
+                    // onClick: (evt, legendItem, legend) => {
+                    //     const legendIndex = legendItem.index;
+                    //     const chart = legend.chart;
+                    //     chart.legend.legendItems.forEach((item, itemIndex) => {
+                    //         if (itemIndex == legendIndex) {
+                    //             item.hidden = !item.hidden;
+                    //         }
+                    //     });
+                    //     // chart.show();
+                    //     // legendItem.hidden = false;
+                    //     chart.update();
+                    // },
+                },
             },
             responsive: true,
             maintainAspectRatio: false,
+            cutout: 30,
         },
     };
 
