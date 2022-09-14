@@ -80,12 +80,7 @@ export default function Breakdown() {
             </Toolbar>
             <Divider style={{ margin: '0 0 10px' }} />
             <Skeleton loading={isLoading()}>
-                <div
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='center'
-                    style={{ height: '500px' }}
-                >
+                <div style={{ height: '500px' }}>
                     <Doughnut data={data.data} options={data.options} />
                 </div>
             </Skeleton>
