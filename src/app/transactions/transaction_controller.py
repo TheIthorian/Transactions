@@ -19,9 +19,15 @@ def get_transactions(
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
-    l1_data = get_transaction_amounts_by_tag_level(1, filter.date_from, filter.date_to)
-    l2_data = get_transaction_amounts_by_tag_level(2, filter.date_from, filter.date_to)
-    l3_data = get_transaction_amounts_by_tag_level(3, filter.date_from, filter.date_to)
+    l1_data = get_transaction_amounts_by_tag_level(
+        1, filter.date_from, filter.date_to, filter.tags
+    )
+    l2_data = get_transaction_amounts_by_tag_level(
+        2, filter.date_from, filter.date_to, filter.tags
+    )
+    l3_data = get_transaction_amounts_by_tag_level(
+        3, filter.date_from, filter.date_to, filter.tags
+    )
 
     return {
         "labels": [t[0] for t in l1_data],
