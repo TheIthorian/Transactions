@@ -1,4 +1,6 @@
-import { Button, Card, Divider, Select, Option, DatePicker, Skeleton, Space } from 'antd';
+import { Button, Card, Divider, Select, DatePicker, Skeleton, Space } from 'antd';
+const { Option } = Select;
+
 import { useEffect, useState } from 'react';
 
 import { ReloadOutlined } from '@ant-design/icons';
@@ -13,7 +15,24 @@ import { Doughnut } from 'react-chartjs-2';
 export default function Breakdown() {
     const [loaded, setLoaded] = useState(true);
     const [data, setData] = useState(null);
-    const [filter, setFilter] = useState({});
+    const [filter, setFilter] = useState({
+        tags: {
+            l1: [
+                'Appearance',
+                'Bills',
+                'Enjoyment',
+                'Family',
+                'Home',
+                'Insurance',
+                'One-off or Other',
+                'Repayments',
+                'Savings',
+                'Transfers',
+                'Transport',
+                'Unknown',
+            ],
+        },
+    });
     const [reload, setReload] = useState(false);
     const [allTags, setAllTags] = useState([]);
 
@@ -34,7 +53,12 @@ export default function Breakdown() {
     }
 
     function handleChangeTagFilter(values) {
-        setFilter(filter => ({ ...filter, tags: { l1: values } }));
+        console.log(values);
+        if (values.length) {
+            setFilter(filter => ({ ...filter, tags: { l1: values } }));
+        } else {
+            setFilter(filter => ({ ...filter, tags: {} }));
+        }
     }
 
     function handleChangeDateFrom(value) {
@@ -49,34 +73,57 @@ export default function Breakdown() {
         return !allTags.length || !data || !loaded;
     }
 
+    function renderOptions(allTags) {
+        return allTags.map(tag => <Option key={tag}>{tag}</Option>);
+    }
+
     if (isLoading()) {
         return <em>Loading...</em>;
     }
 
     return (
-        <Card loading={!loaded} maxHeight='300px' maxWidth='100vw' marginTop={10}>
+        <Card loading={!loaded} style={{ marginTop: 10 }}>
             <Toolbar title={LABELS.breakdownTitle}>
-                <DatePicker onChange={handleChangeDateFrom}>From</DatePicker>
-                <DatePicker onChange={handleChangeDateTo}>To</DatePicker>
-                <Select
-                    mode='multiple'
-                    allowClear
+                <div
                     style={{
-                        width: '100%',
+                        display: 'flex',
+                        justifyItems: 'end',
+                        justifyContent: ' space-around',
                     }}
-                    placeholder='Filter by Tag'
-                    onChange={handleChangeTagFilter}
                 >
-                    {allTags.length &&
-                        allTags.map(tag => (
-                            <Option key={tag} value={tag}>
-                                {tag}
-                            </Option>
-                        ))}
-                </Select>
-                <Button onClick={handleReload}>
-                    <ReloadOutlined />
-                </Button>
+                    <DatePicker
+                        onChange={handleChangeDateFrom}
+                        style={{
+                            marginRight: '5px',
+                        }}
+                    >
+                        From
+                    </DatePicker>
+                    <DatePicker
+                        onChange={handleChangeDateTo}
+                        style={{
+                            marginRight: '5px',
+                        }}
+                    >
+                        To
+                    </DatePicker>
+                    <Select
+                        mode='multiple'
+                        allowClear
+                        style={{
+                            minWidth: '200px',
+                            maxWidth: '300px',
+                            marginRight: '5px',
+                        }}
+                        placeholder='Filter by Tag'
+                        onChange={handleChangeTagFilter}
+                    >
+                        {renderOptions(allTags)}
+                    </Select>
+                    <Button onClick={handleReload}>
+                        <ReloadOutlined />
+                    </Button>
+                </div>
             </Toolbar>
             <Divider style={{ margin: '0 0 10px' }} />
             <Skeleton loading={isLoading()}>
