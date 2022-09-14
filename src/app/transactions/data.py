@@ -13,9 +13,9 @@ from app import util
 def get_all_transactions() -> list[Transaction]:
     """Gets all transactions from the database."""
     transactions = database.select(
-        """SELECT rowid, * FROM transactions ORDER BY date desc"""
+        "SELECT rowid, * FROM transactions ORDER BY date desc"
     )
-    return list(map(lambda t: Transaction.from_db(t), transactions))
+    return [Transaction.from_db(t) for t in transactions]
 
 
 def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]:
@@ -69,8 +69,9 @@ class TagLists:
 @lru_cache(1)
 def get_all_tags() -> list[Tag]:
     """Finds all unique tags in used by any transaction."""
-    query = """SELECT DISTINCT l1, l2, l3 FROM Transactions ORDER BY l1, l2, l3"""
-    result = database.select(query)
+    result = database.select(
+        "SELECT DISTINCT l1, l2, l3 FROM Transactions ORDER BY l1, l2, l3"
+    )
 
     return [Tag(l1=row[0], l2=row[1], l3=row[2]) for row in result]
 
@@ -106,4 +107,4 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     query += " ORDER BY date desc"
 
     transactions = database.select(query, inputs)
-    return list(map(lambda t: Transaction.from_db(t), transactions))
+    return [Transaction.from_db(t) for t in transactions]
