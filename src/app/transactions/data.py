@@ -30,7 +30,7 @@ def group_transactions_by_tag_level(transactions: list[Transaction]):
             filter(lambda t: t.tag.l1 is not None and t.tag.l1 != "", transactions)
         ),
         l2=list(
-            filter(lambda t: t.tag.l1 is not None and t.tag.l2 != "", transactions)
+            filter(lambda t: t.tag.l2 is not None and t.tag.l2 != "", transactions)
         ),
         l3=list(
             filter(lambda t: t.tag.l3 is not None and t.tag.l3 != "", transactions)
