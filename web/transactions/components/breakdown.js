@@ -9,61 +9,6 @@ import { LABELS } from './i18n';
 
 import Chart from 'chart.js/auto';
 
-// import {
-//     Chart,
-//     ArcElement,
-//     LineElement,
-//     BarElement,
-//     PointElement,
-//     BarController,
-//     BubbleController,
-//     DoughnutController,
-//     LineController,
-//     PieController,
-//     PolarAreaController,
-//     RadarController,
-//     ScatterController,
-//     CategoryScale,
-//     LinearScale,
-//     LogarithmicScale,
-//     RadialLinearScale,
-//     TimeScale,
-//     TimeSeriesScale,
-//     Decimation,
-//     Filler,
-//     Legend,
-//     Title,
-//     Tooltip,
-//     SubTitle,
-// } from 'chart.js';
-
-// Chart.register(
-//     ArcElement,
-//     LineElement,
-//     BarElement,
-//     PointElement,
-//     BarController,
-//     BubbleController,
-//     DoughnutController,
-//     LineController,
-//     PieController,
-//     PolarAreaController,
-//     RadarController,
-//     ScatterController,
-//     CategoryScale,
-//     LinearScale,
-//     LogarithmicScale,
-//     RadialLinearScale,
-//     TimeScale,
-//     TimeSeriesScale,
-//     Decimation,
-//     Filler,
-//     Legend,
-//     Title,
-//     Tooltip,
-//     SubTitle
-// );
-
 function Canvas({ id, width, height, onload }) {
     useEffect(() => {
         onload(id);
