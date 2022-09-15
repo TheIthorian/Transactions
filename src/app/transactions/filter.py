@@ -1,8 +1,25 @@
 """Collection of filter functions."""
 
+from dataclasses import dataclass
 from datetime import date
 from app.transactions.transaction_model import Tag, Transaction
-from app.transactions.transaction_schema import TransactionFilter
+
+
+@dataclass
+class TagFilter:
+    l1: list[str] = None
+    l2: list[str] = None
+    l3: list[str] = None
+
+
+@dataclass
+class TransactionFilter:
+    account: date = None
+    date_from: date = None
+    date_to: date = None
+    min_value: int = None
+    max_value: int = None
+    tags: TagFilter = None
 
 
 def filter_transactions(transactions: list[Transaction], filter: TransactionFilter):

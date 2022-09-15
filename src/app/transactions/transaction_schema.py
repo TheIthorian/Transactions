@@ -1,20 +1,9 @@
-from dataclasses import dataclass
-from datetime import date
 from marshmallow import Schema, fields, post_load
 
-from app.tags.tag_schema import Tag, TagFilter, TagFilterSchema
+from app.tags.tag_schema import Tag, TagFilterSchema
+from app.transactions.filter import TransactionFilter
 
 ### Get Transactions ###
-
-
-@dataclass
-class TransactionFilter:
-    account: date = None
-    date_from: date = None
-    date_to: date = None
-    min_value: int = None
-    max_value: int = None
-    tags: TagFilter = None
 
 
 class GetTransactionsRequestSchema(Schema):

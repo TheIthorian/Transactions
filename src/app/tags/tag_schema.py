@@ -1,12 +1,6 @@
 from marshmallow import Schema, fields, post_load
-from dataclasses import dataclass
 
-
-@dataclass
-class TagFilter:
-    l1: list[str] = None
-    l2: list[str] = None
-    l3: list[str] = None
+from app.transactions.filter import TagFilter
 
 
 class TagFilterSchema(Schema):

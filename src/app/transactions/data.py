@@ -5,7 +5,7 @@
 from app.tags.tag_model import TagLists
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database
-from app import util
+from app.util import list as list_util
 
 
 def get_all_transactions() -> list[Transaction]:
@@ -18,7 +18,7 @@ def get_all_transactions() -> list[Transaction]:
 
 def get_tags_from_transactions(transaction_list: list[Transaction]) -> list[Tag]:
     """Finds all unique tag in a list of transactions."""
-    return util.list.unique([transaction.tag for transaction in transaction_list])
+    return list_util.unique([transaction.tag for transaction in transaction_list])
 
 
 def group_transactions_by_tag_level(transactions: list[Transaction]):
@@ -58,7 +58,7 @@ def group_transaction_by_tag_level(
 def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     """Find all transactions that have at least one tag in each of the input `tag_lists` levels.
     \n
-    E.g. if `tag_lists => l1=["Income"], l2=["Investments or Shares"], l3=[]`
+    E.g. if `tag_lists => l1=["Income"], l2=["Investments or Shares"], l3=None`
     then only transactions which match each of the tag levels will be returned, except l3 which will be ignored.
     """
 
