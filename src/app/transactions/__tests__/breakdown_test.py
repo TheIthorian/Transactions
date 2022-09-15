@@ -1,9 +1,39 @@
+from datetime import datetime
+from app import database
+from app.tags.tag_model import Tag
 from app.transactions.breakdown import (
     get_transaction_amounts_by_tag_level,
 )
 from app.transactions.filter import TransactionFilter
+from app.transactions.transaction_model import Transaction
 
 FILTER = TransactionFilter()
+
+
+class Test_database:
+    def test_select(self):
+        database.mock()
+
+        transactions = database.select("SELECT * FROM Transactions LIMIT 1")
+        print(transactions)
+
+        transaction = Transaction.make(
+            account="Test Account",
+            date=datetime.now(),
+            current_description="Test Description",
+            original_description="",
+            amount=69,
+            tag=Tag(l1="Test", l2="", l3=""),
+        )
+
+        transaction.insert()
+
+        transactions = database.select("SELECT * FROM Transactions LIMIT 1")
+        print(transactions)
+
+        assert 1 == 2
+
+        database.unmock()
 
 
 class Test_get_breakdown_by_tag:
