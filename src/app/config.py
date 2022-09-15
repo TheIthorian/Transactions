@@ -22,7 +22,15 @@ def add_arguments(parser: ArgumentParser):
 
 
 def get_database_path():
-    return os.path.normpath(os.path.join(get_root_directory(), "src", "assets", "transactions.db"))
+    return os.path.normpath(
+        os.path.join(get_root_directory(), "src", "assets", "transactions.db")
+    )
+
+
+def get_mock_database_path():
+    return os.path.normpath(
+        os.path.join(get_root_directory(), "src", "assets", "mock_transactions.db")
+    )
 
 
 def get_root_directory():
@@ -37,6 +45,7 @@ class CONFIG:
     DEV: bool = args.dev
     HOST = "0.0.0.0" if not args.dev else None
     DATABASE_PATH = get_database_path()
+    MOCK_DATABASE_PATH = get_mock_database_path()
     ROOT_DIR = get_root_directory()
     # REQUEST_ORIGIN: str = args.requestOrigin
     REQUEST_ORIGIN: str = "*"

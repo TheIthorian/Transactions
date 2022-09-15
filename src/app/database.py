@@ -9,6 +9,18 @@ import sqlite3
 from app.config import CONFIG
 
 
+class _State:
+    use_mock: bool = False
+
+    def path(self):
+        if state["use_mock"]:
+            return CONFIG.MOCK_DATABASE_PATH
+        return CONFIG.DATABASE_PATH
+
+
+state = _State()
+
+
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
     """Returns sqlite rows as named tuples."""
     fields = [col[0] for col in cursor.description]
@@ -16,13 +28,23 @@ def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
     return Row(*row)
 
 
+def mock():
+    state.use_mock = True
+    init()
+
+
+def unmock():
+    state.use_mock = False
+
+
 def connect() -> sqlite3.Connection:
-    return sqlite3.connect(CONFIG.DATABASE_PATH)
+    print("Connecting to database", state.path())
+    return sqlite3.connect(state.path())
 
 
 def init() -> None:
     """Creates the database."""
-    print("Creating database at: ", CONFIG.DATABASE_PATH)
+    print("Creating database at: ", state.path())
     con = connect()
     cur = con.cursor()
 

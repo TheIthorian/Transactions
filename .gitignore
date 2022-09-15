@@ -38,6 +38,7 @@ __pycache__
 Transactions.csv
 new_Transactions.csv
 src/assets/transactions.db
+src/assets/mock_transactions.db
 
 # virtual environment
 src/venv
