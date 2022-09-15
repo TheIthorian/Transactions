@@ -4,6 +4,7 @@
 """
 
 from collections import namedtuple
+import os
 import sqlite3
 
 from app.config import CONFIG
@@ -13,12 +14,12 @@ class _State:
     use_mock: bool = False
 
     def path(self):
-        if state["use_mock"]:
+        if _state.use_mock:
             return CONFIG.MOCK_DATABASE_PATH
         return CONFIG.DATABASE_PATH
 
 
-state = _State()
+_state = _State()
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
@@ -29,22 +30,23 @@ def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
 
 
 def mock():
-    state.use_mock = True
+    _state.use_mock = True
     init()
 
 
 def unmock():
-    state.use_mock = False
+    os.remove(CONFIG.MOCK_DATABASE_PATH)
+    _state.use_mock = False
 
 
 def connect() -> sqlite3.Connection:
-    print("Connecting to database", state.path())
-    return sqlite3.connect(state.path())
+    print("Connecting to database", _state.path())
+    return sqlite3.connect(_state.path())
 
 
 def init() -> None:
     """Creates the database."""
-    print("Creating database at: ", state.path())
+    print("Creating database at: ", _state.path())
     con = connect()
     cur = con.cursor()
 
