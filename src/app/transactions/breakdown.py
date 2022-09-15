@@ -1,14 +1,17 @@
-from datetime import date
 from typing import Tuple
 from app import database
-from app.tags.tag_schema import TagFilter
 from app.util import date as date_util
+from app.transactions.filter import TransactionFilter
 
 
 def get_transaction_amounts_by_tag_level(
-    level: int, date_from: date, date_to: date, tagFilter: TagFilter
+    level: int, filter: TransactionFilter
 ) -> Tuple[str, int]:
     """Returns a tuple of `(tag_name, amount)` for the given tag level"""
+
+    date_from = filter.date_from
+    date_to = filter.date_to
+    tag_filter = filter.tags
     conditions = []
     if date_from is not None:
         conditions.append(f"date > {date_util.to_integer(date_from)}")
@@ -16,13 +19,13 @@ def get_transaction_amounts_by_tag_level(
     if date_to is not None:
         conditions.append(f"date < {date_util.to_integer(date_to)}")
 
-    if tagFilter is not None:
-        if tagFilter.l1 is not None:
-            conditions.append(f"l1 IN ('" + "', '".join(tagFilter.l1) + "')")
-        if tagFilter.l2 is not None:
-            conditions.append(f"l2 IN ('" + "', '".join(tagFilter.l2) + "')")
-        if tagFilter.l3 is not None:
-            conditions.append(f"l3 IN ('" + "', '".join(tagFilter.l3) + "')")
+    if tag_filter is not None:
+        if tag_filter.l1 is not None:
+            conditions.append(f"l1 IN ('" + "', '".join(tag_filter.l1) + "')")
+        if tag_filter.l2 is not None:
+            conditions.append(f"l2 IN ('" + "', '".join(tag_filter.l2) + "')")
+        if tag_filter.l3 is not None:
+            conditions.append(f"l3 IN ('" + "', '".join(tag_filter.l3) + "')")
 
     condition = ""
     if len(conditions) != 0:

@@ -8,7 +8,7 @@ from app.transactions.breakdown import (
 )
 from app.transactions.filter import filter_transactions
 from app.transactions.transaction_model import Transaction
-from app.transactions.transaction_schema import TransactionFilter
+from app.transactions.filter import TransactionFilter
 
 
 def get_transactions(
@@ -19,15 +19,9 @@ def get_transactions(
 
 
 def get_transaction_breakdown(filter: TransactionFilter, request: Request = None):
-    l1_data = get_transaction_amounts_by_tag_level(
-        1, filter.date_from, filter.date_to, filter.tags
-    )
-    l2_data = get_transaction_amounts_by_tag_level(
-        2, filter.date_from, filter.date_to, filter.tags
-    )
-    l3_data = get_transaction_amounts_by_tag_level(
-        3, filter.date_from, filter.date_to, filter.tags
-    )
+    l1_data = get_transaction_amounts_by_tag_level(1, filter)
+    l2_data = get_transaction_amounts_by_tag_level(2, filter)
+    l3_data = get_transaction_amounts_by_tag_level(3, filter)
 
     return {
         "labels": [t[0] for t in l1_data],

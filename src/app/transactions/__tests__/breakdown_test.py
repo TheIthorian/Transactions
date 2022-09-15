@@ -1,6 +1,9 @@
 from app.transactions.breakdown import (
     get_transaction_amounts_by_tag_level,
 )
+from app.transactions.filter import TransactionFilter
+
+FILTER = TransactionFilter()
 
 
 class Test_get_breakdown_by_tag:
@@ -15,7 +18,7 @@ class Test_get_breakdown_by_tag:
 
         mocker.patch("app.database.select", return_value=mock_query_results)
 
-        result = get_transaction_amounts_by_tag_level(1)
+        result = get_transaction_amounts_by_tag_level(1, FILTER)
 
         assert result == [
             ("Income", 20_000),
@@ -36,7 +39,7 @@ class Test_get_breakdown_by_tag:
 
         mocker.patch("app.database.select", return_value=mock_query_results)
 
-        result = get_transaction_amounts_by_tag_level(2)
+        result = get_transaction_amounts_by_tag_level(2, FILTER)
 
         assert result == [
             ("", 20_000),
@@ -59,7 +62,7 @@ class Test_get_breakdown_by_tag:
 
         mocker.patch("app.database.select", return_value=mock_query_results)
 
-        result = get_transaction_amounts_by_tag_level(3)
+        result = get_transaction_amounts_by_tag_level(3, FILTER)
 
         assert result == [
             ("", 20_000),
