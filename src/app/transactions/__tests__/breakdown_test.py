@@ -31,8 +31,6 @@ class Test_database:
         transactions = database.select("SELECT * FROM Transactions LIMIT 1")
         print(transactions)
 
-        assert 1 == 2
-
         database.unmock()
 
 
