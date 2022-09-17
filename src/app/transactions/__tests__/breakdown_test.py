@@ -4,7 +4,7 @@ from app.tags.tag_model import Tag
 from app.transactions.breakdown import (
     get_transaction_amounts_by_tag_level,
 )
-from app.transactions.filter import TransactionFilter
+from app.transactions.filter import TagFilter, TransactionFilter
 from app.transactions.transaction_model import Transaction
 
 FILTER = TransactionFilter()
@@ -66,7 +66,7 @@ def setup():
     return transactions
 
 
-class Test_get_breakdown_by_tag:
+class Test_get_breakdown_by_tag_level:
     def test_returns_grouped_l1_tags(self):
         database.mock()
 
@@ -139,3 +139,67 @@ class Test_get_breakdown_by_tag:
             ("", -5_000.0),
             ("", 20_000.0),
         ]
+
+    def test_only_sums_transactions_with_correct_tags(self):
+        # Given
+        transactions = setup()[0:5]
+        transactions[0].amount = 10_000
+        transactions[0].tag.l1 = "Income"
+
+        transactions[1].amount = 10_000
+        transactions[1].tag.l1 = "Income"
+
+        transactions[2].amount = 5_000
+        transactions[2].tag.l1 = "Appearance"
+        transactions[2].tag.l2 = "Other"
+
+        transactions[3].amount = 6_000
+        transactions[3].tag.l1 = "Home"
+        transactions[3].tag.l2 = "Other"
+
+        transactions[4].amount = 3_000
+        transactions[4].tag.l1 = "Home"
+        transactions[4].tag.l2 = "Bills"
+
+        filter = TransactionFilter(tags=TagFilter(l1=["Home"], l2=["Other"]))
+
+        database.mock()
+        for transaction in transactions:
+            transaction.insert()
+
+        # When
+        result = get_transaction_amounts_by_tag_level(1, filter)
+        database.unmock()
+
+        # Then
+        assert result == [("Home", 6_000.0)]
+
+    def test_filters_transactions_by_date(self):
+        # Given
+        transactions = setup()[0:3]
+        transactions[0].date = datetime(2022, 1, 10).date()
+        transactions[0].amount = 10_000
+        transactions[0].tag.l1 = "Income"
+
+        transactions[1].date = datetime(2022, 1, 15).date()
+        transactions[1].amount = 10_000
+        transactions[1].tag.l1 = "Income"
+
+        transactions[2].date = datetime(2022, 1, 5).date()
+        transactions[2].amount = 5_000
+        transactions[2].tag.l1 = "Appearance"
+
+        filter = TransactionFilter(
+            date_from=datetime(2022, 1, 8), date_to=datetime(2022, 1, 13)
+        )
+
+        database.mock()
+        for transaction in transactions:
+            transaction.insert()
+
+        # When
+        result = get_transaction_amounts_by_tag_level(1, filter)
+        database.unmock()
+
+        # Then
+        assert result == [("Income", 10_000.0)]
