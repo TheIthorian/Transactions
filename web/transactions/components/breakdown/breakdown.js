@@ -1,48 +1,41 @@
-import { Button, Card, Divider, Select, DatePicker, Skeleton, Space } from 'antd';
+import { Button, Card, Divider, Select, DatePicker, Skeleton } from 'antd';
 const { Option } = Select;
 
 import { useEffect, useState } from 'react';
-
+import { Doughnut } from 'react-chartjs-2';
+import 'chart.js/auto';
 import { ReloadOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 import Toolbar from 'components/toolbar';
-import { getAllTags, getBreakdown } from './data';
 import { LABELS } from 'components/i18n';
+import { makeStore } from 'util/store';
 
-import 'chart.js/auto';
-import { Doughnut } from 'react-chartjs-2';
+import { getAllTags, getBreakdown } from './data';
+import { STORE_ID } from './constants';
 
 export default function Breakdown() {
     const [loaded, setLoaded] = useState(true);
     const [data, setData] = useState(null);
-    const [filter, setFilter] = useState({
-        tags: {
-            l1: [
-                'Appearance',
-                'Bills',
-                'Enjoyment',
-                'Family',
-                'Home',
-                'Insurance',
-                'One-off or Other',
-                'Repayments',
-                'Savings',
-                'Transfers',
-                'Transport',
-                'Unknown',
-            ],
-        },
-    });
+    const [filter, setFilter] = useState(undefined);
     const [reload, setReload] = useState(false);
     const [allTags, setAllTags] = useState([]);
+    const store = makeStore(STORE_ID);
+    const dateFormat = 'YYYY-MM-DD';
+
+    const storedFilter = {
+        dat_from: store.get('dateFrom'),
+        date_to: store.get('dateTo'),
+        tags: { l1: store.get('tagFilter') },
+    };
 
     useEffect(() => {
+        console.log('useEffect 2');
         getAllTags().then(res => {
-            console.log(res);
             setAllTags(res);
         });
 
-        getBreakdown(filter)
+        getBreakdown(filter ?? storedFilter)
             .then(setData)
             .then(() => setLoaded(true))
             .catch(console.log);
@@ -53,7 +46,8 @@ export default function Breakdown() {
     }
 
     function handleChangeTagFilter(values) {
-        console.log(values);
+        console.log('handleChangeTagFilter');
+        store.set('tagFilter', values);
         if (values.length) {
             setFilter(filter => ({ ...filter, tags: { l1: values } }));
         } else {
@@ -62,11 +56,17 @@ export default function Breakdown() {
     }
 
     function handleChangeDateFrom(value) {
-        setFilter(filter => ({ ...filter, date_from: value?.format('YYYY-MM-DD') }));
+        console.log('handleChangeDateFrom');
+        const date_from = value?.format('YYYY-MM-DD');
+        store.set('dateFrom', date_from);
+        setFilter(filter => ({ ...filter, date_from }));
     }
 
     function handleChangeDateTo(value) {
-        setFilter(filter => ({ ...filter, date_to: value?.format('YYYY-MM-DD') }));
+        console.log('handleChangeDateTo');
+        const date_to = value?.format('YYYY-MM-DD');
+        store.set('dateTo', date_to);
+        setFilter(filter => ({ ...filter, date_to }));
     }
 
     function isLoading() {
@@ -96,6 +96,11 @@ export default function Breakdown() {
                         style={{
                             marginRight: '5px',
                         }}
+                        defaultValue={
+                            store.get('dateTo')
+                                ? moment(store.get('dateTo'), dateFormat)
+                                : undefined
+                        }
                     >
                         From
                     </DatePicker>
@@ -104,6 +109,11 @@ export default function Breakdown() {
                         style={{
                             marginRight: '5px',
                         }}
+                        defaultValue={
+                            store.get('dateTo')
+                                ? moment(store.get('dateTo'), dateFormat)
+                                : undefined
+                        }
                     >
                         To
                     </DatePicker>
@@ -117,6 +127,7 @@ export default function Breakdown() {
                         }}
                         placeholder='Filter by Tag'
                         onChange={handleChangeTagFilter}
+                        defaultValue={store.get('tagFilter')}
                     >
                         {renderOptions(allTags)}
                     </Select>
