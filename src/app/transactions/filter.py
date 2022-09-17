@@ -14,7 +14,7 @@ class TagFilter:
 
 @dataclass
 class TransactionFilter:
-    account: date = None
+    account: str = None
     date_from: date = None
     date_to: date = None
     min_value: int = None
