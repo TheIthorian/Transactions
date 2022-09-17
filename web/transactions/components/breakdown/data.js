@@ -20,7 +20,11 @@ export async function getBreakdown(filter) {
                 tooltip: {
                     callbacks: {
                         label: ({ dataset, dataIndex }) => {
-                            return dataset.labels[dataIndex] + ': ' + dataset.data[dataIndex];
+                            return (
+                                dataset.labels[dataIndex] +
+                                ': £' +
+                                dataset.data[dataIndex]?.toLocaleString()
+                            );
                         },
                     },
                 },
