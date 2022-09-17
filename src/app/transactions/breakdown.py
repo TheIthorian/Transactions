@@ -9,17 +9,11 @@ def get_transaction_amounts_by_tag_level(
     level: int, filter: TransactionFilter
 ) -> Tuple[str, int]:
     """Returns a tuple of `(tag_name, amount)` for the given tag level"""
-
-    date_from = filter.date_from
-    date_to = filter.date_to
-    tag_filter = filter.tags
-    conditions = []
-
     query_builder = QueryBuilder()
     condition = (
-        query_builder.date_from(date_util.to_integer(date_from))
-        .date_to(date_util.to_integer(date_to))
-        .by_tag_filter(tag_filter)
+        query_builder.date_from(date_util.to_integer(filter.date_from))
+        .date_to(date_util.to_integer(filter.date_to))
+        .by_tag_filter(filter.tags)
         .build()
     )
     inputs = query_builder.get_inputs()
