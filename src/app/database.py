@@ -37,7 +37,14 @@ def mock():
 
 
 def unmock():
-    os.remove(CONFIG.MOCK_DATABASE_PATH)
+    if _state.use_mock:
+        delete("DELETE FROM Transactions")
+
+    try:
+        os.remove(CONFIG.MOCK_DATABASE_PATH)
+    except PermissionError as e:
+        print(e)
+
     _state.use_mock = False
     _state.print_query = False
 
@@ -68,6 +75,23 @@ def init() -> None:
 
     con.commit()
     con.close()
+
+
+def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None):
+    if _state.print_query:
+        print(query)
+
+    auto_commit = False
+    if connection is None:
+        connection = connect()
+        auto_commit = True
+
+    cur = connection.cursor()
+    cur.execute(query, inputs)
+
+    if auto_commit:
+        connection.commit()
+        connection.close()
 
 
 def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int:
