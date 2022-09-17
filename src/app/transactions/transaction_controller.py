@@ -4,6 +4,7 @@ from app.tags.tag_model import TAG_COLOR_MAP
 
 from app.transactions import data
 from app.transactions.breakdown import (
+    get_average_transaction_amounts_by_tag_level,
     get_transaction_amounts_by_tag_level,
 )
 from app.transactions.filter import filter_transactions
@@ -23,6 +24,20 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
     l2_data = get_transaction_amounts_by_tag_level(2, filter)
     l3_data = get_transaction_amounts_by_tag_level(3, filter)
 
+    return _format_breakdown_output(l1_data, l2_data, l3_data)
+
+
+def get_transaction_breakdown_month_average(
+    filter: TransactionFilter, request: Request = None
+):
+    l1_data = get_average_transaction_amounts_by_tag_level(1, filter)
+    l2_data = get_average_transaction_amounts_by_tag_level(2, filter)
+    l3_data = get_average_transaction_amounts_by_tag_level(3, filter)
+
+    return _format_breakdown_output(l1_data, l2_data, l3_data)
+
+
+def _format_breakdown_output(l1_data, l2_data, l3_data):
     return {
         "labels": [t[0] for t in l1_data],
         "datasets": [
