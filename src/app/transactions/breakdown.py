@@ -1,5 +1,6 @@
 from typing import Tuple
 from app import database
+from app.transactions.transaction_model import QueryBuilder
 from app.util import date as date_util
 from app.transactions.filter import TransactionFilter
 
@@ -13,23 +14,17 @@ def get_transaction_amounts_by_tag_level(
     date_to = filter.date_to
     tag_filter = filter.tags
     conditions = []
-    if date_from is not None:
-        conditions.append(f"date > {date_util.to_integer(date_from)}")
 
-    if date_to is not None:
-        conditions.append(f"date < {date_util.to_integer(date_to)}")
+    query_builder = QueryBuilder()
+    condition = (
+        query_builder.date_from(date_util.to_integer(date_from))
+        .date_to(date_util.to_integer(date_to))
+        .by_tag_filter(tag_filter)
+        .build()
+    )
+    inputs = query_builder.get_inputs()
 
-    if tag_filter is not None:
-        if tag_filter.l1 is not None:
-            conditions.append(f"l1 IN ('" + "', '".join(tag_filter.l1) + "')")
-        if tag_filter.l2 is not None:
-            conditions.append(f"l2 IN ('" + "', '".join(tag_filter.l2) + "')")
-        if tag_filter.l3 is not None:
-            conditions.append(f"l3 IN ('" + "', '".join(tag_filter.l3) + "')")
-
-    condition = ""
-    if len(conditions) != 0:
-        condition = "WHERE " + " AND ".join(conditions)
+    print(condition)
 
     if level == 1:
         query = f"SELECT SUM(amount) AS amount, l1 FROM transactions {condition} GROUP BY l1 ORDER BY l1"
@@ -38,5 +33,5 @@ def get_transaction_amounts_by_tag_level(
     elif level == 3:
         query = f"SELECT SUM(amount) AS amount, l1, l2, l3 FROM transactions {condition} GROUP BY l1, l2, l3 ORDER BY l1, l2, l3"
 
-    result = database.select(query)
+    result = database.select(query, inputs)
     return [(r[level], r[0]) for r in result]
