@@ -55,13 +55,13 @@ def setup():
     transactions[5].amount = -3_000
     transactions[5].tag.l1 = "Appearance"
     transactions[5].tag.l2 = "Clothes"
-    transactions[5].tag.l2 = "Work"
+    transactions[5].tag.l3 = "Work"
 
     # Enjoyment
     transactions[6].amount = -2_000
     transactions[6].tag.l1 = "Enjoyment"
     transactions[6].tag.l2 = "Eating out"
-    transactions[6].tag.l2 = "Everyday"
+    transactions[6].tag.l3 = "Everyday"
 
     return transactions
 
@@ -87,48 +87,55 @@ class Test_get_breakdown_by_tag:
             ("Income", 20_000.0),
         ]
 
-    def test_returns_grouped_l2_tags(self, mocker):
-        # given
-        mock_query_results = [
-            [20_000, "Income", ""],
-            [-10_000, "Home", "Bills"],
-            [-5_000, "Home", "Other"],
-            [-7_000, "Appearance", "Clothes"],
-            [-2_000, "Enjoyment", "Eating Out"],
-        ]
+    def test_returns_grouped_l2_tags(self):
+        database.mock()
 
-        mocker.patch("app.database.select", return_value=mock_query_results)
+        # Given
+        transactions = setup()
+        for transaction in transactions:
+            transaction.insert()
 
+        # When
         result = get_transaction_amounts_by_tag_level(2, FILTER)
+        print(
+            database.select(
+                "SELECT SUM(amount) AS amount, l1, l2 FROM transactions  GROUP BY l1, l2 ORDER BY l1, l2"
+            )
+        )
+        database.unmock()
 
+        # Then
         assert result == [
-            ("", 20_000),
-            ("Bills", -10_000),
-            ("Other", -5_000),
-            ("Clothes", -7_000),
-            ("Eating Out", -2_000),
+            ("Clothes", -7_000.0),
+            ("Eating out", -2_000.0),
+            ("Bills", -10_000.0),
+            ("Other", -5_000.0),
+            ("", 20_000.0),
         ]
 
-    def test_returns_grouped_l3_tags(self, mocker):
-        # given
-        mock_query_results = [
-            [20_000, "Income", "", ""],
-            [-10_000, "Home", "Bills", ""],
-            [-5_000, "Home", "Other", ""],
-            [-4_000, "Appearance", "Clothes", "Everyday"],
-            [-3_000, "Appearance", "Clothes", "Work"],
-            [-2_000, "Enjoyment", "Eating Out", "Everyday"],
-        ]
+    def test_returns_grouped_l3_tags(self):
+        database.mock()
 
-        mocker.patch("app.database.select", return_value=mock_query_results)
+        # Given
+        transactions = setup()
+        for transaction in transactions:
+            transaction.insert()
 
+        # When
         result = get_transaction_amounts_by_tag_level(3, FILTER)
+        print(
+            database.select(
+                "SELECT SUM(amount) AS amount, l1, l2, l3 FROM transactions  GROUP BY l1, l2, l3 ORDER BY l1, l2, l3"
+            )
+        )
+        database.unmock()
 
+        # Then
         assert result == [
-            ("", 20_000),
-            ("", -10_000),
-            ("", -5_000),
-            ("Everyday", -4_000),
-            ("Work", -3_000),
-            ("Everyday", -2_000),
+            ("Everyday", -4_000.0),
+            ("Work", -3_000.0),
+            ("Everyday", -2_000.0),
+            ("", -10_000.0),
+            ("", -5_000.0),
+            ("", 20_000.0),
         ]
