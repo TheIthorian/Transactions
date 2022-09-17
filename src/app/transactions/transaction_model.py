@@ -8,7 +8,7 @@ import datetime as dt
 import json
 
 import app.database as database
-from app.tags.tag_model import Tag
+from app.tags.tag_model import Tag, TagLists
 from app.util import date as date_util
 
 
@@ -118,6 +118,121 @@ class Transaction:
             amount=int(float(row["Amount"]) * 100),
             tag=Tag(row["L1Tag"], row["L2Tag"], row["L3Tag"]),
         )
+
+
+class QueryBuilder:
+    _existing_query: str
+    _select: list[str]
+    _conditions: list[str]
+    _group_by: list[str]
+    _order_by: list[str]
+    _inputs: list[str]
+
+    def __init__(self, existing_query: str = None, existing_inputs: list[str] = []):
+        self._existing_query = existing_query
+        self._select = []
+        self._conditions = []
+        self._group_by = []
+        self._order_by = []
+        self._inputs = existing_inputs.copy()
+
+    def select(self, columns: list[str]) -> "QueryBuilder":
+        for column in columns:
+            self._select.append(column)
+        return self
+
+    def date_from(self, date_from: dt.date) -> "QueryBuilder":
+        if date_from is not None:
+            self._conditions.append(f"date >= {date_util.to_integer(date_from)}")
+        return self
+
+    def date_to(self, date_to: dt.date) -> "QueryBuilder":
+        if date_to is not None:
+            self._conditions.append(f"date <= {date_util.to_integer(date_to)}")
+        return self
+
+    def amount_from(self, amount_from: int) -> "QueryBuilder":
+        return self
+
+    def amount_to(self, amount_to: int) -> "QueryBuilder":
+        return self
+
+    def by_tag_list(self, tag_lists: TagLists = None) -> "QueryBuilder":
+        if tag_lists.l1 is not None:
+            self._conditions.append(" l1 IN (%s)" % ",".join("?" for _ in tag_lists.l1))
+            self._inputs.extend(tag_lists.l1)
+
+        if tag_lists.l2 is not None:
+            self._conditions.append(" l2 IN (%s)" % ",".join("?" for _ in tag_lists.l2))
+            self._inputs.extend(tag_lists.l2)
+
+        if tag_lists.l3 is not None:
+            self._conditions.append(" l3 IN (%s)" % ",".join("?" for _ in tag_lists.l3))
+            self._inputs.extend(tag_lists.l3)
+        return self
+
+    def by_tag_filter(self, tag_filter=None) -> "QueryBuilder":
+        if tag_filter is None:
+            return self
+
+        if tag_filter.l1 is not None:
+            self._conditions.append(
+                f"l1 IN (%s)" % ",".join("?" for _ in tag_filter.l1)
+            )
+            self._inputs.extend(tag_filter.l1)
+
+        if tag_filter.l2 is not None:
+            self._conditions.append(
+                f"l2 IN (%s)" % ",".join("?" for _ in tag_filter.l2)
+            )
+            self._inputs.extend(tag_filter.l2)
+
+        if tag_filter.l3 is not None:
+            self._conditions.append(
+                f"l3 IN (%s)" % ",".join("?" for _ in tag_filter.l3)
+            )
+            self._inputs.extend(tag_filter.l3)
+
+        return self
+
+    def order_by(self, order_list: list[str]) -> "QueryBuilder":
+        self._order_by.extend(order_list)
+        return self
+
+    def add_input(self, val) -> "QueryBuilder":
+        if type(val) is list:
+            self._inputs.extend(val)
+        else:
+            self._inputs.append(val)
+        return self
+
+    def get_inputs(self) -> list:
+        return self._inputs
+
+    def build(self) -> str:
+        query = ""
+        if self._existing_query is not None:
+            query = self._existing_query
+
+        query = self.build_select(query)
+        query = self.build_conditions(query)
+        query = self.build_order_by(query)
+
+        return query
+
+    def build_select(self, query: str) -> str:
+        query += ", ".join(self._select)
+        return query
+
+    def build_conditions(self, query: str) -> str:
+        if len(self._conditions) != 0:
+            query += " WHERE " + " AND".join(self._conditions)
+        return query
+
+    def build_order_by(self, query: str) -> str:
+        if len(self._order_by) != 0:
+            query += " ORDER BY " + ", ".join(self._order_by)
+        return query
 
 
 @dataclass
