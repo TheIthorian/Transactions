@@ -1,7 +1,6 @@
 from typing import Tuple
 from app import database
-from app.transactions.transaction_model import QueryBuilder
-from app.util import date as date_util
+from app.transactions.transaction_model import Query
 from app.transactions.filter import TransactionFilter
 
 
@@ -9,7 +8,7 @@ def get_transaction_amounts_by_tag_level(
     level: int, filter: TransactionFilter
 ) -> Tuple[str, int]:
     """Returns a tuple of `(tag_name, amount)` for the given tag level"""
-    query_builder = QueryBuilder()
+    query_builder = Query()
     condition = (
         query_builder.date_from(filter.date_from)
         .date_to(filter.date_to)
