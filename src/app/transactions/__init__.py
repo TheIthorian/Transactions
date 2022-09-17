@@ -24,3 +24,11 @@ def register_routes(app):
             GetTransactionBreakdownRequestSchema(),
             GetTransactionBreakdownResponseSchema(),
         )
+
+    @app.route("/getAverageTransactionBreakdown", methods=["POST"])
+    def _get_average_transaction_breakdown():
+        return request.invoke(
+            transactions.get_transaction_breakdown_month_average,
+            GetTransactionBreakdownRequestSchema(),
+            GetTransactionBreakdownResponseSchema(),
+        )
