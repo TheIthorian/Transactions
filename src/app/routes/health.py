@@ -1,19 +1,7 @@
-from app.tags.data import get_all_tags
-from app.transactions.data import (
-    get_all_transactions,
-    get_tags_from_transactions,
-)
-
-
 def hello_world():
     output = {"Hello": "Hello", "World": "World"}
 
-    transactionss = get_all_transactions()
-    tags = get_tags_from_transactions(transactionss)
-    tags = get_all_tags()
-    for t in tags:
-        print(t)
-    return tags
+    return output
 
 
 def status():
