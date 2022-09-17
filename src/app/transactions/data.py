@@ -38,23 +38,6 @@ def group_transactions_by_tag_level(transactions: list[Transaction]):
     return transactions_by_tag_level
 
 
-def group_transaction_by_tag_level(
-    transactions: list[Transaction],
-) -> TransactionsByTagLevel:
-    """Groups each transaction in `transactions` according to their tag level."""
-    transactions_by_tag_level = TransactionsByTagLevel()
-
-    for transaction in transactions:
-        if transaction.tag.l1 != "":
-            transactions_by_tag_level.l1.append(transaction)
-        if transaction.tag.l2 != "":
-            transactions_by_tag_level.l2.append(transaction)
-        if transaction.tag.l3 != "":
-            transactions_by_tag_level.l3.append(transaction)
-
-    return transactions_by_tag_level
-
-
 def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     """Find all transactions that have at least one tag in each of the input `tag_lists` levels.
     \n

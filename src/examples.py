@@ -17,7 +17,7 @@ from app.transactions.data import (
     get_all_transactions,
     get_tags_from_transactions,
     get_transactions_for_tags,
-    group_transaction_by_tag_level,
+    group_transactions_by_tag_level,
 )
 from app.transactions import filter
 from app.transactions.aggregate import aggregate
@@ -68,8 +68,8 @@ def misc():
     for tag in get_tags_from_transactions(get_all_transactions()[0:10]):
         print(tag)
 
-    print("\ngroup_transaction_by_tag_level(first 10 transactions)")
-    groups = group_transaction_by_tag_level(get_all_transactions()[0:10])
+    print("\ngroup_transactions_by_tag_level(first 10 transactions)")
+    groups = group_transactions_by_tag_level(get_all_transactions()[0:10])
     print("l1: ", [transaction.original_description for transaction in groups.l1])
     print("l2: ", [transaction.original_description for transaction in groups.l2])
     print("l3: ", [transaction.original_description for transaction in groups.l3])
