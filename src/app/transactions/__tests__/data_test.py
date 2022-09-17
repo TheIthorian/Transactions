@@ -2,6 +2,7 @@ from datetime import datetime
 from app import database
 from app.transactions.data import (
     get_all_transactions,
+    get_tags_from_transactions,
     group_transactions_by_tag_level,
 )
 from app.transactions.transaction_model import Tag, Transaction, TransactionsByTagLevel
@@ -48,6 +49,35 @@ class Test_get_all_transactions:
         )
         assert result_transaction.amount == transaction.amount
         assert result_transaction.tag == transaction.tag
+
+
+class Test_get_tags_from_transactions:
+    def test_returns_unique_tags(self):
+        # Given
+        transactions = [
+            Transaction.make(tag=Tag("Income", "", "")),
+            Transaction.make(tag=Tag("Income", "", "")),
+            Transaction.make(tag=Tag("Home", "Bills", "Other")),
+            Transaction.make(tag=Tag("Home", "Bills", "Rent")),
+            Transaction.make(tag=Tag("Home", "Bills", "")),
+            Transaction.make(tag=Tag("Home", "Bills", "")),
+            Transaction.make(tag=Tag("Enjoyment", "Dining", "")),
+            Transaction.make(tag=Tag("Enjoyment", "Dining", "Other")),
+            Transaction.make(tag=Tag("Enjoyment", "Dining", "Other")),
+        ]
+
+        # When
+        result = get_tags_from_transactions(transactions)
+
+        # Then
+        assert result == [
+            Tag("Income", "", ""),
+            Tag("Home", "Bills", "Other"),
+            Tag("Home", "Bills", "Rent"),
+            Tag("Home", "Bills", ""),
+            Tag("Enjoyment", "Dining", ""),
+            Tag("Enjoyment", "Dining", "Other"),
+        ]
 
 
 class Test_group_transactions_by_tag_level:
