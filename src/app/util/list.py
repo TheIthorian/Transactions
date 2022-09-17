@@ -1,4 +1,4 @@
-import collections
+from collections.abc import Hashable
 from typing import Iterable
 
 
@@ -6,7 +6,7 @@ def unique(sequence: Iterable) -> list:
     if len(sequence) == 0:
         return []
 
-    if isinstance(sequence[0], collections.Hashable):
+    if isinstance(sequence[0], Hashable):
         return unique_with_set(sequence)
 
     return unique_without_set(sequence)
