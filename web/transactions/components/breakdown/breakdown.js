@@ -41,11 +41,11 @@ export default function Breakdown() {
             setAllTags(res);
         });
 
-        getBreakdown(filter)
+        getBreakdown(filter, mode)
             .then(setData)
             .then(() => setLoaded(true))
             .catch(console.log);
-    }, [filter, reload]);
+    }, [filter, reload, mode]);
 
     function handleReload() {
         setReload(reload => !reload);

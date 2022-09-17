@@ -1,8 +1,11 @@
 import { API_URL } from 'config';
 import { handleResponse } from 'util/rest';
+import { MODES } from './constants';
 
-export async function getBreakdown(filter) {
-    const response = await fetch(API_URL + '/getTransactionBreakdown', {
+export async function getBreakdown(filter, mode) {
+    const url =
+        mode == MODES.Monthly ? '/getAverageTransactionBreakdown' : '/getTransactionBreakdown';
+    const response = await fetch(API_URL + url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
