@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Select, DatePicker, Skeleton } from 'antd';
+import { Button, Card, Divider, Select, DatePicker, Skeleton, Empty } from 'antd';
 const { Option } = Select;
 
 import { useEffect, useState } from 'react';
@@ -22,6 +22,11 @@ export default function Breakdown() {
     const [allTags, setAllTags] = useState([]);
     const store = makeStore(STORE_ID);
     const dateFormat = 'YYYY-MM-DD';
+    const defaultDateFrom = store.get('dateTo')
+        ? moment(store.get('dateTo'), dateFormat)
+        : undefined;
+
+    const defaultDateTo = store.get('dateTo') ? moment(store.get('dateTo'), dateFormat) : undefined;
 
     const storedFilter = {
         dat_from: store.get('dateFrom'),
@@ -77,6 +82,10 @@ export default function Breakdown() {
         return allTags.map(tag => <Option key={tag}>{tag}</Option>);
     }
 
+    function isEmpty() {
+        return data?.data?.datasets[0]?.data?.length == 0;
+    }
+
     if (isLoading()) {
         return <em>Loading...</em>;
     }
@@ -96,11 +105,7 @@ export default function Breakdown() {
                         style={{
                             marginRight: '5px',
                         }}
-                        defaultValue={
-                            store.get('dateTo')
-                                ? moment(store.get('dateTo'), dateFormat)
-                                : undefined
-                        }
+                        defaultValue={defaultDateFrom}
                     >
                         From
                     </DatePicker>
@@ -109,11 +114,7 @@ export default function Breakdown() {
                         style={{
                             marginRight: '5px',
                         }}
-                        defaultValue={
-                            store.get('dateTo')
-                                ? moment(store.get('dateTo'), dateFormat)
-                                : undefined
-                        }
+                        defaultValue={defaultDateTo}
                     >
                         To
                     </DatePicker>
@@ -137,10 +138,15 @@ export default function Breakdown() {
                 </div>
             </Toolbar>
             <Divider style={{ margin: '0 0 10px' }} />
+
             <Skeleton loading={isLoading()}>
-                <div style={{ height: '500px' }}>
-                    <Doughnut data={data.data} options={data.options} />
-                </div>
+                {isEmpty() ? (
+                    <Empty />
+                ) : (
+                    <div style={{ height: '500px' }}>
+                        <Doughnut data={data.data} options={data.options} />
+                    </div>
+                )}
             </Skeleton>
         </Card>
     );
