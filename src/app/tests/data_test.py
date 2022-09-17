@@ -1,4 +1,5 @@
 from datetime import datetime
+from app import database
 from app.transactions.data import (
     get_all_transactions,
     group_transactions_by_tag_level,
@@ -12,51 +13,41 @@ def test_get_tags_correctly_finds_tags():
     pass
 
 
-def test_get_all_transactions(mocker):
-    # Given
-    transaction_date = datetime(2022, 9, 9)
+class Test_get_all_transactions:
+    def test_returns_all_transactions(self):
+        # Given
+        database.mock()
+        transaction_date = datetime(2022, 9, 9)
 
-    id = 1
-    account_name = "account"
-    date = int(transaction_date.timestamp())
-    current_description = "current_description"
-    original_description = "original_description"
-    amount = 10
-    l1 = "l1"
-    l2 = "l2"
-    l3 = "l3"
+        transaction = Transaction(
+            account="account",
+            date=transaction_date.date(),
+            current_description="current_description",
+            original_description="original_description",
+            amount=10,
+            tag=Tag("l1", "l2", "l3"),
+        )
 
-    mock_select_results = [
-        [
-            id,
-            account_name,
-            date,
-            current_description,
-            original_description,
-            amount,
-            l1,
-            l2,
-            l3,
-        ]
-    ]
+        transaction.insert()
 
-    mocker.patch("app.database.select", return_value=mock_select_results)
+        # When
+        result = get_all_transactions()
+        database.unmock()
 
-    expected_transactions = Transaction(
-        id=1,
-        account=account_name,
-        date=transaction_date.date(),
-        current_description=current_description,
-        original_description=original_description,
-        amount=amount,
-        tag=Tag(l1, l2, l3),
-    )
+        # Then
+        assert len(result) == 1
 
-    # When
-    result = get_all_transactions()
-
-    # Then
-    assert result[0] == expected_transactions
+        result_transaction = result[0]
+        assert result_transaction == transaction
+        assert result_transaction.id == 1
+        assert result_transaction.account == transaction.account
+        assert result_transaction.date == transaction.date
+        assert result_transaction.current_description == transaction.current_description
+        assert (
+            result_transaction.original_description == transaction.original_description
+        )
+        assert result_transaction.amount == transaction.amount
+        assert result_transaction.tag == transaction.tag
 
 
 class Test_group_transactions_by_tag_level:
