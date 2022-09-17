@@ -4,4 +4,6 @@ from typing import Union
 
 
 def to_integer(dt_time: Union[datetime, date]):
+    if dt_time is None:
+        return None
     return time.mktime(dt_time.timetuple())
