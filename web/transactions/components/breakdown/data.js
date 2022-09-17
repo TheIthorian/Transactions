@@ -11,10 +11,6 @@ export async function getBreakdown(filter) {
     });
 
     const data = await handleResponse(response);
-    console.log(data);
-
-    // const oldOnClick = Chart.defaults.legend.onClick;
-    // console.log(oldOnClick)
 
     return {
         type: 'doughnut',
@@ -28,54 +24,11 @@ export async function getBreakdown(filter) {
                         },
                     },
                 },
-                legend: {
-                    // onClick: (evt, legendItem, legend) => {
-                    //     const legendIndex = legendItem.index;
-                    //     const chart = legend.chart;
-                    //     chart.legend.legendItems.forEach((item, itemIndex) => {
-                    //         if (itemIndex == legendIndex) {
-                    //             item.hidden = !item.hidden;
-                    //         }
-                    //     });
-                    //     // chart.show();
-                    //     // legendItem.hidden = false;
-                    //     chart.update();
-                    // },
-                },
+                legend: {},
             },
             responsive: true,
             maintainAspectRatio: false,
             cutout: 30,
-        },
-    };
-
-    return {
-        type: 'doughnut',
-        data: {
-            labels: ['Green', 'Yellow', 'Red', 'Purple', 'Blue'],
-            datasets: [
-                {
-                    data: [1, 2, 3, 4, 5],
-                    backgroundColor: ['green', 'yellow', 'red', 'purple', 'blue'],
-                    labels: ['green', 'yellow', 'red', 'purple', 'blue'],
-                },
-                {
-                    data: [6, 7, 8],
-                    backgroundColor: ['black', 'grey', 'lightgrey'],
-                    labels: ['black', 'grey', 'lightgrey'],
-                },
-            ],
-        },
-        options: {
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: ({ dataset, dataIndex }) => {
-                            return dataset.labels[dataIndex] + ': ' + dataset.data[dataIndex];
-                        },
-                    },
-                },
-            },
         },
     };
 }
