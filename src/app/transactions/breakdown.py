@@ -11,14 +11,12 @@ def get_transaction_amounts_by_tag_level(
     """Returns a tuple of `(tag_name, amount)` for the given tag level"""
     query_builder = QueryBuilder()
     condition = (
-        query_builder.date_from(date_util.to_integer(filter.date_from))
-        .date_to(date_util.to_integer(filter.date_to))
+        query_builder.date_from(filter.date_from)
+        .date_to(filter.date_to)
         .by_tag_filter(filter.tags)
         .build()
     )
     inputs = query_builder.get_inputs()
-
-    print(condition)
 
     if level == 1:
         query = f"SELECT SUM(amount) AS amount, l1 FROM transactions {condition} GROUP BY l1 ORDER BY l1"
