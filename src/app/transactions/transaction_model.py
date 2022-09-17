@@ -226,7 +226,7 @@ class QueryBuilder:
 
     def build_conditions(self, query: str) -> str:
         if len(self._conditions) != 0:
-            query += " WHERE " + " AND".join(self._conditions)
+            query += " WHERE " + " AND ".join(self._conditions)
         return query
 
     def build_order_by(self, query: str) -> str:
