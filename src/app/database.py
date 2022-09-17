@@ -12,6 +12,7 @@ from app.config import CONFIG
 
 class _State:
     use_mock: bool = False
+    print_query: bool = False
 
     def path(self):
         if _state.use_mock:
@@ -31,12 +32,14 @@ def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
 
 def mock():
     _state.use_mock = True
+    _state.print_query = CONFIG.PRINT_QUERIES_IN_TESTS
     init()
 
 
 def unmock():
     os.remove(CONFIG.MOCK_DATABASE_PATH)
     _state.use_mock = False
+    _state.print_query = False
 
 
 def connect() -> sqlite3.Connection:
@@ -70,6 +73,10 @@ def init() -> None:
 def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int:
     """Runs an insert query, returning the `connection` if one is provided."""
 
+    if _state.print_query:
+        print(query)
+        print(data)
+
     auto_commit = False
     if connection is None:
         connection = connect()
@@ -88,6 +95,10 @@ def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int
 
 
 def select(query: str, inputs: dict = None) -> list:
+    if _state.print_query:
+        print(query)
+        print(inputs)
+
     connection = connect()
     connection.row_factory = namedtuple_factory
     cur = connection.cursor()

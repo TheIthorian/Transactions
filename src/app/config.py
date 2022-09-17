@@ -49,3 +49,4 @@ class CONFIG:
     ROOT_DIR = get_root_directory()
     # REQUEST_ORIGIN: str = args.requestOrigin
     REQUEST_ORIGIN: str = "*"
+    PRINT_QUERIES_IN_TESTS = False
