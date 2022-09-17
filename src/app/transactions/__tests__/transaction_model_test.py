@@ -76,13 +76,16 @@ class Test_Transaction_to_dict:
 
 class Test_insert:
     def test_inserts_correctly_to_database(self):
+        # Given
         database.mock()
-
         transaction = make_transaction()
         transaction.insert()
 
+        # When
         transaction_rows = database.select("SELECT * FROM Transactions")
+        database.unmock()
 
+        # Then
         assert len(transaction_rows) == 1
         row = transaction_rows[0]
 
@@ -95,22 +98,19 @@ class Test_insert:
         assert row[6] == "l2_tag"
         assert row[7] == "l3_tag"
 
-        database.unmock()
-
 
 class Test_from_db:
     def test_creates_Transaction_from_database_row(self):
-
+        # Given
         database.mock()
-
         transaction = make_transaction()
         transaction.insert()
 
-        [transaction_row] = database.select("SELECT rowid, * FROM Transactions")
+        transaction_row = database.select("SELECT rowid, * FROM Transactions")[0]
 
-        print(transaction_row)
-
+        # When
         new_transaction = Transaction.from_db(transaction_row)
+        database.unmock()
 
         assert new_transaction.account == transaction.account
         assert new_transaction.date == transaction.date
@@ -123,6 +123,7 @@ class Test_from_db:
 
 class Test_from_row:
     def test_returns_Transaction_from_csv_row(self):
+        # Given
         csv_row = {
             "Account": account,
             "Date": "2022-01-01",
@@ -134,8 +135,10 @@ class Test_from_row:
             "L3Tag": "l3_tag",
         }
 
+        # When
         transaction = Transaction.from_row(csv_row)
 
+        # Then
         assert transaction.account == account
         assert transaction.date == date
         assert transaction.current_description == current_description
