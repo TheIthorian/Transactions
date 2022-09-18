@@ -32,8 +32,6 @@ def get_average_transaction_amounts_by_tag_level(
     amounts = get_transaction_amounts_by_tag_level(level, filter)
     month_count = _get_month_difference(filter)
 
-    print("month count: ", month_count)
-
     averaged_amounts = [
         (amount[0], round(amount[1] / month_count, 0)) for amount in amounts
     ]
@@ -67,7 +65,5 @@ def get_total_average_amount(filter: TransactionFilter):
 def _get_month_difference(filter: TransactionFilter) -> int:
     earliest_date = filter.date_from or Transaction.get_earliest_transaction().date
     latest_date = filter.date_to or Transaction.get_latest_transaction().date
-
-    print(earliest_date, latest_date)
 
     return get_month_difference(latest_date, earliest_date)
