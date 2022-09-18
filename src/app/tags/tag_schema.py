@@ -1,6 +1,12 @@
+from dataclasses import dataclass
 from marshmallow import Schema, fields, post_load
 
-from app.transactions.filter import TagFilter
+
+@dataclass
+class TagFilter:
+    l1: list[str] = None
+    l2: list[str] = None
+    l3: list[str] = None
 
 
 class TagFilterSchema(Schema):
@@ -13,7 +19,7 @@ class TagFilterSchema(Schema):
         return TagFilter(**data)
 
 
-class Tag(Schema):
+class TagSchema(Schema):
     l1 = fields.String()
     l2 = fields.String()
     l3 = fields.String()
