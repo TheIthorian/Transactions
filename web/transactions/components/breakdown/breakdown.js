@@ -8,6 +8,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 import Toolbar from 'components/toolbar';
+import { TagFilter } from 'components/tag-filter';
 import { LABELS } from 'components/i18n';
 import { makeStore } from 'util/store';
 
@@ -87,10 +88,6 @@ export default function Breakdown() {
         return (!allTags.length || !data || !loaded) && !error;
     }
 
-    function renderOptions(allTags) {
-        return allTags.map(tag => <Option key={tag}>{tag}</Option>);
-    }
-
     function isEmpty() {
         return data?.data?.datasets[0]?.data?.length == 0;
     }
@@ -124,20 +121,11 @@ export default function Breakdown() {
                     >
                         To
                     </DatePicker>
-                    <Select
-                        mode='multiple'
-                        allowClear
-                        style={{
-                            minWidth: '200px',
-                            maxWidth: '300px',
-                            marginRight: '5px',
-                        }}
-                        placeholder='Filter by Tag'
-                        onChange={handleChangeTagFilter}
+                    <TagFilter
+                        allTags={allTags}
                         defaultValue={store.get('tagFilter')}
-                    >
-                        {renderOptions(allTags)}
-                    </Select>
+                        onChange={handleChangeTagFilter}
+                    />
                     <Button onClick={handleReload}>
                         <ReloadOutlined />
                     </Button>
