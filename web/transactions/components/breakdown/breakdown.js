@@ -1,4 +1,4 @@
-import { Card, Divider, Skeleton, Empty, Radio, Space } from 'antd';
+import { Card, Divider, Skeleton, Radio, Space } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
@@ -6,6 +6,7 @@ import 'chart.js/auto';
 
 import { FilterToolbar } from 'components/filter-toolbar';
 import { LABELS } from 'components/i18n';
+import Empty from 'components/empty';
 import { makeStore } from 'util/store';
 import { useFilter } from 'hooks/filter';
 
