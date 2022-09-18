@@ -23,7 +23,7 @@ export function useFilter(storeId) {
     const [filter, setFilter] = useState({
         date_from: store.get('dateFrom'),
         date_to: store.get('dateTo'),
-        tags: { l1: store.get('tagFilter') },
+        tags: store.get('tagFilter')?.length ? { l1: store.get('tagFilter') } : {},
     });
     const [allTags, setAllTags] = useState([]);
 
@@ -73,5 +73,6 @@ export function useFilter(storeId) {
         defaultDateFrom,
         defaultDateTo,
         filter,
+        store,
     };
 }

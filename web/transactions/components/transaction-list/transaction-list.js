@@ -6,18 +6,12 @@ import { DataGrid } from 'components/data-grid';
 import { LABELS } from 'components/i18n';
 import { Error } from 'components/error';
 import { FilterToolbar } from 'components/filter-toolbar';
-import { makeStore } from 'util/store';
 
 import { TRANSACTIONS_GRID_STORE_ID } from './constants';
 import { getAllTransactions } from './data';
 import { buildColumns } from './grid/columnBuilder';
 
 export function TransactionList() {
-    const [transactions, setTransactions] = useState();
-    const [reload, setReload] = useState(false);
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [error, setError] = useState(null);
-
     const {
         handleChangeTagFilter,
         handleChangeDateFrom,
@@ -27,13 +21,18 @@ export function TransactionList() {
         defaultDateFrom,
         defaultDateTo,
         filter,
+        store,
     } = useFilter(TRANSACTIONS_GRID_STORE_ID);
 
-    const store = makeStore(TRANSACTIONS_GRID_STORE_ID);
-    const columns = buildColumns(store);
+    const [reload, setReload] = useState(false);
+    const [transactions, setTransactions] = useState(null);
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [error, setError] = useState(null);
+    const [columns, setColumns] = useState([]);
 
     useEffect(() => {
         getAllTransactions(filter).then(setTransactions).catch(setError);
+        setColumns(buildColumns({}));
     }, [filter, reload]);
 
     function handleReload() {

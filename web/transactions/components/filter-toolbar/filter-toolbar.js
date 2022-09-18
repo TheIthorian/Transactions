@@ -1,8 +1,10 @@
 import { Button, DatePicker } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 import Toolbar from 'components/toolbar';
 import { TagFilter } from 'components/tag-filter';
+import NoSsr from 'components/nossr';
 
 export function FilterToolbar({
     title,
@@ -18,37 +20,35 @@ export function FilterToolbar({
 }) {
     return (
         <Toolbar title={title}>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyItems: 'end',
-                    justifyContent: 'space-around',
-                }}
-            >
-                <DatePicker
-                    onChange={handleChangeDateFrom}
-                    style={{ marginRight: '5px' }}
-                    defaultValue={defaultDateFrom}
+            <NoSsr>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyItems: 'end',
+                        justifyContent: 'space-around',
+                    }}
                 >
-                    From
-                </DatePicker>
-                <DatePicker
-                    onChange={handleChangeDateTo}
-                    style={{ marginRight: '5px' }}
-                    defaultValue={defaultDateTo}
-                >
-                    To
-                </DatePicker>
-                <TagFilter
-                    allTags={allTags}
-                    defaultValue={defaultSelectedTags}
-                    onChange={handleChangeTagFilter}
-                />
-                {children}
-                <Button onClick={handleReload}>
-                    <ReloadOutlined />
-                </Button>
-            </div>
+                    <DatePicker
+                        onChange={handleChangeDateFrom}
+                        style={{ marginRight: '5px' }}
+                        defaultValue={defaultDateFrom && moment(defaultDateFrom)}
+                    />
+                    <DatePicker
+                        onChange={handleChangeDateTo}
+                        style={{ marginRight: '5px' }}
+                        defaultValue={defaultDateTo && moment(defaultDateTo)}
+                    />
+                    <TagFilter
+                        allTags={allTags}
+                        defaultValue={defaultSelectedTags}
+                        onChange={handleChangeTagFilter}
+                    />
+                    <>{children}</>
+                    <Button onClick={handleReload}>
+                        <ReloadOutlined />
+                    </Button>
+                </div>
+            </NoSsr>
         </Toolbar>
     );
 }

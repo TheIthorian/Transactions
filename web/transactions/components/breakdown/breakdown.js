@@ -14,8 +14,6 @@ import { getBreakdown } from './data';
 import { DEFAULT_MODE, MODES, STORE_ID } from './constants';
 
 export default function Breakdown() {
-    const store = makeStore(STORE_ID);
-
     const {
         handleChangeTagFilter,
         handleChangeDateFrom,
@@ -25,6 +23,7 @@ export default function Breakdown() {
         defaultDateFrom,
         defaultDateTo,
         filter,
+        store,
     } = useFilter(STORE_ID);
 
     const [reload, setReload] = useState(false);
@@ -47,7 +46,6 @@ export default function Breakdown() {
     function handleOnChangeMode(event) {
         const value = event.target.value;
         store.set('mode', value);
-        console.log(value);
         setMode(value);
     }
 
