@@ -1,8 +1,3 @@
-"""Various data models for storing transactions.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
-
 from dataclasses import dataclass
 import datetime as dt
 import json

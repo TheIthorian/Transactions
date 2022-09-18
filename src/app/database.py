@@ -1,7 +1,4 @@
-"""Module to interact with the SQLite database.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
+"""Module to interact with the SQLite database."""
 
 from collections import namedtuple
 import os

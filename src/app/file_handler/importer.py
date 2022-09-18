@@ -1,7 +1,4 @@
-"""Functions to update latest data from moneydashboard.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
+"""Functions to update latest data from moneydashboard."""
 
 import os
 from app.config import CONFIG

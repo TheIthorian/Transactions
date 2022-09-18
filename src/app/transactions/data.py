@@ -1,7 +1,3 @@
-"""Module to fetch and form data in a useable format.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
 from app.tags.tag_model import TagLists
 from app.transactions.transaction_model import Tag, TransactionsByTagLevel, Transaction
 import app.database as database

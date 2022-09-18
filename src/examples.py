@@ -1,7 +1,4 @@
-"""Module to show usage examples of existing functions.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
+"""Module to show usage examples of existing functions."""
 
 from datetime import datetime
 import os
