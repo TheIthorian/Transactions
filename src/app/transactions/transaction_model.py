@@ -3,9 +3,10 @@ import datetime as dt
 import json
 
 import app.database as database
-from app.tags.tag_model import Tag, TagLists
 from app.util import date as date_util
 from app.util.query_builder import QueryBuilder
+
+from app.tags.tag_model import Tag, TagLists
 
 
 @dataclass
