@@ -41,19 +41,6 @@ export async function getBreakdown(filter, mode) {
     };
 }
 
-export async function getAllTags() {
-    const response = await fetch(API_URL + '/getAllTags', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Api-Key': API_KEY,
-        },
-    });
-
-    const data = await handleResponse(response);
-    return Array.from(new Set(data.map(t => t.l1)));
-}
-
 function convertFromApi(transaction) {
     return {
         ...transaction,
