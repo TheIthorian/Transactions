@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, post_load
 
-from app.tags.tag_schema import Tag, TagFilterSchema
+from app.tags.tag_schema import TagSchema, TagFilterSchema
 from app.transactions.filter import TransactionFilter
 
 ### Get Transactions ###
@@ -26,7 +26,7 @@ class GetTransactionsResponseSchema(Schema):
     current_description = fields.String()
     original_description = fields.String()
     amount = fields.Integer()
-    tag = fields.Nested(Tag)
+    tag = fields.Nested(TagSchema)
 
     class Meta:
         ordered = True
