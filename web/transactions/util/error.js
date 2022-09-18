@@ -5,7 +5,7 @@ class CustomError extends Error {
     constructor({ title, message, detail }) {
         super(message);
         this.title = title;
-        this.message = message;
+        this.message = message ?? detail.Error;
         this.detail = detail;
         console.log('Error: ', { title, message, detail });
     }
