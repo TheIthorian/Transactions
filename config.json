@@ -1,4 +1,6 @@
 {
     "API_KEY": "MY_API_KEY",
-    "REQUEST_ORIGIN": "*"
+    "REQUEST_ORIGIN": "*",
+    "HOST": "0.0.0.0",
+    "PRINT_QUERIES_IN_TESTS": false
 }
