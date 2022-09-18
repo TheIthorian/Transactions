@@ -35,6 +35,6 @@ def add_cors(response):
     # response.headers.add(
     #     "Access-Control-Allow-Headers", "Access-Control-Request-Headers"
     # )
-    response.headers["Access-Control-Allow-Headers"] = "api_key"
+    response.headers["Access-Control-Allow-Headers"] = "Api-Key"
 
     return response
