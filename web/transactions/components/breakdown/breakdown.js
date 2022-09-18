@@ -27,24 +27,25 @@ export default function Breakdown() {
     const [reload, setReload] = useState(false);
     const [allTags, setAllTags] = useState([]);
     const [mode, setMode] = useState(store.get('mode') ?? DEFAULT_MODE);
+    const [error, setError] = useState(null);
 
     const dateFormat = 'YYYY-MM-DD';
     const defaultDateFrom = store.get('dateFrom')
         ? moment(store.get('dateFrom'), dateFormat)
         : undefined;
-
     const defaultDateTo = store.get('dateTo') ? moment(store.get('dateTo'), dateFormat) : undefined;
 
     useEffect(() => {
-        console.log('useEffect 2');
-        getAllTags().then(res => {
-            setAllTags(res);
-        });
+        getAllTags()
+            .then(res => {
+                setAllTags(res);
+            })
+            .catch(setError);
 
         getBreakdown(filter, mode)
             .then(setData)
             .then(() => setLoaded(true))
-            .catch(console.log);
+            .catch(setError);
     }, [filter, reload, mode]);
 
     function handleReload() {
@@ -94,12 +95,17 @@ export default function Breakdown() {
         return data?.data?.datasets[0]?.data?.length == 0;
     }
 
-    if (isLoading()) {
+    if (error) {
+        console.log(error);
+        return <Error error={error} />;
+    }
+
+    if (isLoading() && !error) {
         return <em>Loading...</em>;
     }
 
     return (
-        <Card loading={!loaded} style={{ marginTop: 10 }}>
+        <Card loading={isLoading()} style={{ marginTop: 10 }}>
             <Toolbar title={LABELS.breakdownTitle}>
                 <div
                     style={{
