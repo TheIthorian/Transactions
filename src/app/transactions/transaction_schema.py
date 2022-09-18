@@ -48,3 +48,4 @@ class DatasetSchema(Schema):
 class GetTransactionBreakdownResponseSchema(Schema):
     labels = fields.List(fields.String())
     datasets = fields.List(fields.Nested(DatasetSchema))
+    total = fields.String()
