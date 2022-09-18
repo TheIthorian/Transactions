@@ -1,12 +1,10 @@
-import { Button, Card, Divider, DatePicker, Skeleton, Empty, Radio, Space } from 'antd';
+import { Card, Divider, Skeleton, Empty, Radio, Space } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
-import { ReloadOutlined } from '@ant-design/icons';
 
-import Toolbar from 'components/toolbar';
-import { TagFilter } from 'components/tag-filter';
+import { FilterToolbar } from 'components/filter-toolbar';
 import { LABELS } from 'components/i18n';
 import { makeStore } from 'util/store';
 import { useFilter } from 'hooks/filter';
@@ -66,44 +64,25 @@ export default function Breakdown() {
 
     return (
         <Card loading={isLoading()} style={{ marginTop: 10 }}>
-            <Toolbar title={LABELS.breakdownTitle}>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyItems: 'end',
-                        justifyContent: 'space-around',
-                    }}
-                >
-                    <DatePicker
-                        onChange={handleChangeDateFrom}
-                        style={{ marginRight: '5px' }}
-                        defaultValue={defaultDateFrom}
-                    >
-                        From
-                    </DatePicker>
-                    <DatePicker
-                        onChange={handleChangeDateTo}
-                        style={{ marginRight: '5px' }}
-                        defaultValue={defaultDateTo}
-                    >
-                        To
-                    </DatePicker>
-                    <TagFilter
-                        allTags={allTags}
-                        defaultValue={defaultSelectedTags}
-                        onChange={handleChangeTagFilter}
-                    />
-                    <Button onClick={handleReload}>
-                        <ReloadOutlined />
-                    </Button>
-                    <Radio.Group onChange={handleOnChangeMode} value={mode}>
-                        <Space direction='vertical' style={{ padding: 10 }}>
-                            <Radio value={MODES.All}>{MODES.All}</Radio>
-                            <Radio value={MODES.Monthly}>{MODES.Monthly}</Radio>
-                        </Space>
-                    </Radio.Group>
-                </div>
-            </Toolbar>
+            <FilterToolbar
+                title={LABELS.breakdownTitle}
+                {...{
+                    handleChangeTagFilter,
+                    handleChangeDateFrom,
+                    handleChangeDateTo,
+                    allTags,
+                    defaultSelectedTags,
+                    defaultDateFrom,
+                    defaultDateTo,
+                }}
+            >
+                <Radio.Group onChange={handleOnChangeMode} value={mode}>
+                    <Space direction='vertical' style={{ padding: 10 }}>
+                        <Radio value={MODES.All}>{MODES.All}</Radio>
+                        <Radio value={MODES.Monthly}>{MODES.Monthly}</Radio>
+                    </Space>
+                </Radio.Group>
+            </FilterToolbar>
             <Divider style={{ margin: '0 0 10px' }} />
             <Skeleton loading={isLoading()}>
                 {isEmpty() ? (
