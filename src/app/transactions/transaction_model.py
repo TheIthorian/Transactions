@@ -120,6 +120,22 @@ class Transaction:
             tag=Tag(row["L1Tag"], row["L2Tag"], row["L3Tag"]),
         )
 
+    @staticmethod
+    def get_earliest_transaction() -> "Transaction":
+        return Transaction.from_db(
+            database.select("SELECT rowid, * FROM Transactions ORDER BY Date LIMIT 1")[
+                0
+            ]
+        )
+
+    @staticmethod
+    def get_latest_transaction() -> "Transaction":
+        return Transaction.from_db(
+            database.select(
+                "SELECT rowid, * FROM Transactions ORDER BY Date desc LIMIT 1"
+            )[0]
+        )
+
 
 class Query(QueryBuilder):
     def date_from(self, date_from: dt.date) -> "Query":
