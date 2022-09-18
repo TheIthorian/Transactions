@@ -65,5 +65,5 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
                 ],
             },
         ],
-        "total": total_amount / 100,
+        "total": (total_amount or 0) / 100,
     }
