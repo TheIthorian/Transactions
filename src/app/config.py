@@ -1,3 +1,4 @@
+import json
 import os
 from argparse import ArgumentParser
 
@@ -15,9 +16,6 @@ def add_arguments(parser: ArgumentParser):
         "--dev",
         help="Runs in development mode",
         action="store_true",
-    )
-    parser.add_argument(
-        "-ro", "--rquestOrigin", help="Sets the allowed request origin", type=str
     )
 
 
@@ -38,7 +36,16 @@ def get_root_directory():
     return os.path.normpath(os.path.join(dir_path, "..", ".."))
 
 
+def get_config():
+    file_path = os.path.join(get_root_directory(), "src", "config.json")
+    config = {}
+    with open(file_path) as config_file:
+        config = json.load(config_file)
+    return config
+
+
 args = get_arguments()
+config = get_config()
 
 
 class CONFIG:
@@ -47,6 +54,6 @@ class CONFIG:
     DATABASE_PATH = get_database_path()
     MOCK_DATABASE_PATH = get_mock_database_path()
     ROOT_DIR = get_root_directory()
-    # REQUEST_ORIGIN: str = args.requestOrigin
-    REQUEST_ORIGIN: str = "*"
+    REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
     PRINT_QUERIES_IN_TESTS = False
+    API_KEY = config["API_KEY"]
