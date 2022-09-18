@@ -53,8 +53,6 @@ def get_total_amount(filter: TransactionFilter):
         query_builder.get_inputs(),
     )[0]
 
-    print("total: ", total[0] / 100)
-
     return total[0]
 
 
