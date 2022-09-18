@@ -12,7 +12,7 @@ class Response:
     @classmethod
     def authentication_error(cls) -> tuple[any, int, dict]:
         """Creates an authentication error response"""
-        return {"Error": "Authentication Error"}, 400, cls.content_type
+        return {"Error": "Authentication Error"}, 401, cls.content_type
 
 
 def register_after_request(app):
