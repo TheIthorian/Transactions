@@ -1,20 +1,14 @@
 import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
 
-export async function getAllTransactions({ account, dateFrom, dateTo, minValue, maxValue, tags }) {
+export async function getAllTransactions(filter) {
     const response = await fetch(API_URL + '/getTransactions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Api-Key': API_KEY,
         },
-        body: JSON.stringify({
-            account,
-            date_from: dateFrom,
-            date_to: dateTo,
-            min_value: minValue,
-            max_vaule: maxValue,
-        }),
+        body: JSON.stringify({ ...filter }),
     });
 
     const data = await handleResponse(response);

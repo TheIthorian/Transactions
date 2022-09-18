@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ReloadOutlined } from '@ant-design/icons';
-import { Button, Card } from 'antd';
+import { Card } from 'antd';
 
+import { useFilter } from 'hooks/filter';
 import { DataGrid } from 'components/data-grid';
-import Toolbar from 'components/toolbar';
 import { LABELS } from 'components/i18n';
 import { Error } from 'components/error';
+import { FilterToolbar } from 'components/filter-toolbar';
 import { makeStore } from 'util/store';
 
 import { TRANSACTIONS_GRID_STORE_ID } from './constants';
@@ -14,19 +14,30 @@ import { buildColumns } from './grid/columnBuilder';
 
 export function TransactionList() {
     const [transactions, setTransactions] = useState();
-    const [reload, setReload] = useState(0);
+    const [reload, setReload] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [error, setError] = useState(null);
+
+    const {
+        handleChangeTagFilter,
+        handleChangeDateFrom,
+        handleChangeDateTo,
+        allTags,
+        defaultSelectedTags,
+        defaultDateFrom,
+        defaultDateTo,
+        filter,
+    } = useFilter(TRANSACTIONS_GRID_STORE_ID);
 
     const store = makeStore(TRANSACTIONS_GRID_STORE_ID);
     const columns = buildColumns(store);
 
     useEffect(() => {
-        getAllTransactions({}).then(setTransactions).catch(setError);
-    }, [reload]);
+        getAllTransactions(filter).then(setTransactions).catch(setError);
+    }, [filter, reload]);
 
     function handleReload() {
-        setReload(val => val + 1);
+        setReload(reload => !reload);
     }
 
     function handleSelectRow(selectedRows) {
@@ -45,11 +56,19 @@ export function TransactionList() {
                 onSelectRow={handleSelectRow}
                 store={store}
             >
-                <Toolbar title={LABELS.transactionListGridTitle}>
-                    <Button onClick={handleReload}>
-                        <ReloadOutlined />
-                    </Button>
-                </Toolbar>
+                <FilterToolbar
+                    title={LABELS.transactionListGridTitle}
+                    {...{
+                        handleChangeTagFilter,
+                        handleChangeDateFrom,
+                        handleChangeDateTo,
+                        allTags,
+                        defaultSelectedTags,
+                        defaultDateFrom,
+                        defaultDateTo,
+                        handleReload,
+                    }}
+                ></FilterToolbar>
             </DataGrid>
         </Card>
     );
