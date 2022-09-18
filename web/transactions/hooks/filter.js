@@ -18,7 +18,7 @@ async function getAllTags() {
     return Array.from(new Set(data.map(t => t.l1)));
 }
 
-export function useFilter({ storeId }) {
+export function useFilter(storeId) {
     const store = makeStore(storeId);
     const [filter, setFilter] = useState({
         date_from: store.get('dateFrom'),
