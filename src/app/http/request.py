@@ -16,7 +16,7 @@ class Request:
     def authenticate(self) -> bool:
         """Returns true if the request `api_key` header is valid."""
 
-        key = self.request.headers.get("api_key", None)
+        key = self.request.headers.get("api_key")
         return is_key_valid(key)
 
     def parse(self, schema: Schema) -> Union[dict, list]:
