@@ -84,7 +84,7 @@ export default function Breakdown() {
     }
 
     function isLoading() {
-        return !allTags.length || !data || !loaded;
+        return (!allTags.length || !data || !loaded) && !error;
     }
 
     function renderOptions(allTags) {
@@ -98,10 +98,6 @@ export default function Breakdown() {
     if (error) {
         console.log(error);
         return <Error error={error} />;
-    }
-
-    if (isLoading() && !error) {
-        return <em>Loading...</em>;
     }
 
     return (
@@ -159,10 +155,10 @@ export default function Breakdown() {
                     <Empty />
                 ) : (
                     <div style={{ height: '500px' }}>
-                        <Doughnut data={data.data} options={data.options} />
+                        <Doughnut data={data?.data} options={data?.options} />
                     </div>
                 )}
-                <h2>Total: {'£' + data.data.total?.toLocaleString()}</h2>
+                <h2>Total: {'£' + data?.data.total?.toLocaleString()}</h2>
             </Skeleton>
         </Card>
     );
