@@ -36,7 +36,7 @@ class Test_Response:
             # Then
             assert result == (
                 {"Error": "Authentication Error"},
-                400,
+                401,
                 {"Content-Type": "application/json"},
             )
 
@@ -53,5 +53,5 @@ def test_add_cors():
         "Access-Control-Allow-Origin": CONFIG.REQUEST_ORIGIN,
         "Access-Control-Allow-Request-Headers": "*",
         "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS, POST",
-        "Access-Control-Allow-Headers": "api_key",
+        "Access-Control-Allow-Headers": "Api-Key",
     }

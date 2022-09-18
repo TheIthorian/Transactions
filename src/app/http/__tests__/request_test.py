@@ -5,7 +5,7 @@ from app.http import authentication
 
 
 class MockHeaders:
-    headers = {"api_key": "Some api key"}
+    headers = {"Api-Key": "Some api key"}
 
     def get(self, key: str, default=None):
         return self.headers[key]
@@ -51,4 +51,4 @@ class Test_Request:
             # Then
             # assert self.calls[0]["name"] == "mock_is_key_valids"
             # assert self.calls[0]["arguments"] == ["Some api key"]
-            assert result
+            assert not result
