@@ -191,7 +191,7 @@ class Test_get_breakdown_by_tag_level:
         transactions[2].tag.l1 = "Appearance"
 
         filter = TransactionFilter(
-            date_from=datetime(2022, 1, 8), date_to=datetime(2022, 1, 13)
+            date_from=datetime(2022, 1, 8).date(), date_to=datetime(2022, 1, 13).date()
         )
 
         database.mock()
@@ -218,7 +218,8 @@ class Test_get_average_transaction_amounts_by_tag_level:
         result = get_average_transaction_amounts_by_tag_level(
             1,
             TransactionFilter(
-                date_from=datetime(2022, 1, 1).date(), date_to=datetime(2022, 4, 1)
+                date_from=datetime(2022, 1, 1).date(),
+                date_to=datetime(2022, 4, 1).date(),
             ),
         )
         database.unmock()
@@ -227,8 +228,8 @@ class Test_get_average_transaction_amounts_by_tag_level:
 
         # Then
         assert result == [
-            ("Appearance", -2283.0),
-            ("Enjoyment", -652.0),
-            ("Home", -4893.0),
-            ("Income", 6524.0),
+            ("Appearance", -2366.0),
+            ("Enjoyment", -676.0),
+            ("Home", -5069.0),
+            ("Income", 6759.0),
         ]
