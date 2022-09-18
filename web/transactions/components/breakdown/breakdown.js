@@ -74,6 +74,7 @@ export default function Breakdown() {
                     defaultSelectedTags,
                     defaultDateFrom,
                     defaultDateTo,
+                    handleReload,
                 }}
             >
                 <Radio.Group onChange={handleOnChangeMode} value={mode}>
