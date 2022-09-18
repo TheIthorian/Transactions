@@ -1,4 +1,4 @@
-import { API_URL } from 'config';
+import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
 
 export async function getAllTransactions({ account, dateFrom, dateTo, minValue, maxValue, tags }) {
@@ -6,6 +6,7 @@ export async function getAllTransactions({ account, dateFrom, dateTo, minValue, 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Api-Key': API_KEY,
         },
         body: JSON.stringify({
             account,

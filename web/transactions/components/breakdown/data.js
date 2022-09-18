@@ -1,4 +1,4 @@
-import { API_URL } from 'config';
+import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
 import { MODES } from './constants';
 
@@ -9,6 +9,7 @@ export async function getBreakdown(filter, mode) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Api-Key': API_KEY,
         },
         body: JSON.stringify({ ...filter }),
     });
@@ -45,6 +46,7 @@ export async function getAllTags() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Api-Key': API_KEY,
         },
     });
 
