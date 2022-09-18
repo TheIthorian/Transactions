@@ -1,2 +1,5 @@
+from app.config import CONFIG
+
+
 def is_key_valid(key: str) -> bool:
-    return True
+    return key == CONFIG.API_KEY
