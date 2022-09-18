@@ -23,7 +23,7 @@ def register_after_request(app):
 
 
 def add_cors(response):
-    response.headers.set("Access-Control-Allow-Origin", CONFIG.REQUEST_ORIGIN)
+    response.headers["Access-Control-Allow-Origin"] = CONFIG.REQUEST_ORIGIN
     response.headers["Access-Control-Allow-Request-Headers"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS, POST"
     # response.headers.add("Access-Control-Allow-Headers", "Access-Control-Allow-Headers")
@@ -35,6 +35,6 @@ def add_cors(response):
     # response.headers.add(
     #     "Access-Control-Allow-Headers", "Access-Control-Request-Headers"
     # )
-    response.headers.add("Access-Control-Allow-Headers", "api_key")
+    response.headers["Access-Control-Allow-Headers"] = "api_key"
 
     return response
