@@ -39,6 +39,7 @@ Transactions.csv
 new_Transactions.csv
 src/assets/transactions.db
 src/assets/mock_transactions.db
+src/config.json
 
 # virtual environment
 src/venv
