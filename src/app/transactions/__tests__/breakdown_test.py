@@ -2,6 +2,7 @@ from datetime import datetime
 from app import database
 from app.tags.tag_model import Tag
 from app.transactions.breakdown import (
+    get_average_transaction_amounts_by_tag_level,
     get_transaction_amounts_by_tag_level,
 )
 from app.transactions.filter import TagFilter, TransactionFilter
@@ -203,3 +204,31 @@ class Test_get_breakdown_by_tag_level:
 
         # Then
         assert result == [("Income", 10_000.0)]
+
+
+class Test_get_average_transaction_amounts_by_tag_level:
+    def test_returns_average_amount_over_a_month(self):
+        # Given
+        database.mock()
+        transactions = setup()
+        for transaction in transactions:
+            transaction.insert()
+
+        # When
+        result = get_average_transaction_amounts_by_tag_level(
+            1,
+            TransactionFilter(
+                date_from=datetime(2022, 1, 1).date(), date_to=datetime(2022, 4, 1)
+            ),
+        )
+        database.unmock()
+
+        print(result)
+
+        # Then
+        assert result == [
+            ("Appearance", -2283.0),
+            ("Enjoyment", -652.0),
+            ("Home", -4893.0),
+            ("Income", 6524.0),
+        ]
