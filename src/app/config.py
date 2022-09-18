@@ -37,7 +37,7 @@ def get_root_directory():
 
 
 def get_config():
-    file_path = os.path.join(get_root_directory(), "src", "config.json")
+    file_path = os.path.join(get_root_directory(), "config.json")
     config = {}
     with open(file_path) as config_file:
         config = json.load(config_file)
