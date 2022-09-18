@@ -50,10 +50,10 @@ config = get_config()
 
 class CONFIG:
     DEV: bool = args.dev
-    HOST = "0.0.0.0" if not args.dev else None
-    DATABASE_PATH = get_database_path()
-    MOCK_DATABASE_PATH = get_mock_database_path()
-    ROOT_DIR = get_root_directory()
+    API_KEY: str = config["API_KEY"]
+    HOST: str = config["HOST"] if not args.dev else None
     REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
-    PRINT_QUERIES_IN_TESTS = False
-    API_KEY = config["API_KEY"]
+    ROOT_DIR: str = get_root_directory()
+    DATABASE_PATH: str = get_database_path()
+    MOCK_DATABASE_PATH: str = get_mock_database_path()
+    PRINT_QUERIES_IN_TESTS: bool = config["PRINT_QUERIES_IN_TESTS"]
