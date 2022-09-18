@@ -24,7 +24,3 @@ def add_new_transactions():
 
     conn.commit()
     print(f"{count} new transactions added")
-
-
-if __name__ == "__main__":
-    add_new_transactions()
