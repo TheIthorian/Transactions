@@ -21,8 +21,6 @@ class Test_get_transaction_breakdown:
 
         result = TC.get_transaction_breakdown(TransactionFilter())
 
-        print(result)
-
         result["datasets"][0] == [("Income", 2000), ("Home", 1100)]
         result["datasets"][1] == [
             ("None", 2000),

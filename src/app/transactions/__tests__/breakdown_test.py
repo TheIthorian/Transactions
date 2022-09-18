@@ -98,11 +98,6 @@ class Test_get_breakdown_by_tag_level:
 
         # When
         result = get_transaction_amounts_by_tag_level(2, FILTER)
-        print(
-            database.select(
-                "SELECT SUM(amount) AS amount, l1, l2 FROM transactions  GROUP BY l1, l2 ORDER BY l1, l2"
-            )
-        )
         database.unmock()
 
         # Then
@@ -124,11 +119,6 @@ class Test_get_breakdown_by_tag_level:
 
         # When
         result = get_transaction_amounts_by_tag_level(3, FILTER)
-        print(
-            database.select(
-                "SELECT SUM(amount) AS amount, l1, l2, l3 FROM transactions  GROUP BY l1, l2, l3 ORDER BY l1, l2, l3"
-            )
-        )
         database.unmock()
 
         # Then
