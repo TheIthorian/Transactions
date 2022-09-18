@@ -156,6 +156,7 @@ export default function Breakdown() {
                         <Doughnut data={data.data} options={data.options} />
                     </div>
                 )}
+                <h2>Total: {'£' + data.data.total?.toLocaleString()}</h2>
             </Skeleton>
         </Card>
     );
