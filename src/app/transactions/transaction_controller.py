@@ -5,6 +5,8 @@ from app.tags.tag_model import TAG_COLOR_MAP
 from app.transactions import data
 from app.transactions.breakdown import (
     get_average_transaction_amounts_by_tag_level,
+    get_total_amount,
+    get_total_average_amount,
     get_transaction_amounts_by_tag_level,
 )
 from app.transactions.filter import filter_transactions
@@ -23,8 +25,9 @@ def get_transaction_breakdown(filter: TransactionFilter, request: Request = None
     l1_data = get_transaction_amounts_by_tag_level(1, filter)
     l2_data = get_transaction_amounts_by_tag_level(2, filter)
     l3_data = get_transaction_amounts_by_tag_level(3, filter)
+    total_amount = get_total_amount(filter)
 
-    return _format_breakdown_output(l1_data, l2_data, l3_data)
+    return _format_breakdown_output(l1_data, l2_data, l3_data, total_amount)
 
 
 def get_transaction_breakdown_month_average(
@@ -33,11 +36,12 @@ def get_transaction_breakdown_month_average(
     l1_data = get_average_transaction_amounts_by_tag_level(1, filter)
     l2_data = get_average_transaction_amounts_by_tag_level(2, filter)
     l3_data = get_average_transaction_amounts_by_tag_level(3, filter)
+    total_amount = get_total_average_amount(filter)
 
-    return _format_breakdown_output(l1_data, l2_data, l3_data)
+    return _format_breakdown_output(l1_data, l2_data, l3_data, total_amount)
 
 
-def _format_breakdown_output(l1_data, l2_data, l3_data):
+def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
     return {
         "labels": [t[0] for t in l1_data],
         "datasets": [
@@ -61,4 +65,5 @@ def _format_breakdown_output(l1_data, l2_data, l3_data):
                 ],
             },
         ],
+        "total": total_amount / 100,
     }
