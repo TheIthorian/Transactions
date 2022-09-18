@@ -47,7 +47,6 @@ def unmock():
 
 
 def connect() -> sqlite3.Connection:
-    print("Connecting to database", _state.path())
     return sqlite3.connect(_state.path())
 
 
