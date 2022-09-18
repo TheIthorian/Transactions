@@ -9,4 +9,6 @@ export const LABELS = {
     transactionListGridTitle: 'Transactions',
 
     breakdownTitle: 'Breakdown',
+
+    noDataError: 'Try adjusting the filters to view more data.',
 };
