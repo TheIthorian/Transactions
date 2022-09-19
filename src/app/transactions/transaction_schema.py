@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from marshmallow import Schema, fields, post_load
 
 from app.tags.tag_schema import TagSchema, TagFilterSchema
@@ -6,7 +7,7 @@ from app.transactions.filter import TransactionFilter
 ### Get Transactions ###
 
 
-class GetTransactionsRequestSchema(Schema):
+class TransactionFilterSchema(Schema):
     account = fields.String(required=False, allow_none=True)
     date_from = fields.Date(required=False, allow_none=True)
     date_to = fields.Date(required=False, allow_none=True)
@@ -14,6 +15,8 @@ class GetTransactionsRequestSchema(Schema):
     max_value = fields.Integer(required=False, allow_none=True)
     tags = fields.Nested(TagFilterSchema, allow_none=True)
 
+
+class GetTransactionsRequestSchema(TransactionFilterSchema):
     @post_load
     def make_filter(self, data, **kwargs):
         return TransactionFilter(**data)
@@ -49,3 +52,36 @@ class GetTransactionBreakdownResponseSchema(Schema):
     labels = fields.List(fields.String())
     datasets = fields.List(fields.Nested(DatasetSchema))
     total = fields.String()
+
+    class Meta:
+        ordered = True
+
+
+### Get Transaction Timeline ###
+
+
+@dataclass
+class TimelineRequest:
+    group_by_tags: bool = False
+    filter: TransactionFilter = TransactionFilter()
+
+
+class GetTransactionTimelineRequestSchema(Schema):
+    group_by_tags = fields.Boolean(allow_none=False, required=True)
+    filter = fields.Nested(TransactionFilterSchema, allow_none=False, required=True)
+
+    @post_load
+    def make_request_dto(self, data, **kwargs):
+        return TimelineRequest(
+            group_by_tags=data["group_by_tags"],
+            filter=TransactionFilter(**data["filter"]),
+        )
+
+
+class GetTransactionTimelineResponseSchema(Schema):
+    amount = fields.Integer()
+    month_start_date = fields.Date()
+    l1 = fields.String(allow_none=True)
+
+    class Meta:
+        ordered = True
