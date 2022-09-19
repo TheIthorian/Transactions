@@ -117,3 +117,29 @@ class Test_get_transaction_timeline:
                 l1="Income",
             ),
         ]
+
+    def test_returns_total_over_each_month_without_grouping_by_tag(self):
+        # Given
+        database.mock()
+
+        transactions = setup()
+        for transaction in transactions:
+            transaction.insert()
+
+        # When
+        result = get_transaction_timeline(TransactionFilter(), False)
+        database.unmock()
+
+        # Then
+        assert result == [
+            TimelineMonth(
+                amount=8_000.0,
+                month_start_date=datetime(2022, 2, 1).date(),
+                l1=None,
+            ),
+            TimelineMonth(
+                amount=4_000.0,
+                month_start_date=datetime(2022, 3, 1).date(),
+                l1=None,
+            ),
+        ]
