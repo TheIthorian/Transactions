@@ -3,6 +3,8 @@ import app.transactions.transaction_controller as transactions
 from app.transactions.transaction_schema import (
     GetTransactionBreakdownRequestSchema,
     GetTransactionBreakdownResponseSchema,
+    GetTransactionTimelineRequestSchema,
+    GetTransactionTimelineResponseSchema,
     GetTransactionsRequestSchema,
     GetTransactionsResponseSchema,
 )
@@ -31,4 +33,12 @@ def register_routes(app):
             transactions.get_transaction_breakdown_month_average,
             GetTransactionBreakdownRequestSchema(),
             GetTransactionBreakdownResponseSchema(),
+        )
+
+    @app.route("/getTransactionTimeline", methods=["POST"])
+    def _get_transaction_timeline():
+        return request.invoke(
+            transactions.get_transaction_timeline,
+            GetTransactionTimelineRequestSchema(),
+            GetTransactionTimelineResponseSchema(many=True),
         )
