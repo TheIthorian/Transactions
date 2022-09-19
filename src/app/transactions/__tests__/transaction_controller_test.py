@@ -1,12 +1,23 @@
+from app import database
 from app.transactions.transaction_model import Tag, Transaction
 from app.transactions import transaction_controller as TC
 from app.transactions.transaction_schema import TransactionFilter
 
+from app.transactions import data, filter
+
+calls = []
+
+
+def call(*args):
+    calls.append([args])
+
 
 class Test_get_transaction_breakdown:
-    def test_returns_grouped_tags(self, mocker):
-        return
+    def test_returns_grouped_tags(self, monkeypatch):
         # given
+        database.mock()
+        res = []
+
         transactions = [
             Transaction.make(amount=2000, tag=Tag("Income", "", "")),
             Transaction.make(amount=200, tag=Tag("Home", "Bills", "")),
@@ -14,19 +25,31 @@ class Test_get_transaction_breakdown:
             Transaction.make(amount=800, tag=Tag("Home", "Rent", "")),
         ]
 
-        mocker.patch(
-            "app.transactions.data.get_transactions_for_tags",
-            return_value=transactions,
+        def mock_get_transactions_for_tags(*args):
+            call(args)
+            return transactions
+
+        monkeypatch.setattr(
+            data,
+            "get_transactions_for_tags",
+            lambda _: transactions,
         )
 
-        result = TC.get_transaction_breakdown(TransactionFilter())
+        def mock_filter_transactions(*args):
+            call(args)
+            return res
 
-        result["datasets"][0] == [("Income", 2000), ("Home", 1100)]
-        result["datasets"][1] == [
-            ("None", 2000),
-            ("Bills", 300),
-            ("Rent", 800),
-            ("None", 0),
-        ]
-        # assert result["datasets"][2] == [("None", 2000), ("None") ("Other", 100)]
-        # [2000, 0, ]
+        monkeypatch.setattr(
+            filter,
+            "filter_transactions",
+            mock_filter_transactions,
+        )
+
+        result = TC.get_transactions(TransactionFilter())
+        print(result)
+        print(calls)
+
+        database.unmock()
+
+        # assert result == []
+        # assert calls[1] == [transactions]
