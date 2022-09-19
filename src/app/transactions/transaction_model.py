@@ -134,6 +134,12 @@ class Transaction:
 
 
 class Query(QueryBuilder):
+    def by_account(self, account: str) -> "Query":
+        if account is not None:
+            self._conditions.append(f"account = ?")
+            self.add_input(account)
+        return self
+
     def date_from(self, date_from: dt.date) -> "Query":
         if date_from is not None:
             self._conditions.append(f"date >= {date_util.to_integer(date_from)}")
@@ -145,9 +151,15 @@ class Query(QueryBuilder):
         return self
 
     def amount_from(self, amount_from: int) -> "Query":
+        if amount_from is not None:
+            self._conditions.append(f"amount >= ?")
+            self.add_input(amount_from)
         return self
 
     def amount_to(self, amount_to: int) -> "Query":
+        if amount_to is not None:
+            self._conditions.append(f"amount <= ?")
+            self.add_input(amount_to)
         return self
 
     def by_tag_list(self, tag_lists: TagLists = None) -> "Query":
