@@ -10,5 +10,7 @@ export const LABELS = {
 
     breakdownTitle: 'Breakdown',
 
+    timelineTitle: 'Timeline',
+
     noDataError: 'Try adjusting the filters to view more data.',
 };
