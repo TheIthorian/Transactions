@@ -13,6 +13,7 @@ from app.transactions import timeline
 from app.transactions.filter import filter_transactions
 from app.transactions.transaction_model import Transaction
 from app.transactions.filter import TransactionFilter
+from app.transactions.transaction_schema import TimelineRequest
 
 
 def get_transactions(
@@ -70,5 +71,5 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
     }
 
 
-def get_transaction_timeline(filter: TransactionFilter, request: Request = None):
-    return timeline.get_transaction_timeline(filter)
+def get_transaction_timeline(input: TimelineRequest, request: Request = None):
+    return timeline.get_transaction_timeline(input.filter, input.group_by_tags)
