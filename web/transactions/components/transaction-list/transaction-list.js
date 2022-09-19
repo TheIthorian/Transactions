@@ -48,7 +48,7 @@ export function TransactionList() {
     }
 
     return (
-        <Card bodyStyle={{ padding: 5, marginTop: 10 }}>
+        <Card style={{ marginTop: 10 }} bodyStyle={{ padding: 5 }}>
             <DataGrid
                 dataSource={transactions}
                 columns={columns}
