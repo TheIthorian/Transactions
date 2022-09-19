@@ -14,6 +14,7 @@ from app.transactions.filter import filter_transactions
 from app.transactions.transaction_model import Transaction
 from app.transactions.filter import TransactionFilter
 from app.transactions.transaction_schema import TimelineRequest
+from app.util import list as list_util
 
 
 def get_transactions(
@@ -72,4 +73,35 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
 
 
 def get_transaction_timeline(input: TimelineRequest, request: Request = None):
-    return timeline.get_transaction_timeline(input.filter, input.group_by_tags)
+    data_sets = timeline.get_transaction_timeline(input.filter, input.group_by_tags)
+
+    if input.group_by_tags:
+        tags = list_util.unique(list(map(lambda d: d.l1, data_sets)))
+        new_data_sets = [[y for y in data_sets if y.l1 == x] for x in tags]
+
+        all_data_sets = []
+        for data_set in new_data_sets:
+            all_data_sets.append(
+                {
+                    "label": data_set[0].l1,
+                    "data": [d.amount / 100 for d in data_set],
+                    "backgroundColor": TAG_COLOR_MAP[data_set[0].l1],
+                }
+            )
+
+        return {
+            "labels": list_util.unique(
+                list(map(lambda d: d.month_start_date, data_sets))
+            ),
+            "datasets": all_data_sets,
+        }
+
+    return {
+        "labels": [d.month_start_date for d in data_sets],
+        "datasets": [
+            {
+                "data": [d.amount / 100 for d in data_sets],
+                "backgroundColor": ["blue" for _ in data_sets],
+            }
+        ],
+    }
