@@ -40,5 +40,5 @@ def register_routes(app):
         return request.invoke(
             transactions.get_transaction_timeline,
             GetTransactionTimelineRequestSchema(),
-            GetTransactionTimelineResponseSchema(many=True),
+            GetTransactionTimelineResponseSchema(),
         )
