@@ -7,7 +7,6 @@ import 'chart.js/auto';
 import { FilterToolbar } from 'components/filter-toolbar';
 import { LABELS } from 'components/i18n';
 import Empty from 'components/empty';
-import { makeStore } from 'util/store';
 import { useFilter } from 'hooks/filter';
 
 import { getBreakdown } from './data';
