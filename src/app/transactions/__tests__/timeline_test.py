@@ -35,18 +35,29 @@ class Test_get_transaction_timeline:
 
         # When
         result = get_transaction_timeline(TransactionFilter())
+        print(result)
         database.unmock()
 
         # Then
         assert result == [
             TimelineMonth(
-                amount_in=10_000,
-                amount_out=-2_000,
+                amount=-2_000.0,
                 month_start_date=datetime(2022, 2, 1).date(),
+                l1="Bills",
             ),
             TimelineMonth(
-                amount_in=10_000,
-                amount_out=-6_000,
+                amount=10_000.0,
                 month_start_date=datetime(2022, 2, 1).date(),
+                l1="Income",
+            ),
+            TimelineMonth(
+                amount=-6_000.0,
+                month_start_date=datetime(2022, 3, 1).date(),
+                l1="Bills",
+            ),
+            TimelineMonth(
+                amount=10_000.0,
+                month_start_date=datetime(2022, 3, 1).date(),
+                l1="Income",
             ),
         ]
