@@ -3,7 +3,7 @@ from datetime import datetime
 from app import database
 from app.tags.tag_model import Tag
 from app.transactions.filter import TransactionFilter
-from app.transactions.timeline import get_transaction_timeline
+from app.transactions.timeline import TimelineMonth, get_transaction_timeline
 from app.transactions.transaction_model import Transaction
 
 
@@ -20,7 +20,7 @@ class Test_get_transaction_timeline:
                 date=datetime(2022, 2, 10), amount=-2_000, tag=Tag(l1="Bills")
             ),
             Transaction.make(
-                date=datetime(2022, 2, 10), amount=10_000, tag=Tag(l1="Income")
+                date=datetime(2022, 3, 10), amount=10_000, tag=Tag(l1="Income")
             ),
             Transaction.make(
                 date=datetime(2022, 3, 1), amount=-2_000, tag=Tag(l1="Bills")
@@ -33,8 +33,20 @@ class Test_get_transaction_timeline:
         for transaction in transactions:
             transaction.insert()
 
+        # When
         result = get_transaction_timeline(TransactionFilter())
-
-        assert result == []
-
         database.unmock()
+
+        # Then
+        assert result == [
+            TimelineMonth(
+                amount_in=10_000,
+                amount_out=-2_000,
+                month_start_date=datetime(2022, 2, 1).date(),
+            ),
+            TimelineMonth(
+                amount_in=10_000,
+                amount_out=-6_000,
+                month_start_date=datetime(2022, 2, 1).date(),
+            ),
+        ]
