@@ -136,43 +136,53 @@ class Transaction:
 class Query(QueryBuilder):
     def by_account(self, account: str) -> "Query":
         if account is not None:
-            self._conditions.append(f"account = ?")
+            self._conditions.append(f"{self.alias}account = ?")
             self.add_input(account)
         return self
 
     def date_from(self, date_from: dt.date) -> "Query":
         if date_from is not None:
-            self._conditions.append(f"date >= {date_util.to_integer(date_from)}")
+            self._conditions.append(
+                f"{self.alias}date >= {date_util.to_integer(date_from)}"
+            )
         return self
 
     def date_to(self, date_to: dt.date) -> "Query":
         if date_to is not None:
-            self._conditions.append(f"date <= {date_util.to_integer(date_to)}")
+            self._conditions.append(
+                f"{self.alias}date <= {date_util.to_integer(date_to)}"
+            )
         return self
 
     def amount_from(self, amount_from: int) -> "Query":
         if amount_from is not None:
-            self._conditions.append(f"amount >= ?")
+            self._conditions.append(f"{self.alias}amount >= ?")
             self.add_input(amount_from)
         return self
 
     def amount_to(self, amount_to: int) -> "Query":
         if amount_to is not None:
-            self._conditions.append(f"amount <= ?")
+            self._conditions.append(f"{self.alias}amount <= ?")
             self.add_input(amount_to)
         return self
 
     def by_tag_list(self, tag_lists: TagLists = None) -> "Query":
         if tag_lists.l1 is not None:
-            self._conditions.append(" l1 IN (%s)" % ",".join("?" for _ in tag_lists.l1))
+            self._conditions.append(
+                f" {self.alias}l1 IN (%s)" % ",".join("?" for _ in tag_lists.l1)
+            )
             self._inputs.extend(tag_lists.l1)
 
         if tag_lists.l2 is not None:
-            self._conditions.append(" l2 IN (%s)" % ",".join("?" for _ in tag_lists.l2))
+            self._conditions.append(
+                f" {self.alias}l2 IN (%s)" % ",".join("?" for _ in tag_lists.l2)
+            )
             self._inputs.extend(tag_lists.l2)
 
         if tag_lists.l3 is not None:
-            self._conditions.append(" l3 IN (%s)" % ",".join("?" for _ in tag_lists.l3))
+            self._conditions.append(
+                f" {self.alias}l3 IN (%s)" % ",".join("?" for _ in tag_lists.l3)
+            )
             self._inputs.extend(tag_lists.l3)
         return self
 
@@ -182,19 +192,19 @@ class Query(QueryBuilder):
 
         if tag_filter.l1 is not None:
             self._conditions.append(
-                f"l1 IN (%s)" % ",".join("?" for _ in tag_filter.l1)
+                f"{self.alias}l1 IN (%s)" % ",".join("?" for _ in tag_filter.l1)
             )
             self._inputs.extend(tag_filter.l1)
 
         if tag_filter.l2 is not None:
             self._conditions.append(
-                f"l2 IN (%s)" % ",".join("?" for _ in tag_filter.l2)
+                f"{self.alias}l2 IN (%s)" % ",".join("?" for _ in tag_filter.l2)
             )
             self._inputs.extend(tag_filter.l2)
 
         if tag_filter.l3 is not None:
             self._conditions.append(
-                f"l3 IN (%s)" % ",".join("?" for _ in tag_filter.l3)
+                f"{self.alias}l3 IN (%s)" % ",".join("?" for _ in tag_filter.l3)
             )
             self._inputs.extend(tag_filter.l3)
 
