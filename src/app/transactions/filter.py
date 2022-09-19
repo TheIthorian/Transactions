@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 from datetime import date
-from app.transactions.transaction_model import Tag, Transaction
+from app.transactions.transaction_model import Query, Tag, Transaction
 
 
 @dataclass
@@ -20,6 +20,13 @@ class TransactionFilter:
     min_value: int = None
     max_value: int = None
     tags: TagFilter = None
+
+    def build_query(self) -> Query:
+        qb = Query()
+        qb.by_account(self.account).date_from(self.date_from).date_to(
+            self.date_to
+        ).amount_from(self.min_value).amount_to(self.max_value).by_tag_filter(self.tags)
+        return qb
 
 
 def filter_transactions(transactions: list[Transaction], filter: TransactionFilter):
