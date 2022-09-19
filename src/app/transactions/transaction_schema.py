@@ -78,10 +78,15 @@ class GetTransactionTimelineRequestSchema(Schema):
         )
 
 
+class TimelineDatasetSchema(Schema):
+    label = fields.String()
+    data = fields.List(fields.Float())
+    backgroundColor = fields.String()
+
+
 class GetTransactionTimelineResponseSchema(Schema):
-    amount = fields.Integer()
-    month_start_date = fields.Date()
-    l1 = fields.String(allow_none=True)
+    labels = fields.List(fields.Date())
+    datasets = fields.List(fields.Nested(TimelineDatasetSchema), many=True)
 
     class Meta:
         ordered = True
