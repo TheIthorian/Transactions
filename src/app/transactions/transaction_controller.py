@@ -9,6 +9,7 @@ from app.transactions.breakdown import (
     get_total_average_amount,
     get_transaction_amounts_by_tag_level,
 )
+from app.transactions import timeline
 from app.transactions.filter import filter_transactions
 from app.transactions.transaction_model import Transaction
 from app.transactions.filter import TransactionFilter
@@ -67,3 +68,7 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
         ],
         "total": (total_amount or 0) / 100,
     }
+
+
+def get_transaction_timeline(filter: TransactionFilter, request: Request = None):
+    return timeline.get_transaction_timeline(filter)
