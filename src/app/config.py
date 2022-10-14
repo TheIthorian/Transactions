@@ -2,6 +2,10 @@ import json
 import os
 from argparse import ArgumentParser
 
+DATABASE_NAME = "transactions.db"
+MOCK_DATABASE_NAME = "mock_transactions.db"
+DEMO_DATABASE_NAME = "demo_transactions.db"
+
 
 def get_arguments() -> ArgumentParser:
     parser = ArgumentParser()
@@ -17,17 +21,16 @@ def add_arguments(parser: ArgumentParser):
         help="Runs in development mode",
         action="store_true",
     )
-
-
-def get_database_path():
-    return os.path.normpath(
-        os.path.join(get_root_directory(), "src", "assets", "transactions.db")
+    parser.add_argument(
+        "--demo",
+        help="Runs in demo mode which uses fake data",
+        action="store_true",
     )
 
 
-def get_mock_database_path():
+def get_database_path(db_name: str):
     return os.path.normpath(
-        os.path.join(get_root_directory(), "src", "assets", "mock_transactions.db")
+        os.path.join(get_root_directory(), "src", "assets", db_name)
     )
 
 
@@ -52,8 +55,10 @@ class CONFIG:
     DEV: bool = args.dev
     API_KEY: str = config["API_KEY"]
     HOST: str = config["HOST"] if not args.dev else None
+    DEMO: bool = args.demo
     REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
     ROOT_DIR: str = get_root_directory()
-    DATABASE_PATH: str = get_database_path()
-    MOCK_DATABASE_PATH: str = get_mock_database_path()
+    DATABASE_PATH: str = get_database_path(DATABASE_NAME)
+    MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
+    DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
     PRINT_QUERIES_IN_TESTS: bool = config["PRINT_QUERIES_IN_TESTS"]
