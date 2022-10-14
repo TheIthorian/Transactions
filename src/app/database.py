@@ -14,10 +14,43 @@ class _State:
     def path(self):
         if _state.use_mock:
             return CONFIG.MOCK_DATABASE_PATH
+        if CONFIG.DEMO:
+            return CONFIG.DEMO_DATABASE_PATH
+
         return CONFIG.DATABASE_PATH
 
 
 _state = _State()
+
+
+class Database:
+    def __init__(self, path: str):
+        self.path = path
+
+    def connect(self):
+        return sqlite3.connect(self.path)
+
+    def init(self):
+        """Creates the database."""
+        print("Creating database at: ", self.path)
+        con = self.connect()
+        cur = con.cursor()
+
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS transactions
+                (account text, 
+                date integer, 
+                current_description text, 
+                original_description text, 
+                amount real,
+                l1 text,
+                l2 text,
+                l3 text
+                )"""
+        )
+
+        con.commit()
+        con.close()
 
 
 def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
@@ -91,7 +124,10 @@ def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None)
 
 
 def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int:
-    """Runs an insert query, returning the `connection` if one is provided."""
+    """
+    Runs an insert query, returning the `id`.
+    Keeps the connection open if one is provided
+    """
 
     if _state.print_query:
         print(query)
