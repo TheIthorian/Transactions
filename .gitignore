@@ -37,8 +37,9 @@ __pycache__
 .pytest_cache
 Transactions.csv
 new_Transactions.csv
-src/assets/transactions.db
-src/assets/mock_transactions.db
+**/transactions.db
+**/mock_transactions.db
+**/demo_transactions.db
 src/config.json
 
 # virtual environment
