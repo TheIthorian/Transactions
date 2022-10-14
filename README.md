@@ -107,6 +107,24 @@ This is where all the config for the application is stored. See below for an exp
 
 To load transactions, go to [https://www.moneydashboard.com](https://www.moneydashboard.com) and download all transactions to a csv file. Save this file to the root of the project directory and run `pipenv run import`. This saves all the transactions to the persistent database.
 
+## Transaction List
+
+The transaction list displays a detailed list of all transactions.
+
+![The transaction list with the start date filter being changed](./project/list-demo.gif 'Transaction list example')
+
+## Transaction Breakdown
+
+A breakdown of the total transaction amounts under each tag type. The tag level and specificity increases towards the center.
+
+![The transaction breakdown with the start date and tag filter being changed](./project/breakdown-demo.gif 'Transaction breakdown example')
+
+## Transaction Timeline
+
+The total amount by tag across a monthly timeline.
+
+![The transaction timeline with the start date and tag filter being changed](./project/timeline-demo.gif 'Transaction timeline example')
+
 ## Filtering
 
 In each data display component, it is possible to filter the results by date and tag (inclusive):
