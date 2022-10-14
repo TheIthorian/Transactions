@@ -48,6 +48,9 @@ def get_config():
 
 
 args = get_arguments()
+if args.demo:
+    print("Currently running on demo environment")
+
 config = get_config()
 
 
