@@ -20,7 +20,7 @@ export default function _Layout({ children }) {
                 <Content
                     className='site-layout'
                     style={{
-                        padding: '0 50px',
+                        padding: '0 10px',
                         marginTop: 64,
                     }}
                 >
