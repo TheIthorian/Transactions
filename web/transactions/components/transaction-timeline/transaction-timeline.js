@@ -47,8 +47,6 @@ export function TransactionTimeline() {
     //     return <Error error={error} />;
     // }
 
-    console.log(data);
-
     return (
         <Card loading={isLoading()} style={{ marginTop: 10 }}>
             <FilterToolbar

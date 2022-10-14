@@ -2,7 +2,6 @@ import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
 
 export async function getTimeline(filter, group_by_tags = true) {
-    console.log(filter, group_by_tags);
     const url = '/getTransactionTimeline';
     const response = await fetch(API_URL + url, {
         method: 'POST',
