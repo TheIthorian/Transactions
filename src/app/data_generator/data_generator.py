@@ -40,7 +40,6 @@ def insert_transactions(transactions: list[Transaction]):
 
     print(f"Inserting {len(transactions)} transactions...")
     for transaction in transactions:
-        print(transaction)
         transaction.insert(conn)
 
     conn.commit()
