@@ -49,13 +49,13 @@ class Transaction:
 
     @staticmethod
     def make(
-        account=None,
-        date=None,
-        current_description=None,
-        original_description=None,
-        amount=None,
-        tag=None,
-        id=None,
+        account: str = None,
+        date: dt.date = None,
+        current_description: str = None,
+        original_description: str = None,
+        amount: int = None,
+        tag: Tag = None,
+        id: int = None,
     ) -> "Transaction":
         return Transaction(
             account=account,
