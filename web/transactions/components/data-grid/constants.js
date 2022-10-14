@@ -3,4 +3,6 @@ const PAGINATION = {
     pageSizeOptions: ['10', '25', '100', '500'],
 };
 
-export { PAGINATION };
+const DEFAULT_PAGE_SIZE = 10;
+
+export { PAGINATION, DEFAULT_PAGE_SIZE };
