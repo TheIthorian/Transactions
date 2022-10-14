@@ -1,5 +1,10 @@
 import { LABELS } from 'components/i18n';
-import { makeTransactionDateRenderer, makeTagRenderer, makeAmountRenderer } from './renderers';
+import {
+    makeTransactionDateRenderer,
+    makeTagRenderer,
+    makeAmountRenderer,
+    makeDescriptionRenderer,
+} from './renderers';
 
 export function buildColumns(store) {
     return [
@@ -23,6 +28,7 @@ export function buildColumns(store) {
             title: LABELS.transactionDescription,
             dataIndex: 'description',
             key: 'description',
+            render: makeDescriptionRenderer(),
         },
         {
             title: LABELS.transactionAmount,

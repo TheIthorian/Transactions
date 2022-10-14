@@ -13,6 +13,18 @@ export function makeTransactionDateRenderer() {
     };
 }
 
+export function makeDescriptionRenderer() {
+    return (_, record) => {
+        const { description } = record;
+        const MAX_LENGTH = 50;
+        if (description.length > MAX_LENGTH) {
+            return description.substring(0, MAX_LENGTH) + '...';
+        }
+
+        return description;
+    };
+}
+
 export function makeAmountRenderer() {
     return (_, record) => {
         const { amount } = record;
