@@ -14,7 +14,7 @@ MIN_TRANSACTION_AMOUNT = 50
 MAX_TRANSACTION_AMOUNT = 50_000
 
 
-L1_TAGS = ["Income", "Bills", "Food"]
+L1_TAGS = ["Income", "Bills", "Savings", "Enjoyment"]
 L2_TAGS = ["Regular", "Other", ""]
 L3_TAGS = ["Unknown", ""]
 
