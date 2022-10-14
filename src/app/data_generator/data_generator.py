@@ -7,8 +7,8 @@ from app.transactions.transaction_model import Transaction
 from app.config import CONFIG
 from app.data_generator.constants import LOREM_IPSUM
 
-MIN_TRANSACTION_DATE = datetime.strptime("2016-01-01", "%Y-%m-%d")
-MAX_TRANSACTION_DATE = datetime.strptime("2022-01-01", "%Y-%m-%d")
+MIN_TRANSACTION_DATE = datetime.strptime("2022-01-01", "%Y-%m-%d")
+MAX_TRANSACTION_DATE = datetime.strptime("2022-08-01", "%Y-%m-%d")
 
 MIN_TRANSACTION_AMOUNT = 50
 MAX_TRANSACTION_AMOUNT = 50_000
