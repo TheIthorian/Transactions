@@ -6,6 +6,7 @@ import 'chart.js/auto';
 
 import { useFilter } from 'hooks/filter';
 import { LABELS } from 'components/i18n';
+import { Error } from 'components/error';
 import { FilterToolbar } from 'components/filter-toolbar';
 
 import { STORE_ID } from './constants';
@@ -43,9 +44,9 @@ export function TransactionTimeline() {
         return data?.data?.datasets[0]?.data?.length == 0;
     }
 
-    // if (error) {
-    //     return <Error error={error} />;
-    // }
+    if (error) {
+        return <Error error={error} />;
+    }
 
     return (
         <Card loading={isLoading()} style={{ marginTop: 10 }}>

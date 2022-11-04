@@ -6,6 +6,7 @@ import 'chart.js/auto';
 
 import { FilterToolbar } from 'components/filter-toolbar';
 import { LABELS } from 'components/i18n';
+import { Error } from 'components/error';
 import Empty from 'components/empty';
 import { useFilter } from 'hooks/filter';
 
