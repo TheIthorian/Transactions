@@ -11,6 +11,7 @@ async function getAllTags() {
         headers: {
             'Content-Type': 'application/json',
             'Api-Key': API_KEY,
+            password: makeStore('user').get('password'),
         },
     });
 

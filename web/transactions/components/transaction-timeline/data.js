@@ -1,5 +1,6 @@
 import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
+import { makeStore } from 'util/store';
 
 export async function getTimeline(filter, group_by_tags = true) {
     const url = '/getTransactionTimeline';
@@ -8,6 +9,7 @@ export async function getTimeline(filter, group_by_tags = true) {
         headers: {
             'Content-Type': 'application/json',
             'Api-Key': API_KEY,
+            password: makeStore('user').get('password'),
         },
         body: JSON.stringify({ filter, group_by_tags }),
     });

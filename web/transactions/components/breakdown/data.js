@@ -1,5 +1,6 @@
 import { API_URL, API_KEY } from 'config';
 import { handleResponse } from 'util/rest';
+import { makeStore } from 'util/store';
 import { MODES } from './constants';
 
 export async function getBreakdown(filter, mode) {
@@ -10,6 +11,7 @@ export async function getBreakdown(filter, mode) {
         headers: {
             'Content-Type': 'application/json',
             'Api-Key': API_KEY,
+            password: makeStore('user').get('password'),
         },
         body: JSON.stringify({ ...filter }),
     });
