@@ -1,11 +1,11 @@
-from urllib import request
-import pytest
+from unittest import mock
+import unittest
 from app.http.request import Request
 from app.http import authentication
 
 
 class MockHeaders:
-    headers = {"Api-Key": "Some api key"}
+    headers = {"Api-Key": "Some api key", "password": "some password"}
 
     def get(self, key: str, default=None):
         return self.headers[key]
@@ -18,37 +18,18 @@ class MockFlaskRequest:
 mock_flask_request = MockFlaskRequest()
 
 
-class Test_Request:
+class Test_Request(unittest.TestCase):
     def test_constructor(self):
         request = Request(mock_flask_request)
         assert request.request == mock_flask_request
 
-    class Test_authenticate:
-        calls = []
+    @mock.patch("app.http.authentication.is_key_valid")
+    def test_validates_api_key(self):
+        # Given
 
-        def mock_is_key_valid(self, key):
-            print(self.calls)
-            self.calls.append([{"name": "mock_is_key_valid", "arguments": [key]}])
-            print(self.calls)
-            return True
+        # When
+        request = Request(MockFlaskRequest())
+        result = request.authenticate()
 
-        def test_validates_api_key(self, monkeypatch: pytest.MonkeyPatch):
-            # Given
-
-            monkeypatch.setattr(
-                authentication,
-                "is_key_valid",
-                # lambda key: self.mock_is_key_valid(key),
-                self.mock_is_key_valid,
-            )
-
-            print(self.calls)
-
-            # When
-            request = Request(MockFlaskRequest())
-            result = request.authenticate()
-
-            # Then
-            # assert self.calls[0]["name"] == "mock_is_key_valids"
-            # assert self.calls[0]["arguments"] == ["Some api key"]
-            assert not result
+        # Then
+        assert result
