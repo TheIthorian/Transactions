@@ -56,12 +56,16 @@ config = get_config()
 
 class CONFIG:
     DEV: bool = args.dev
-    API_KEY: str = config["API_KEY"]
-    HOST: str = config["HOST"] if not args.dev else None
     DEMO: bool = args.demo
+
+    API_KEY: str = config["API_KEY"]
+    PASSWORD: str = config["PASSWORD"]
+    HOST: str = config["HOST"] if not args.dev else None
     REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
+
     ROOT_DIR: str = get_root_directory()
     DATABASE_PATH: str = get_database_path(DATABASE_NAME)
     MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
     DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
+
     PRINT_QUERIES_IN_TESTS: bool = config["PRINT_QUERIES_IN_TESTS"]
