@@ -28,6 +28,7 @@ web/transactions/.pnpm-debug.log*
 
 # local env files
 web/transactions/**.env*.local
+config.json
 
 # vercel
 .vercel
@@ -40,7 +41,6 @@ new_Transactions.csv
 **/transactions.db
 **/mock_transactions.db
 **/demo_transactions.db
-src/config.json
 
 # virtual environment
 src/venv
