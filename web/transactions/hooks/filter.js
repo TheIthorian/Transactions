@@ -15,7 +15,12 @@ async function getAllTags() {
         },
     });
 
-    const data = await handleResponse(response);
+    let data;
+    try {
+        data = await handleResponse(response);
+    } catch {
+        data = [];
+    }
     return Array.from(new Set(data.map(t => t.l1)));
 }
 
