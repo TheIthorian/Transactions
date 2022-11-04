@@ -26,7 +26,7 @@ def read_data(filename: str) -> Tuple[dict, list[Transaction]]:
     return header, transactions  # Swap these
 
 
-def make_dict_reader(csv_file: TextIOWrapper):
+def make_dict_reader(csv_file: TextIOWrapper) -> csv.DictReader:
     return csv.DictReader(
         csv_file,
         fieldnames=[
