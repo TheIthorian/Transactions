@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card, Col, Form, Input, Row } from 'antd';
@@ -53,11 +54,11 @@ export default function Login() {
     };
 
     return (
-        <>
-            <h1>Login</h1>
+        <div style={{ marginTop: 100 }}>
             <Row>
                 <Col span={12} offset={6}>
                     <Card>
+                        <h2>Login</h2>
                         <Form
                             name='login'
                             onFinish={onFinish}
@@ -100,6 +101,6 @@ export default function Login() {
                     </Card>
                 </Col>
             </Row>
-        </>
+        </div>
     );
 }
