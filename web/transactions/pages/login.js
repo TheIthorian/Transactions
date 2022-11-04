@@ -5,15 +5,16 @@ import { Button, Card, Col, Form, Input, Row } from 'antd';
 import { Error } from 'components/error';
 import { API_URL, API_KEY } from 'config';
 import { makeStore } from 'util/store';
+import { handleResponse } from 'util/rest';
 
 // Consider putting this in a component. Then wrap in context
 export default function Login() {
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
     const store = makeStore('user');
     const router = useRouter();
 
     const login = async password => {
-        let response = await fetch(API_URL + '/login', {
+        const response = await fetch(API_URL + '/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,16 +22,22 @@ export default function Login() {
             },
             body: JSON.stringify({ password }),
         });
-        response = await response.json();
-        store.set('password', password);
-        router.push('/');
+
+        const data = await handleResponse(response);
+
+        if (data.logged_in) {
+            store.set('password', password);
+            router.push('/');
+        } else {
+            setError({ message: 'Incorrect password' });
+        }
     };
 
     const onFinish = values => {
         setError(false);
         login(values.password).catch(err => {
             console.log(err);
-            setError(true);
+            setError({ message: 'Error: Unable to log in.' });
         });
     };
 
@@ -40,8 +47,7 @@ export default function Login() {
 
     const renderError = () => {
         if (error) {
-            const display = { message: 'Error: Unable to log in.' };
-            return <Error error={display} />;
+            return <Error error={error} />;
         }
         return <></>;
     };
