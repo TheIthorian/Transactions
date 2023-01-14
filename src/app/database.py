@@ -102,6 +102,14 @@ def init() -> None:
                )"""
     )
 
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS session
+                (session_id text NOT NULL,
+                last_accessed_date date NOT NULL,
+                valid_until_date date NOT NULL
+                )"""
+    )
+
     con.commit()
     con.close()
 
@@ -123,7 +131,7 @@ def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None)
         connection.close()
 
 
-def insert(query: str, data: dict, connection: sqlite3.Connection = None) -> int:
+def insert(query: str, data: dict = {}, connection: sqlite3.Connection = None) -> int:
     """
     Runs an insert query, returning the `id`.
     Keeps the connection open if one is provided
