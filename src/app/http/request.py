@@ -23,7 +23,8 @@ class Request:
 
     def check_session_id(self) -> bool:
         """Returns true if the request `session_id` cookie is valid."""
-        return is_session_id_valid(self.request.cookies.get("session_id"))
+        session_id = self.request.cookies.get("session_id")
+        return is_session_id_valid(session_id)
 
     def parse(self, schema: Schema) -> Union[dict, list]:
         """Returns the parsed request body."""
