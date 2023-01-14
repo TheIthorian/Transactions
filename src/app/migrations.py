@@ -25,4 +25,21 @@ def migrate(conn: sqlite3.Connection):
                 )"""
     )
 
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS budget
+                (budget_id INTEGER PRIMARY KEY,
+                name TEXT,
+                total_limit INTEGER
+                )"""
+    )
+
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS BudgetItem
+                (budget_item_id INTEGER PRIMARY KEY,
+                budget_id 
+                l1 text NOT NULL,
+                amount INTEGER NOT NULL
+                )"""
+    )
+
     conn.commit()
