@@ -4,6 +4,10 @@ from app.transactions import transaction_controller as TC
 from app.transactions.transaction_schema import TransactionFilter
 
 from app.transactions import data, filter
+from app.config import CONFIG
+
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+
 
 calls = []
 
@@ -15,7 +19,6 @@ def call(*args):
 class Test_get_transaction_breakdown:
     def test_returns_grouped_tags(self, monkeypatch):
         # given
-        database.mock()
         res = []
 
         transactions = [
@@ -48,8 +51,6 @@ class Test_get_transaction_breakdown:
         result = TC.get_transactions(TransactionFilter())
         print(result)
         print(calls)
-
-        database.unmock()
 
         # assert result == []
         # assert calls[1] == [transactions]

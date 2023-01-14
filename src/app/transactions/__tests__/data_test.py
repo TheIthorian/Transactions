@@ -6,8 +6,12 @@ from app.transactions.data import (
     group_transactions_by_tag_level,
 )
 from app.transactions.transaction_model import Tag, Transaction, TransactionsByTagLevel
+from app.config import CONFIG
 
 # https://www.freblogg.com/pytest-functions-mocking-1
+
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+database.init()
 
 
 def test_get_tags_correctly_finds_tags():
@@ -17,7 +21,6 @@ def test_get_tags_correctly_finds_tags():
 class Test_get_all_transactions:
     def test_returns_all_transactions(self):
         # Given
-        database.mock()
         transaction_date = datetime(2022, 9, 9)
 
         transaction = Transaction(
@@ -33,7 +36,7 @@ class Test_get_all_transactions:
 
         # When
         result = get_all_transactions()
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert len(result) == 1
@@ -68,6 +71,7 @@ class Test_get_tags_from_transactions:
 
         # When
         result = get_tags_from_transactions(transactions)
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -95,5 +99,6 @@ class Test_group_transactions_by_tag_level:
         )
 
         result = group_transactions_by_tag_level(transactions)
+        database.clean_mock()
 
         assert expected_result == result

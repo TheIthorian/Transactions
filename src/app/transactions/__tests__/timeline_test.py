@@ -5,6 +5,10 @@ from app.tags.tag_model import Tag
 from app.transactions.filter import TagFilter, TransactionFilter
 from app.transactions.timeline import TimelineMonth, get_transaction_timeline
 from app.transactions.transaction_model import Transaction
+from app.config import CONFIG
+
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+database.init()
 
 
 def setup():
@@ -26,15 +30,13 @@ def setup():
 class Test_get_transaction_timeline:
     def test_returns_total_over_each_month(self):
         # Given
-        database.mock()
-
         transactions = setup()
         for transaction in transactions:
             transaction.insert()
 
         # When
         result = get_transaction_timeline(TransactionFilter())
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -62,8 +64,6 @@ class Test_get_transaction_timeline:
 
     def test_filters_transactions_by_tag(self):
         # Given
-        database.mock()
-
         transactions = setup()
         for transaction in transactions:
             transaction.insert()
@@ -73,7 +73,7 @@ class Test_get_transaction_timeline:
             TransactionFilter(tags=TagFilter(l1=["Income"]))
         )
         print(result)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -91,8 +91,6 @@ class Test_get_transaction_timeline:
 
     def test_filters_transactions_by_date(self):
         # Given
-        database.mock()
-
         transactions = setup()
         for transaction in transactions:
             transaction.insert()
@@ -102,7 +100,7 @@ class Test_get_transaction_timeline:
             TransactionFilter(date_from=datetime(2022, 3, 1).date())
         )
         print(result)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -120,15 +118,13 @@ class Test_get_transaction_timeline:
 
     def test_returns_total_over_each_month_without_grouping_by_tag(self):
         # Given
-        database.mock()
-
         transactions = setup()
         for transaction in transactions:
             transaction.insert()
 
         # When
         result = get_transaction_timeline(TransactionFilter(), False)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [

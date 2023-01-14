@@ -7,8 +7,12 @@ from app.transactions.breakdown import (
 )
 from app.transactions.filter import TagFilter, TransactionFilter
 from app.transactions.transaction_model import Transaction
+from app.config import CONFIG
 
 FILTER = TransactionFilter()
+
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+database.init()
 
 
 def make_transaction():
@@ -69,8 +73,6 @@ def setup():
 
 class Test_get_breakdown_by_tag_level:
     def test_returns_grouped_l1_tags(self):
-        database.mock()
-
         # Given
         transactions = setup()
         for transaction in transactions:
@@ -78,7 +80,7 @@ class Test_get_breakdown_by_tag_level:
 
         # When
         result = get_transaction_amounts_by_tag_level(1, FILTER)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -89,8 +91,6 @@ class Test_get_breakdown_by_tag_level:
         ]
 
     def test_returns_grouped_l2_tags(self):
-        database.mock()
-
         # Given
         transactions = setup()
         for transaction in transactions:
@@ -98,7 +98,7 @@ class Test_get_breakdown_by_tag_level:
 
         # When
         result = get_transaction_amounts_by_tag_level(2, FILTER)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -110,8 +110,6 @@ class Test_get_breakdown_by_tag_level:
         ]
 
     def test_returns_grouped_l3_tags(self):
-        database.mock()
-
         # Given
         transactions = setup()
         for transaction in transactions:
@@ -119,7 +117,7 @@ class Test_get_breakdown_by_tag_level:
 
         # When
         result = get_transaction_amounts_by_tag_level(3, FILTER)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
@@ -154,13 +152,12 @@ class Test_get_breakdown_by_tag_level:
 
         filter = TransactionFilter(tags=TagFilter(l1=["Home"], l2=["Other"]))
 
-        database.mock()
         for transaction in transactions:
             transaction.insert()
 
         # When
         result = get_transaction_amounts_by_tag_level(1, filter)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [("Home", 6_000.0)]
@@ -184,13 +181,12 @@ class Test_get_breakdown_by_tag_level:
             date_from=datetime(2022, 1, 8).date(), date_to=datetime(2022, 1, 13).date()
         )
 
-        database.mock()
         for transaction in transactions:
             transaction.insert()
 
         # When
         result = get_transaction_amounts_by_tag_level(1, filter)
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [("Income", 10_000.0)]
@@ -199,7 +195,6 @@ class Test_get_breakdown_by_tag_level:
 class Test_get_average_transaction_amounts_by_tag_level:
     def test_returns_average_amount_over_a_month(self):
         # Given
-        database.mock()
         transactions = setup()
         for transaction in transactions:
             transaction.insert()
@@ -212,7 +207,7 @@ class Test_get_average_transaction_amounts_by_tag_level:
                 date_to=datetime(2022, 4, 1).date(),
             ),
         )
-        database.unmock()
+        database.clean_mock()
 
         print(result)
 

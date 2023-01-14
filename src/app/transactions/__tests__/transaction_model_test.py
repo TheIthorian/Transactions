@@ -4,6 +4,7 @@ from app import database
 from app.tags.tag_model import Tag
 from app.transactions.transaction_model import Transaction
 from app.util import date as date_util
+from app.config import CONFIG
 
 account = "test account name"
 date = datetime(2022, 1, 1).date()
@@ -26,123 +27,126 @@ def make_transaction():
     )
 
 
-class Test_Transaction_eq:
-    def test_transaction_equality(self):
-        transaction1 = make_transaction()
-        transaction2 = make_transaction()
-
-        assert transaction1 == transaction2
-
-        transaction1 = make_transaction()
-        transaction1.date = datetime(2022, 1, 2)
-        assert transaction1 != transaction2
-
-        transaction1 = make_transaction()
-        transaction1.original_description = "different desc"
-        assert transaction1 != transaction2
-
-        transaction1.amount = 101
-        assert transaction1 != transaction2
-
-        transaction1 = make_transaction()
-        transaction1.current_description = "different desc"
-        assert transaction1 == transaction2
-
-        transaction1 = make_transaction()
-        transaction1.tag = Tag(None, None, None)
-        assert transaction1 == transaction2
-
-        transaction1 = make_transaction()
-        transaction1.id = 2
-        assert transaction1 == transaction2
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+database.init()
 
 
-class Test_Transaction_to_dict:
-    def test_returns_correct_dict(self):
-        transaction = make_transaction()
+class Test_Transaction_model:
+    class Test_Transaction_eq:
+        def test_transaction_equality(self):
+            transaction1 = make_transaction()
+            transaction2 = make_transaction()
 
-        assert transaction.to_dict() == {
-            "id": 1,
-            "account": account,
-            "date": date,
-            "current_description": current_description,
-            "original_description": original_description,
-            "amount": amount,
-            "l1": "l1_tag",
-            "l2": "l2_tag",
-            "l3": "l3_tag",
-        }
+            assert transaction1 == transaction2
 
+            transaction1 = make_transaction()
+            transaction1.date = datetime(2022, 1, 2)
+            assert transaction1 != transaction2
 
-class Test_insert:
-    def test_inserts_correctly_to_database(self):
-        # Given
-        database.mock()
-        transaction = make_transaction()
-        transaction.insert()
+            transaction1 = make_transaction()
+            transaction1.original_description = "different desc"
+            assert transaction1 != transaction2
 
-        # When
-        transaction_rows = database.select("SELECT * FROM Transactions")
-        database.unmock()
+            transaction1.amount = 101
+            assert transaction1 != transaction2
 
-        # Then
-        assert len(transaction_rows) == 1
-        row = transaction_rows[0]
+            transaction1 = make_transaction()
+            transaction1.current_description = "different desc"
+            assert transaction1 == transaction2
 
-        assert row[0] == account
-        assert row[1] == date_util.to_integer(date)
-        assert row[2] == current_description
-        assert row[3] == original_description
-        assert row[4] == amount
-        assert row[5] == "l1_tag"
-        assert row[6] == "l2_tag"
-        assert row[7] == "l3_tag"
+            transaction1 = make_transaction()
+            transaction1.tag = Tag(None, None, None)
+            assert transaction1 == transaction2
 
+            transaction1 = make_transaction()
+            transaction1.id = 2
+            assert transaction1 == transaction2
 
-class Test_from_db:
-    def test_creates_Transaction_from_database_row(self):
-        # Given
-        database.mock()
-        transaction = make_transaction()
-        transaction.insert()
+    class Test_Transaction_to_dict:
+        def test_returns_correct_dict(self):
+            transaction = make_transaction()
 
-        transaction_row = database.select("SELECT rowid, * FROM Transactions")[0]
+            assert transaction.to_dict() == {
+                "id": 1,
+                "account": account,
+                "date": date,
+                "current_description": current_description,
+                "original_description": original_description,
+                "amount": amount,
+                "l1": "l1_tag",
+                "l2": "l2_tag",
+                "l3": "l3_tag",
+            }
 
-        # When
-        new_transaction = Transaction.from_db(transaction_row)
-        database.unmock()
+    class Test_insert:
+        def test_inserts_correctly_to_database(self):
+            # Given
+            transaction = make_transaction()
+            transaction.insert()
 
-        assert new_transaction.account == transaction.account
-        assert new_transaction.date == transaction.date
-        assert new_transaction.current_description == transaction.current_description
-        assert new_transaction.original_description == transaction.original_description
-        assert new_transaction.amount == transaction.amount
-        assert new_transaction.tag == transaction.tag
-        assert new_transaction.id == 1  # Id is generated by rowid
+            # When
+            transaction_rows = database.select("SELECT * FROM Transactions")
+            database.clean_mock()
 
+            # Then
+            assert len(transaction_rows) == 1
+            row = transaction_rows[0]
 
-class Test_from_row:
-    def test_returns_Transaction_from_csv_row(self):
-        # Given
-        csv_row = {
-            "Account": account,
-            "Date": "2022-01-01",
-            "CurrentDescription": current_description,
-            "OriginalDescription": original_description,
-            "Amount": "1.0",
-            "L1Tag": "l1_tag",
-            "L2Tag": "l2_tag",
-            "L3Tag": "l3_tag",
-        }
+            assert row[0] == account
+            assert row[1] == date_util.to_integer(date)
+            assert row[2] == current_description
+            assert row[3] == original_description
+            assert row[4] == amount
+            assert row[5] == "l1_tag"
+            assert row[6] == "l2_tag"
+            assert row[7] == "l3_tag"
 
-        # When
-        transaction = Transaction.from_row(csv_row)
+    class Test_from_db:
+        def test_creates_Transaction_from_database_row(self):
+            # Given
+            transaction = make_transaction()
+            transaction.insert()
 
-        # Then
-        assert transaction.account == account
-        assert transaction.date == date
-        assert transaction.current_description == current_description
-        assert transaction.original_description == original_description
-        assert transaction.amount == amount
-        assert transaction.tag == tag
-        assert transaction.id == None  # Id is generated by rowid
+            transaction_row = database.select("SELECT rowid, * FROM Transactions")[0]
+
+            # When
+            new_transaction = Transaction.from_db(transaction_row)
+            database.clean_mock()
+
+            assert new_transaction.account == transaction.account
+            assert new_transaction.date == transaction.date
+            assert (
+                new_transaction.current_description == transaction.current_description
+            )
+            assert (
+                new_transaction.original_description == transaction.original_description
+            )
+            assert new_transaction.amount == transaction.amount
+            assert new_transaction.tag == transaction.tag
+            assert new_transaction.id == 1  # Id is generated by rowid
+
+    class Test_from_row:
+        def test_returns_Transaction_from_csv_row(self):
+            # Given
+            csv_row = {
+                "Account": account,
+                "Date": "2022-01-01",
+                "CurrentDescription": current_description,
+                "OriginalDescription": original_description,
+                "Amount": "1.0",
+                "L1Tag": "l1_tag",
+                "L2Tag": "l2_tag",
+                "L3Tag": "l3_tag",
+            }
+
+            # When
+            transaction = Transaction.from_row(csv_row)
+
+            # Then
+            assert transaction.account == account
+            assert transaction.date == date
+            assert transaction.current_description == current_description
+            assert transaction.original_description == original_description
+            assert transaction.amount == amount
+            assert transaction.tag == tag
+            assert transaction.id == None  # Id is generated by rowid
