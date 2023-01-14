@@ -52,7 +52,7 @@ class Request:
 
 def invoke(
     fn: Callable, request_schema: Schema, response_schema: Schema, check_session_id=True
-) -> tuple[any, int, dict]:
+):
     """Validates the flask request against the input `request_schema`,
     invokes the `fn`, and outputs an object conforming to `response_schema`."""
 
@@ -85,9 +85,7 @@ def invoke(
     return Response.resolve(response_schema.dumps(response_data), req)
 
 
-def invoke_without_auth(
-    fn: Callable, request_schema: Schema, response_schema: Schema
-) -> tuple[any, int, dict]:
+def invoke_without_auth(fn: Callable, request_schema: Schema, response_schema: Schema):
     return invoke(fn, request_schema, response_schema, False)
 
 
