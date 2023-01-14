@@ -42,7 +42,7 @@ class Test_Tag:
         assert tag.to_dict() == {"l1": "A", "l2": "B", "l3": "C", "color": "lime"}
 
     class Test_is_in:
-        def test_is_in_returns_true_when_list_constains_tag(self):
+        def test_is_in_returns_true_when_list_contains_tag(self):
             # Given
             tag_list: list[Tag] = [
                 Tag(l1="A", l2="B", l3="C"),
