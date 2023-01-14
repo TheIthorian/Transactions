@@ -3,6 +3,10 @@ from app import database
 from app.tags.data import get_all_tags
 from app.tags.tag_model import Tag
 from app.transactions.transaction_model import Transaction
+from app.config import CONFIG
+
+CONFIG.DATABASE_PATH = CONFIG.MOCK_DATABASE_PATH
+database.init()
 
 
 class Test_get_all_tags:
@@ -17,13 +21,12 @@ class Test_get_all_tags:
             Transaction.make(tag=Tag(l1="Home", l2="Bills", l3="Other")),
         ]
 
-        database.mock()
         for transaction in transactions:
             transaction.insert()
 
         # When
         result = get_all_tags()
-        database.unmock()
+        database.clean_mock()
 
         # Then
         assert result == [
