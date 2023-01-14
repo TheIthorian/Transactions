@@ -1,15 +1,18 @@
-from app.config import CONFIG
+import json
 from flask import make_response
+
+from app.config import CONFIG
 
 
 class Response:
     content_type = {"Content-Type": "application/json"}
 
     @classmethod
-    def resolve(
-        cls, data: any, request: "Request", code: int = 200
-    ) -> tuple[any, int, dict]:
+    def resolve(cls, data: any, request: "Request", code: int = 200):
         """Used by `Request` to make consistent responses."""
+        if request.has_errors():
+            return cls.generic_error(request)
+
         response = make_response()
         response.set_data(data)
         response.status_code = code
@@ -22,11 +25,25 @@ class Response:
         return response
 
     @classmethod
-    def authentication_error(cls, request: "Request") -> tuple[any, int, dict]:
+    def authentication_error(cls, request: "Request"):
         """Creates an authentication error response"""
         response = make_response()
-        response.set_data('{"Error": "Authentication Error"}')
+
+        response.set_data(json.dumps({"Error": "Authentication Error"}))
         response.status_code = 401
+        response.content_type = cls.content_type
+        return response
+
+    @classmethod
+    def generic_error(cls, request: "Request"):
+        response = make_response()
+
+        print(request.errors)
+        response_body = {
+            "errors: ": [error.to_json() for error in request.errors],
+        }
+        response.set_data(json.dumps(response_body))
+        response.status_code = request.errors[0].code
         response.content_type = cls.content_type
         return response
 

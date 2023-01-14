@@ -1,5 +1,6 @@
 from typing import Callable, Union
 
+from dataclasses import dataclass, asdict
 from flask import Request as FlaskRequest, request
 from marshmallow import Schema, EXCLUDE, ValidationError
 
@@ -11,10 +12,12 @@ class Request:
     """Wrapper for the flask request object."""
 
     cookies: dict
+    errors: list
 
     def __init__(self, request: FlaskRequest):
         self.request = request
         self.cookies = {}
+        self.errors = []
 
     def check_api_key(self) -> bool:
         """Returns true if the request `Api-Key` header is valid."""
@@ -42,6 +45,9 @@ class Request:
             data = None
 
         return data
+
+    def has_errors(self):
+        return len(self.errors) > 0
 
 
 def invoke(
@@ -83,3 +89,13 @@ def invoke_without_auth(
     fn: Callable, request_schema: Schema, response_schema: Schema
 ) -> tuple[any, int, dict]:
     return invoke(fn, request_schema, response_schema, False)
+
+
+@dataclass
+class Error:
+    title: str
+    message: str
+    code: int
+
+    def to_json(self):
+        return asdict(self)
