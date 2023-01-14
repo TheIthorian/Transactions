@@ -2,32 +2,32 @@
 
 # Web
 # dependencies
-web/transactions/node_modules
-web/transactions/.pnp
+web/node_modules
+web/.pnp
 .pnp.js
 
 # testing
-web/transactions/coverage
+web/coverage
 
 # next.js
-web/transactions/.next/
-web/transactions/out/
+web/.next/
+web/out/
 
 # production
-web/transactions/build
+web/build
 
 # misc
-web/transactions/.DS_Store
-web/transactions/*.pem
+web/.DS_Store
+web/*.pem
 
 # debug
-web/transactions/npm-debug.log*
-web/transactions/yarn-debug.log*
-web/transactions/yarn-error.log*
-web/transactions/.pnpm-debug.log*
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/.pnpm-debug.log*
 
 # local env files
-web/transactions/**.env*.local
+web/**.env*.local
 config.json
 
 # vercel
