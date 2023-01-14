@@ -9,12 +9,12 @@ export const CurrentUserContext = createContext();
 export const CurrentUserProvider = ({ children }) => {
     const store = makeStore('user');
     const [currentUser, setCurrentUser] = useState({});
-    const [password, setPassword] = useState(store.get('password'));
-    const [isLoggedIn, setIsLoggedIn] = useState(!!store.get('password'));
+    const [session, setSession] = useState(store.get('session_id'));
+    const [isLoggedIn, setIsLoggedIn] = useState(!!store.get('session_id'));
     const router = useRouter();
 
     useEffect(() => {
-        if (!store.get('password')) {
+        if (!store.get('session_id')) {
             router.push('/login');
         }
     }, []);
@@ -28,13 +28,11 @@ export const CurrentUserProvider = ({ children }) => {
             },
         });
         response = await response.json();
-        setCurrentUser({ ...response, password: store.get('password') });
+        setCurrentUser({ ...response, session: store.get('session_id') });
     };
 
     return (
-        <CurrentUserContext.Provider
-            value={{ currentUser, isLoggedIn, fetchCurrentUser, password }}
-        >
+        <CurrentUserContext.Provider value={{ currentUser, isLoggedIn, fetchCurrentUser, session }}>
             {children}
         </CurrentUserContext.Provider>
     );

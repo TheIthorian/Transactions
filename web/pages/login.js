@@ -27,7 +27,7 @@ export default function Login() {
         const data = await handleResponse(response);
 
         if (data.logged_in) {
-            store.set('password', password);
+            store.set('session_id', data.session_id);
             router.push('/');
         } else {
             setError({ message: 'Incorrect password' });
