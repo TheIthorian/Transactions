@@ -1,10 +1,10 @@
 """Module to interact with the SQLite database."""
 
 from collections import namedtuple
-import os
 import sqlite3
 
 from app.config import CONFIG
+from app.migrations import migrate
 
 
 class Database:
@@ -18,22 +18,7 @@ class Database:
         """Creates the database."""
         print("Creating database at: ", self.path)
         con = self.connect()
-        cur = con.cursor()
-
-        cur.execute(
-            """CREATE TABLE IF NOT EXISTS transactions
-                (account text, 
-                date integer, 
-                current_description text, 
-                original_description text, 
-                amount real,
-                l1 text,
-                l2 text,
-                l3 text
-                )"""
-        )
-
-        con.commit()
+        migrate(con)
         con.close()
 
 
@@ -58,30 +43,7 @@ def init() -> None:
     """Creates the database."""
     print("Creating database at: ", CONFIG.DATABASE_PATH)
     con = connect()
-    cur = con.cursor()
-
-    cur.execute(
-        """CREATE TABLE IF NOT EXISTS transactions
-               (account text, 
-               date integer, 
-               current_description text, 
-               original_description text, 
-               amount real,
-               l1 text,
-               l2 text,
-               l3 text
-               )"""
-    )
-
-    cur.execute(
-        """CREATE TABLE IF NOT EXISTS session
-                (session_id text NOT NULL,
-                last_accessed_date date NOT NULL,
-                valid_until_date date NOT NULL
-                )"""
-    )
-
-    con.commit()
+    migrate(con)
     con.close()
 
 
