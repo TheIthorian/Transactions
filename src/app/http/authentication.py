@@ -20,5 +20,5 @@ def get_session_id():
     )
 
     if len(result):
-        return result[0]
+        return result[0].session_id
     return None
