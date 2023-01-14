@@ -7,22 +7,6 @@ import sqlite3
 from app.config import CONFIG
 
 
-class _State:
-    use_mock: bool = False
-    print_query: bool = False
-
-    def path(self):
-        if _state.use_mock:
-            return CONFIG.MOCK_DATABASE_PATH
-        if CONFIG.DEMO:
-            return CONFIG.DEMO_DATABASE_PATH
-
-        return CONFIG.DATABASE_PATH
-
-
-_state = _State()
-
-
 class Database:
     def __init__(self, path: str):
         self.path = path
@@ -60,32 +44,19 @@ def namedtuple_factory(cursor: sqlite3.Cursor, row: sqlite3.Row):
     return Row(*row)
 
 
-def mock():
-    _state.use_mock = True
-    _state.print_query = CONFIG.PRINT_QUERIES_IN_TESTS
-    init()
-
-
-def unmock():
-    if _state.use_mock:
+def clean_mock():
+    if CONFIG.DATABASE_PATH == CONFIG.MOCK_DATABASE_PATH:
         delete("DELETE FROM Transactions")
-
-    try:
-        os.remove(CONFIG.MOCK_DATABASE_PATH)
-    except PermissionError as e:
-        print(e)
-
-    _state.use_mock = False
-    _state.print_query = False
+        delete("DELETE FROM Session")
 
 
 def connect() -> sqlite3.Connection:
-    return sqlite3.connect(_state.path())
+    return sqlite3.connect(CONFIG.DATABASE_PATH)
 
 
 def init() -> None:
     """Creates the database."""
-    print("Creating database at: ", _state.path())
+    print("Creating database at: ", CONFIG.DATABASE_PATH)
     con = connect()
     cur = con.cursor()
 
@@ -114,9 +85,15 @@ def init() -> None:
     con.close()
 
 
-def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None):
-    if _state.print_query:
+def print_query(query: str, inputs: dict = {}):
+    if CONFIG.PRINT_QUERIES:
         print(query)
+        print(inputs)
+        print(CONFIG.DATABASE_PATH)
+
+
+def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None):
+    print_query(query, inputs)
 
     auto_commit = False
     if connection is None:
@@ -136,10 +113,10 @@ def insert(query: str, data: dict = {}, connection: sqlite3.Connection = None) -
     Runs an insert query, returning the `id`.
     Keeps the connection open if one is provided
     """
+    print_query(query)
 
-    if _state.print_query:
-        print(query)
-        print(data)
+    if CONFIG.DATABASE_PATH != CONFIG.MOCK_DATABASE_PATH:
+        print("Wrong db")
 
     auto_commit = False
     if connection is None:
@@ -159,9 +136,7 @@ def insert(query: str, data: dict = {}, connection: sqlite3.Connection = None) -
 
 
 def select(query: str, inputs: dict = None) -> list:
-    if _state.print_query:
-        print(query)
-        print(inputs)
+    print_query(query, inputs)
 
     connection = connect()
     connection.row_factory = namedtuple_factory

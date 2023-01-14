@@ -64,8 +64,9 @@ class CONFIG:
     REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
 
     ROOT_DIR: str = get_root_directory()
-    DATABASE_PATH: str = get_database_path(DATABASE_NAME)
+    PROD_DATABASE_PATH: str = get_database_path(DATABASE_NAME)
     MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
     DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
+    DATABASE_PATH = PROD_DATABASE_PATH
 
-    PRINT_QUERIES_IN_TESTS: bool = config["PRINT_QUERIES_IN_TESTS"]
+    PRINT_QUERIES: bool = config["PRINT_QUERIES"]
