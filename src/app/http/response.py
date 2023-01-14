@@ -11,11 +11,12 @@ class Response:
     ) -> tuple[any, int, dict]:
         """Used by `Request` to make consistent responses."""
         response = make_response()
-        response.data = data
+        response.set_data(data)
         response.status_code = code
         response.content_type = cls.content_type
 
         for key, value in request.cookies.items():
+            print(f"Setting response cookie {key}:{value}")
             response.set_cookie(key, value)
 
         return response
@@ -27,7 +28,6 @@ class Response:
         response.set_data('{"Error": "Authentication Error"}')
         response.status_code = 401
         response.content_type = cls.content_type
-        response.delete_cookie("session_id")
         return response
 
 

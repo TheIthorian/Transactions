@@ -10,6 +10,5 @@ def login(input: LoginRequest, request: Request = None):
     session_id = ""
     if is_password_correct:
         session_id = make_user_session()
-        request.set_cookie("session_id", session_id)
 
-    return {"logged_in": is_password_correct}
+    return {"logged_in": is_password_correct, "session_id": session_id}

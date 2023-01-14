@@ -17,3 +17,4 @@ class LoginRequestSchema(Schema):
 
 class GetUserSchema(Schema):
     logged_in = fields.Boolean()
+    session_id = fields.String()

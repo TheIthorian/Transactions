@@ -11,7 +11,8 @@ def is_password_valid(password: str) -> bool:
 
 
 def is_session_id_valid(session_id: str) -> bool:
-    return session_id is not None and session_id == get_session_id()
+    found_session_id = get_session_id()
+    return session_id is not None and session_id == found_session_id
 
 
 def get_session_id():
