@@ -9,5 +9,8 @@
         "**/.DS_Store": true,
         "**/*.pyc": true,
         "**/__pycache__": true
-    }
+    },
+    "python.testing.pytestArgs": ["src"],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
