@@ -1,13 +1,25 @@
 from app.config import CONFIG
+from flask import make_response
 
 
 class Response:
     content_type = {"Content-Type": "application/json"}
 
     @classmethod
-    def resolve(cls, data: any, code: int = 200) -> tuple[any, int, dict]:
+    def resolve(
+        cls, data: any, request: "Request", code: int = 200
+    ) -> tuple[any, int, dict]:
         """Used by `Request` to make consistent responses."""
-        return data, code, cls.content_type
+        response = make_response()
+        response.data = data
+        response.status_code = code
+        response.content_type = cls.content_type
+
+        for key, value in request.cookies.items():
+            print(request.cookies)
+            response.set_cookie(key, value)
+
+        return response
 
     @classmethod
     def authentication_error(cls) -> tuple[any, int, dict]:
