@@ -55,6 +55,10 @@ def print_query(query: str, inputs: dict = {}):
 
 
 def delete(query: str, inputs: dict = {}, connection: sqlite3.Connection = None):
+    update(query, inputs, connection)
+
+
+def update(query: str, inputs: dict = {}, connection: sqlite3.Connection = None):
     print_query(query, inputs)
 
     auto_commit = False
@@ -78,7 +82,7 @@ def insert(query: str, data: dict = {}, connection: sqlite3.Connection = None) -
     print_query(query)
 
     if CONFIG.DATABASE_PATH != CONFIG.MOCK_DATABASE_PATH:
-        print("Wrong db")
+        pass
 
     auto_commit = False
     if connection is None:
