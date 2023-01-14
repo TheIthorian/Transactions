@@ -16,15 +16,19 @@ class Response:
         response.content_type = cls.content_type
 
         for key, value in request.cookies.items():
-            print(request.cookies)
             response.set_cookie(key, value)
 
         return response
 
     @classmethod
-    def authentication_error(cls) -> tuple[any, int, dict]:
+    def authentication_error(cls, request: "Request") -> tuple[any, int, dict]:
         """Creates an authentication error response"""
-        return {"Error": "Authentication Error"}, 401, cls.content_type
+        response = make_response()
+        response.set_data('{"Error": "Authentication Error"}')
+        response.status_code = 401
+        response.content_type = cls.content_type
+        response.delete_cookie("session_id")
+        return response
 
 
 def register_after_request(app):
