@@ -42,7 +42,7 @@ class Budget:
     def from_db(row):
         """To load transaction from database."""
         return Budget(
-            id=row[0],
-            name=row[1],
-            total_limit=row[2] / 100,
+            id=row.budget_id,
+            name=row.name,
+            total_limit=row.total_limit,
         )

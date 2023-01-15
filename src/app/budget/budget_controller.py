@@ -31,7 +31,6 @@ def get_budget(id: int, request: Request = None):
 
 
 def add_budget(budget: Budget, request: Request = None):
-    budget.total_limit = budget.total_limit * 100
     budget.insert()
     return budget
 
