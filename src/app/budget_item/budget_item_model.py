@@ -32,6 +32,13 @@ class BudgetItem:
         self.id = database.insert(query, inputs, conn)
         return self.id
 
+    def update(self, conn=None) -> "BudgetItem":
+        query = """UPDATE BudgetItem SET amount = :amount WHERE budget_item_id = :id AND budget_id = :budget_id"""
+
+        inputs = self.to_dict()
+        self.id = database.update(query, inputs, conn)
+        return self
+
     @staticmethod
     def from_db(row):
         """To load transaction from database."""
