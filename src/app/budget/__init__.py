@@ -21,7 +21,7 @@ def register_routes(app):
         return request.invoke(
             budget.get_budgets,
             None,
-            GetBudgetsResponseSchema(),
+            GetBudgetsResponseSchema(many=True),
         )
 
     @app.route("/addBudget", methods=["POST"])
