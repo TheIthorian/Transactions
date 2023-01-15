@@ -4,7 +4,7 @@ import app.database as database
 from app.budget.budget_model import Budget
 
 
-def get_budgets():
+def get_budgets(request: Request = None):
     budgets = database.select(
         "SELECT budget_id, name, total_limit FROM Budget ORDER BY Name desc",
     )
@@ -18,16 +18,15 @@ def get_budget(id: int, request: Request = None):
     )
 
     if len(budget) == 0:
-        request.errors.append(
-            Error(
-                "No Resource Found",
-                "The budget you are looking for does not exist",
-                404,
-            )
+        err = Error(
+            "No Resource Found",
+            "The budget you are looking for does not exist",
+            404,
         )
+        request.errors.append(err)
         return
 
-    return Budget.from_db(budget)
+    return Budget.from_db(budget[0])
 
 
 def add_budget(budget: Budget, request: Request = None):
