@@ -36,9 +36,10 @@ def migrate(conn: sqlite3.Connection):
     cur.execute(
         """CREATE TABLE IF NOT EXISTS BudgetItem
                 (budget_item_id INTEGER PRIMARY KEY,
-                budget_id 
+                budget_id INTEGER,
                 l1 text NOT NULL,
-                amount INTEGER NOT NULL
+                amount INTEGER NOT NULL,
+                FOREIGN KEY(budget_id) REFERENCES Budget(budget_id)
                 )"""
     )
 
