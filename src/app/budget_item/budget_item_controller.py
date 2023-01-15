@@ -16,13 +16,13 @@ def get_budget_items_for_budget(budget_id: int, request: Request = None):
 
 
 def get_budget_item(data: BudgetItemRequestBody, request: Request = None):
-    budgets = select_item_by_id(data.id, data.budget_id)
+    budget_items = select_item_by_id(data.id, data.budget_id)
 
-    if len(budgets) == 0:
+    if len(budget_items) == 0:
         request.errors.append(item_not_found_error())
         return
 
-    return BudgetItem.from_db(budgets[0])
+    return BudgetItem.from_db(budget_items[0])
 
 
 def add_budget_item(budget_item: BudgetItem, request: Request = None):
