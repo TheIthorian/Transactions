@@ -35,7 +35,16 @@ def add_budget_item(budget_item: BudgetItem, request: Request = None):
 
 
 def update_budget_item(budget_item: BudgetItem, request: Request = None):
-    budget_item.update()
+    budget_items = select_item_by_id(budget_item.id, budget_item.budget_id)
+
+    if len(budget_items) == 0:
+        request.errors.append(item_not_found_error())
+        return
+
+    existing_budget_item = BudgetItem.from_db(budget_items[0])
+    existing_budget_item.amount = budget_item.amount
+    existing_budget_item.update()
+    return existing_budget_item
 
 
 def already_exists_error():
