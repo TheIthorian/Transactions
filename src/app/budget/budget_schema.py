@@ -11,6 +11,9 @@ class GetBudgetResponseSchema(Schema):
     total_limit = fields.Float()
     budget_items = fields.Nested(BudgetItemSchema)
 
+    class Meta:
+        ordered = True
+
 
 class GetBudgetsResponseSchema(GetBudgetResponseSchema):
     pass

@@ -12,6 +12,9 @@ class BudgetItemSchema(Schema):
     l1 = fields.String()
     amount = fields.Integer()
 
+    class Meta:
+        ordered = True
+
 
 ### Get Budget Items ###
 
@@ -23,9 +26,15 @@ class GetBudgetItemsRequestSchema(Schema):
     def make(self, data, **kwargs):
         return data["budget_id"]
 
+    class Meta:
+        ordered = True
+
 
 class GetBudgetItemsResponseSchema(Schema):
     budget_items = fields.Nested(BudgetItemSchema)
+
+    class Meta:
+        ordered = True
 
 
 ### Get Budget Item ###
