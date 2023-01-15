@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from marshmallow import Schema, fields, post_load
 from ..budget_item.budget_item_schema import BudgetItemSchema
 from ..budget.budget_model import Budget
