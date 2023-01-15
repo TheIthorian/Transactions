@@ -2,7 +2,7 @@ from flask import request
 
 from app.routes import health
 from app.routes.error import make_not_found_error
-from app import transactions, tags, user, budget
+from app import transactions, tags, user, budget, budget_item
 
 # https://stackoverflow.com/questions/17129573/can-i-use-external-methods-as-route-decorators-in-python-flask
 def register_routes(app):
@@ -13,3 +13,4 @@ def register_routes(app):
     transactions.register_routes(app)
     tags.register_routes(app)
     budget.register_routes(app)
+    budget_item.register_routes(app)
