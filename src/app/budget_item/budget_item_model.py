@@ -1,6 +1,7 @@
 from dataclasses import dataclass, asdict
 import json
 import app.database as database
+from app.tags.tag_model import get_color_for_tag
 
 
 @dataclass
@@ -9,6 +10,9 @@ class BudgetItem:
     budget_id: int
     l1: str
     amount: int
+
+    def __post_init__(self):
+        self.tag_color = get_color_for_tag(self.l1)
 
     def __eq__(self, other: "BudgetItem") -> bool:
         return self.budget_id == other.budget_id and self.l1 == other.l1
