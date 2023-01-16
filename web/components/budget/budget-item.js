@@ -1,7 +1,8 @@
-import { Input, Progress } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Input, Progress } from 'antd';
 import { updateBudgetItem } from './data';
 
-export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent }) {
+export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelete }) {
     let t;
 
     function handleChangeAmount(event) {
@@ -11,6 +12,10 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent }) {
         }, 300);
     }
 
+    function handleDelete() {
+        onDelete(id);
+    }
+
     return (
         <div style={{ width: '100%', padding: 5 }}>
             <div>
@@ -18,7 +23,7 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent }) {
                 <br />
                 <div style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}>
                     <span>
-                        {spent} /{' '}
+                        {spent ?? 0} /{' '}
                         <Input
                             defaultValue={amount}
                             style={{ padding: 2, width: 'fit-content' }}
@@ -26,7 +31,16 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent }) {
                         />
                     </span>
                 </div>
-                <Progress percent={100 * (10 / amount)} strokeColor={tagColor} showInfo={false} />
+                <div style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}>
+                    <Progress
+                        percent={100 * (10 / amount)}
+                        strokeColor={tagColor}
+                        showInfo={false}
+                    />
+                    <Button size='small' style={{ marginLeft: 15 }} onClick={handleDelete}>
+                        <DeleteOutlined size='small' />
+                    </Button>
+                </div>
             </div>
         </div>
     );

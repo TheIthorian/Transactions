@@ -42,3 +42,12 @@ export async function updateBudgetItem(budgetItemId, budgetId, amount) {
 
     await handleResponse(response);
 }
+
+export async function deleteBudgetItem(budgetItemId, budgetId) {
+    const response = await fetch(
+        API_URL + '/deleteBudgetItem',
+        defaultRequest({ id: budgetItemId, budget_id: budgetId })
+    );
+
+    await handleResponse(response);
+}

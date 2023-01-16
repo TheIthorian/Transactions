@@ -2,7 +2,7 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { BudgetItem } from './budget-item';
-import { addBudgetItem, getBudgetItems } from './data';
+import { addBudgetItem, deleteBudgetItem, getBudgetItems } from './data';
 import { TagSelection } from './tagSelection';
 
 export default function Budget({ budgetId, name, totalLimit }) {
@@ -21,9 +21,15 @@ export default function Budget({ budgetId, name, totalLimit }) {
     }
 
     function handleAddBudgetItem(value) {
+        // This produces NaN and does not provide the new id
         const newItem = { l1: value, amount: 0 };
         setBudgetItems(originalItems => [...originalItems, newItem]);
         addBudgetItem(budgetId, newItem);
+    }
+
+    function handleDelete(id) {
+        deleteBudgetItem(id, budgetId);
+        setBudgetItems(originalItems => originalItems.filter(item => item.id !== id));
     }
 
     if (error) {
@@ -49,6 +55,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
                                 tagColor={item.tagColor}
                                 amount={item.amount}
                                 spent={-item.spent}
+                                onDelete={handleDelete}
                             />
                         </div>
                     ))}
