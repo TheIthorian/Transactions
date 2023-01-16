@@ -22,7 +22,7 @@ export default function Budgets() {
                     budgetId={budget.id}
                     name={budget.name}
                     totalLimit={budget.totalLimit}
-                    key={budget.key}
+                    key={budget.id}
                 />
             ))}
         </Card>
