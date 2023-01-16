@@ -1,32 +1,22 @@
 from app.http.request import Request, Error
-import app.database as database
 
 from app.budget.budget_model import Budget
+from app.budget.budget_selector import select_by_id, select_all_budgets
 
 
 def get_budgets(request: Request = None):
-    budgets = database.select(
-        "SELECT budget_id, name, total_limit FROM Budget ORDER BY Name desc",
-    )
+    budgets = select_all_budgets()
     return [Budget.from_db(budget) for budget in budgets]
 
 
 def get_budget(id: int, request: Request = None):
-    budget = database.select(
-        "SELECT budget_id, name, total_limit FROM Budget WHERE budget_id = :id",
-        {"id": id},
-    )
+    budgets = select_by_id(id)
 
-    if len(budget) == 0:
-        err = Error(
-            "No Resource Found",
-            "The budget you are looking for does not exist",
-            404,
-        )
-        request.errors.append(err)
+    if len(budgets) == 0:
+        request.errors.append(resource_not_found_error())
         return
 
-    return Budget.from_db(budget[0])
+    return Budget.from_db(budgets[0])
 
 
 def add_budget(budget: Budget, request: Request = None):
@@ -35,4 +25,23 @@ def add_budget(budget: Budget, request: Request = None):
 
 
 def update_budget(budget: Budget, request: Request = None):
-    budget.update()
+    budgets = select_by_id(id)
+
+    if len(budgets) == 0:
+        request.errors.append(resource_not_found_error())
+        return
+
+    existing_budget = Budget.from_db(budgets[0])
+    existing_budget.name = budget.name
+    existing_budget.total_limit = budget.total_limit
+
+    existing_budget.update()
+    return existing_budget
+
+
+def resource_not_found_error():
+    return Error(
+        "No Resource Found",
+        "The budget you are looking for does not exist",
+        404,
+    )
