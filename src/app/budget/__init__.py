@@ -1,18 +1,20 @@
 import app.http.request as request
 import app.budget.budget_controller as budget
 from app.budget.budget_schema import (
+    GetBudgetRequestSchema,
     GetBudgetResponseSchema,
     GetBudgetsResponseSchema,
     AddBudgetRequestSchema,
+    UpdateBudgetRequestSchema,
 )
 
 
 def register_routes(app):
-    @app.route("/getBudget/<int:id>", methods=["POST", "GET"])
-    def _get_budget(id):
+    @app.route("/getBudget", methods=["POST"])
+    def _get_budget():
         return request.invoke(
-            lambda request: budget.get_budget(id, request),
-            None,
+            budget.get_budget,
+            GetBudgetRequestSchema(),
             GetBudgetResponseSchema(),
         )
 
@@ -29,5 +31,13 @@ def register_routes(app):
         return request.invoke(
             budget.add_budget,
             AddBudgetRequestSchema(),
+            GetBudgetResponseSchema(),
+        )
+
+    @app.route("/updateBudget", methods=["POST"])
+    def _update_budget():
+        return request.invoke(
+            budget.update_budget,
+            UpdateBudgetRequestSchema(),
             GetBudgetResponseSchema(),
         )
