@@ -3,7 +3,7 @@ from app.http.request import Request, Error
 from app.budget_item.budget_item_schema import GetBudgetItemsRequestBody
 from app.budget_item.budget_item_model import BudgetItem
 from app.budget_item.budget_item_schema import BudgetItemRequestBody
-from app.budget_item.budget_item_service import (
+from app.budget_item.budget_item_selector import (
     select_item_by_id,
     select_by_budget_id,
     budget_item_exists,
