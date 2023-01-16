@@ -20,6 +20,7 @@ export async function getBudgetItems(budgetId) {
     const data = await handleResponse(response);
     return data.map(item => ({
         ...item,
+        tagColor: item.tag_color,
         key: item.id,
     }));
 }
@@ -28,6 +29,15 @@ export async function addBudgetItem(budgetId, newItem) {
     const response = await fetch(
         API_URL + '/addBudgetItem',
         defaultRequest({ budget_id: budgetId, l1: newItem.l1, amount: newItem.amount })
+    );
+
+    await handleResponse(response);
+}
+
+export async function updateBudgetItem(budgetItemId, budgetId, amount) {
+    const response = await fetch(
+        API_URL + '/updateBudgetItem',
+        defaultRequest({ id: budgetItemId, budget_id: budgetId, amount })
     );
 
     await handleResponse(response);
