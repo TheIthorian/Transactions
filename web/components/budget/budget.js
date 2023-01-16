@@ -2,18 +2,16 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { BudgetItem } from './budget-item';
-import { addBudgetItem, getBudget, getBudgetItems } from './data';
+import { addBudgetItem, getBudgetItems } from './data';
 import { TagSelection } from './tagSelection';
 
 export default function Budget({ budgetId, name, totalLimit }) {
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(false);
-    const [budget, setBudget] = useState(null);
     const [budgetItems, setBudgetItems] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        getBudget(budgetId).then(setBudget).catch(console.warn);
         getBudgetItems(budgetId).then(setBudgetItems).catch(console.warn);
         setLoading(false);
     }, [budgetId, reload]);
@@ -45,6 +43,8 @@ export default function Budget({ budgetId, name, totalLimit }) {
                     {budgetItems.map(item => (
                         <div key={item.l1} style={{ marginTop: 10 }}>
                             <BudgetItem
+                                id={item.id}
+                                budgetId={budgetId}
                                 tag={item.l1}
                                 tagColor={item.tagColor}
                                 amount={item.amount}
@@ -52,9 +52,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
                             />
                         </div>
                     ))}
-                    <div>
-                        <TagSelection budgetId={budgetId} onAdd={handleAddBudgetItem} />
-                    </div>
+                    <TagSelection budgetId={budgetId} onAdd={handleAddBudgetItem} />
                 </div>
             </div>
         </Skeleton>
