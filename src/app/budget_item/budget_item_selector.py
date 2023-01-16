@@ -25,3 +25,13 @@ def budget_item_exists(budget_id: int, l1: int) -> bool:
     )
 
     return len(existing_budget_items) > 0
+
+
+def select_spent_for_budget(month_start: int):
+    print(month_start)
+    return database.select(
+        """SELECT sum(T.amount) / 100 as amount, l1 FROM transactions T 
+        WHERE T.date > :month_start
+        GROUP BY T.l1""",
+        {"month_start": month_start},
+    )
