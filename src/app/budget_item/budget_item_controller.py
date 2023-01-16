@@ -1,6 +1,6 @@
 from app.http.request import Request, Error
-import app.database as database
 
+from app.budget_item.budget_item_schema import GetBudgetItemsRequestBody
 from app.budget_item.budget_item_model import BudgetItem
 from app.budget_item.budget_item_schema import BudgetItemRequestBody
 from app.budget_item.budget_item_service import (
@@ -10,8 +10,10 @@ from app.budget_item.budget_item_service import (
 )
 
 
-def get_budget_items_for_budget(budget_id: int, request: Request = None):
-    budget_items = select_by_budget_id(budget_id)
+def get_budget_items_for_budget(
+    data: GetBudgetItemsRequestBody, request: Request = None
+):
+    budget_items = select_by_budget_id(data.budget_id)
     return [BudgetItem.from_db(budget_item) for budget_item in budget_items]
 
 

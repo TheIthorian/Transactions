@@ -13,7 +13,7 @@ def select_item_by_id(id: int, budget_id: int) -> list:
 
 def select_by_budget_id(budget_id: int) -> list:
     return database.select(
-        "SELECT budget_item_id, budget_id, amount FROM BudgetItem WHERE budget_id = :budget_id ORDER BY 1 desc",
+        "SELECT budget_item_id, budget_id, l1, amount FROM BudgetItem WHERE budget_id = :budget_id ORDER BY l1 desc",
         {"budget_id": budget_id},
     )
 
