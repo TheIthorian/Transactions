@@ -1,5 +1,4 @@
 from app.http.request import Request, Error
-
 from app.budget.budget_model import Budget
 from app.budget.budget_selector import (
     select_by_id,
@@ -51,7 +50,6 @@ def get_available_tags(id: int, request: Request = None):
         return
 
     tags = get_tags_not_used_by_budget(id)
-    print(tags)
     return [{"name": row.l1} for row in tags]
 
 
