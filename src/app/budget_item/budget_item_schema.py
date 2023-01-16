@@ -27,7 +27,7 @@ class GetBudgetItemsRequestBody:
 
 
 class GetBudgetItemsRequestSchema(Schema):
-    budget_id = fields.Integer()
+    budget_id = fields.Integer(required=True)
 
     @post_load
     def make(self, data, **kwargs):
@@ -48,8 +48,8 @@ class BudgetItemRequestBody:
 
 
 class GetBudgetItemRequestSchema(Schema):
-    id = fields.Integer()
-    budget_id = fields.Integer()
+    id = fields.Integer(required=True)
+    budget_id = fields.Integer(required=True)
 
     @post_load
     def make(self, data, **kwargs):
@@ -64,8 +64,8 @@ class GetBudgetItemResponseSchema(BudgetItemSchema):
 
 
 class AddBudgetItemRequestSchema(Schema):
-    budget_id = fields.Integer()
-    l1 = fields.String()
+    budget_id = fields.Integer(required=True)
+    l1 = fields.String(required=True)
     amount = fields.Integer()
 
     @post_load
@@ -77,8 +77,8 @@ class AddBudgetItemRequestSchema(Schema):
 
 
 class UpdateBudgetItemRequestSchema(Schema):
-    id = fields.Integer()
-    budget_id = fields.Integer()
+    id = fields.Integer(required=True)
+    budget_id = fields.Integer(required=True)
     amount = fields.Integer()
 
     @post_load
