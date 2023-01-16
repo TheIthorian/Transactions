@@ -19,22 +19,21 @@ class BudgetItemSchema(Schema):
 ### Get Budget Items ###
 
 
+@dataclass
+class GetBudgetItemsRequestBody:
+    budget_id: int
+
+
 class GetBudgetItemsRequestSchema(Schema):
     budget_id = fields.Integer()
 
     @post_load
     def make(self, data, **kwargs):
-        return data["budget_id"]
-
-    class Meta:
-        ordered = True
+        return GetBudgetItemsRequestBody(**data)
 
 
-class GetBudgetItemsResponseSchema(Schema):
-    budget_items = fields.Nested(BudgetItemSchema)
-
-    class Meta:
-        ordered = True
+class GetBudgetItemsResponseSchema(BudgetItemSchema):
+    pass
 
 
 ### Get Budget Item ###
