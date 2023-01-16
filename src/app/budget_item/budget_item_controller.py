@@ -60,6 +60,16 @@ def update_budget_item(budget_item: BudgetItem, request: Request = None):
     return existing_budget_item
 
 
+def delete_budget_item(budget_item: BudgetItem, request: Request = None):
+    budget_items = select_item_by_id(budget_item.id, budget_item.budget_id)
+
+    if len(budget_items) == 0:
+        request.errors.append(item_not_found_error())
+        return
+
+    BudgetItem.from_db(budget_items[0]).delete()
+
+
 def already_exists_error():
     return Error(
         "Already exists",

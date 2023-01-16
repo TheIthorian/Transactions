@@ -45,6 +45,13 @@ class BudgetItem:
         database.update(query, inputs, conn)
         return self
 
+    def delete(self, conn=None):
+        query = """DELETE FROM BudgetItem WHERE budget_item_id = :id AND budget_id = :budget_id"""
+
+        inputs = self.to_dict()
+        database.update(query, inputs, conn)
+        return self
+
     def set_spent(self, spent_by_tag: dict):
         self.spent = spent_by_tag[self.l1] if self.l1 in spent_by_tag else 0
 

@@ -42,3 +42,11 @@ def register_routes(app):
             UpdateBudgetItemRequestSchema(),
             GetBudgetItemResponseSchema(),
         )
+
+    @app.route("/deleteBudgetItem", methods=["POST"])
+    def _delete_budget_item():
+        return request.invoke(
+            budget_item.delete_budget_item,
+            GetBudgetItemRequestSchema(),
+            GetBudgetItemResponseSchema(),
+        )
