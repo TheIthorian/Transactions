@@ -2,13 +2,14 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { BudgetItem } from './budget-item';
-import { getBudget, getBudgetItems } from './data';
+import { addBudgetItem, getBudget, getBudgetItems } from './data';
+import { TagSelection } from './tagSelection';
 
 export default function Budget({ budgetId, name, totalLimit }) {
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(false);
     const [budget, setBudget] = useState(null);
-    const [budgetItems, setBudgetItems] = useState(null);
+    const [budgetItems, setBudgetItems] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -19,6 +20,12 @@ export default function Budget({ budgetId, name, totalLimit }) {
 
     function handleReload() {
         setReload(reload => !reload);
+    }
+
+    function handleAddBudgetItem(value) {
+        const newItem = { l1: value, amount: 0, used: 0 };
+        setBudgetItems(originalItems => [...originalItems, newItem]);
+        addBudgetItem(budgetId, newItem);
     }
 
     if (error) {
@@ -35,16 +42,19 @@ export default function Budget({ budgetId, name, totalLimit }) {
                 <div>
                     <BudgetTitle {...{ budgetId, name, totalLimit, handleReload }} />
                     <Divider style={{ marginTop: 8, marginBottom: 8 }} />
-                    {budgetItems?.map(item => (
-                        <>
+                    {budgetItems.map(item => (
+                        <div key={item.l1} style={{ marginTop: 10 }}>
                             <BudgetItem
                                 tag={item.l1}
-                                tagColor={'red'}
+                                tagColor={item.tagColor}
                                 amount={item.amount}
                                 used={0}
                             />
-                        </>
+                        </div>
                     ))}
+                    <div>
+                        <TagSelection budgetId={budgetId} onAdd={handleAddBudgetItem} />
+                    </div>
                 </div>
             </div>
         </Skeleton>
