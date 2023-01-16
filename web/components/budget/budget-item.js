@@ -1,7 +1,7 @@
 import { Input, Progress } from 'antd';
 import { updateBudgetItem } from './data';
 
-export function BudgetItem({ id, budgetId, tag, tagColor, amount, used }) {
+export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent }) {
     let t;
 
     function handleChangeAmount(event) {
@@ -18,7 +18,7 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, used }) {
                 <br />
                 <div style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}>
                     <span>
-                        {used} /{' '}
+                        {spent} /{' '}
                         <Input
                             defaultValue={amount}
                             style={{ padding: 2, width: 'fit-content' }}

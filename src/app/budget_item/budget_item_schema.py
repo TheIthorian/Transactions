@@ -12,6 +12,7 @@ class BudgetItemSchema(Schema):
     l1 = fields.String()
     amount = fields.Integer()
     tag_color = fields.String()
+    spent = fields.Float()
 
     class Meta:
         ordered = True

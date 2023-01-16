@@ -10,6 +10,8 @@ class BudgetItem:
     budget_id: int
     l1: str
     amount: int
+    spent: int = 0
+    tag_color: str = None
 
     def __post_init__(self):
         self.tag_color = get_color_for_tag(self.l1)
@@ -42,6 +44,9 @@ class BudgetItem:
         inputs = self.to_dict()
         database.update(query, inputs, conn)
         return self
+
+    def set_spent(self, spent_by_tag: dict):
+        self.spent = spent_by_tag[self.l1] if self.l1 in spent_by_tag else 0
 
     @staticmethod
     def from_db(row):

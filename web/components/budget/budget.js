@@ -21,7 +21,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
     }
 
     function handleAddBudgetItem(value) {
-        const newItem = { l1: value, amount: 0, used: 0 };
+        const newItem = { l1: value, amount: 0 };
         setBudgetItems(originalItems => [...originalItems, newItem]);
         addBudgetItem(budgetId, newItem);
     }
@@ -48,7 +48,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
                                 tag={item.l1}
                                 tagColor={item.tagColor}
                                 amount={item.amount}
-                                used={0}
+                                spent={-item.spent}
                             />
                         </div>
                     ))}
