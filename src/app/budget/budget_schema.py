@@ -42,3 +42,7 @@ class UpdateBudgetRequestSchema(Schema):
     @post_load
     def make_budget(self, data, **kwargs):
         return Budget(**data)
+
+
+class AvailableTagSchema(Schema):
+    name = fields.String()

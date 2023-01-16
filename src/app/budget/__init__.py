@@ -6,6 +6,7 @@ from app.budget.budget_schema import (
     GetBudgetsResponseSchema,
     AddBudgetRequestSchema,
     UpdateBudgetRequestSchema,
+    AvailableTagSchema,
 )
 
 
@@ -40,4 +41,12 @@ def register_routes(app):
             budget.update_budget,
             UpdateBudgetRequestSchema(),
             GetBudgetResponseSchema(),
+        )
+
+    @app.route("/getAvailableTags", methods=["POST"])
+    def _get_available_tags():
+        return request.invoke(
+            budget.get_available_tags,
+            GetBudgetRequestSchema(),
+            AvailableTagSchema(many=True),
         )

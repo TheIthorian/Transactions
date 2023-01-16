@@ -1,7 +1,11 @@
 from app.http.request import Request, Error
 
 from app.budget.budget_model import Budget
-from app.budget.budget_selector import select_by_id, select_all_budgets
+from app.budget.budget_selector import (
+    select_by_id,
+    select_all_budgets,
+    get_tags_not_used_by_budget,
+)
 
 
 def get_budgets(request: Request = None):
@@ -37,6 +41,18 @@ def update_budget(budget: Budget, request: Request = None):
 
     existing_budget.update()
     return existing_budget
+
+
+def get_available_tags(id: int, request: Request = None):
+    budgets = select_by_id(id)
+
+    if len(budgets) == 0:
+        request.errors.append(resource_not_found_error())
+        return
+
+    tags = get_tags_not_used_by_budget(id)
+    print(tags)
+    return [{"name": row.l1} for row in tags]
 
 
 def resource_not_found_error():
