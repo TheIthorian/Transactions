@@ -17,6 +17,8 @@ TAG_COLOR_MAP = {
     "Income": "lime",
 }
 
+DEFAULT_COLOR = "grey"
+
 
 @dataclass
 class Tag:
@@ -31,7 +33,7 @@ class Tag:
         self.l1 = l1
         self.l2 = l2
         self.l3 = l3
-        self.color = TAG_COLOR_MAP[self.l1] if self.l1 in TAG_COLOR_MAP else None
+        self.color = get_color_for_tag(self.l1, None)
 
     def __eq__(self, other: "Tag"):
         return self.l1 == other.l1 and self.l2 == other.l2 and self.l3 == other.l3
@@ -54,3 +56,7 @@ class TagLists:
     l1: list[str] = None
     l2: list[str] = None
     l3: list[str] = None
+
+
+def get_color_for_tag(tag_name: str, default: str = DEFAULT_COLOR) -> str:
+    return TAG_COLOR_MAP[tag_name] if tag_name in TAG_COLOR_MAP else default

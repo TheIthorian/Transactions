@@ -1,6 +1,6 @@
 from app.http.request import Request
 
-from app.tags.tag_model import TAG_COLOR_MAP
+from app.tags.tag_model import get_color_for_tag
 
 from app.transactions import data
 from app.transactions.breakdown import (
@@ -51,7 +51,7 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
             {
                 "labels": [t[0] for t in l1_data],
                 "data": [t[1] / 100 for t in l1_data],
-                "backgroundColor": [TAG_COLOR_MAP[t[0]] for t in l1_data],
+                "backgroundColor": [get_color_for_tag(t[0]) for t in l1_data],
             },
             {
                 "labels": [t[0] for t in l2_data],
@@ -85,7 +85,7 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
                 {
                     "label": data_set[0].l1,
                     "data": [d.amount / 100 for d in data_set],
-                    "backgroundColor": TAG_COLOR_MAP[data_set[0].l1],
+                    "backgroundColor": get_color_for_tag(data_set[0].l1),
                 }
             )
 
