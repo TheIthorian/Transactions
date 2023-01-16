@@ -1,4 +1,6 @@
 import { makeCustomError } from './error';
+import { makeStore } from 'util/store';
+import { API_KEY } from 'config';
 
 async function handleHTTPError(response) {
     const responseData = await response.json();
@@ -34,4 +36,16 @@ async function handleResponse(response) {
     throw await handleHTTPError(response);
 }
 
-export { handleHTTPError, handleResponse };
+function defaultRequest(body = null) {
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Api-Key': API_KEY,
+            session_id: makeStore('user').get('session_id'),
+        },
+        body: body && JSON.stringify(body),
+    };
+}
+
+export { handleHTTPError, handleResponse, defaultRequest };
