@@ -9,9 +9,11 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelet
 
     function handleChangeAmount(event) {
         clearTimeout(t);
-        t = setTimeout(() => {
-            updateBudgetItem(id, budgetId, event.target.value);
-        }, 300);
+        if (event.target.value) {
+            t = setTimeout(() => {
+                updateBudgetItem(id, budgetId, event.target.value);
+            }, 300);
+        }
     }
 
     function handleDelete() {
@@ -30,6 +32,7 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelet
                             defaultValue={amount}
                             style={{ padding: 2, width: 'fit-content' }}
                             onChange={handleChangeAmount}
+                            type='number'
                         />
                     </span>
                 </div>
