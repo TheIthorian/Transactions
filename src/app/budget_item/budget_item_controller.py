@@ -43,7 +43,7 @@ def add_budget_item(budget_item: BudgetItem, request: Request = None):
         request.errors.append(already_exists_error())
         return
 
-    budget_item.insert()
+    budget_item.insert().set_spent(get_spent_by_tag(datetime.today().date()))
     return budget_item
 
 

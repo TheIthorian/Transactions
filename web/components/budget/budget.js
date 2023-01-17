@@ -23,12 +23,18 @@ export default function Budget({ budgetId, name, totalLimit }) {
 
     function handleAddBudgetItem(value) {
         // This produces NaN and does not provide the new id
+        if (!value) return;
         const newItem = { l1: value, amount: 0 };
-        setBudgetItems(originalItems => [...originalItems, newItem]);
-        addBudgetItem(budgetId, newItem).catch(setError);
+        addBudgetItem(budgetId, newItem)
+            .then(newItem => {
+                console.log({ newItem });
+                setBudgetItems(originalItems => [...originalItems, newItem]);
+            })
+            .catch(setError);
     }
 
     function handleDelete(id) {
+        if (!id) return;
         deleteBudgetItem(id, budgetId)
             .then(() =>
                 setBudgetItems(originalItems => originalItems.filter(item => item.id !== id))

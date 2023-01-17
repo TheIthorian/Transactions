@@ -31,7 +31,11 @@ export async function addBudgetItem(budgetId, newItem) {
         defaultRequest({ budget_id: budgetId, l1: newItem.l1, amount: newItem.amount })
     );
 
-    await handleResponse(response);
+    const data = await handleResponse(response);
+    return {
+        ...data,
+        key: data.id,
+    };
 }
 
 export async function updateBudgetItem(budgetItemId, budgetId, amount) {
