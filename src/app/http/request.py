@@ -79,9 +79,6 @@ def invoke(
     else:
         response_data = fn(req)
 
-    print(f"response_data: {response_data}")
-    print(response_schema.dumps(response_data))
-
     return Response.resolve(response_schema.dumps(response_data), req)
 
 
