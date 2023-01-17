@@ -28,7 +28,7 @@ export function TagSelection({ budgetId, onChange, onAdd }) {
     }
 
     return (
-        <>
+        <div>
             <Button style={{ marginTop: 10, marginRight: 10 }} onClick={handleAdd}>
                 Add
             </Button>
@@ -39,7 +39,7 @@ export function TagSelection({ budgetId, onChange, onAdd }) {
                     </Select.Option>
                 ))}
             </Select>
-        </>
+        </div>
     );
 }
 
