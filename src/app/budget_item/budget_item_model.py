@@ -36,7 +36,7 @@ class BudgetItem:
 
         inputs = self.to_dict()
         self.id = database.insert(query, inputs, conn)
-        return self.id
+        return self
 
     def update(self, conn=None) -> "BudgetItem":
         query = """UPDATE BudgetItem SET amount = :amount WHERE budget_item_id = :id AND budget_id = :budget_id"""
