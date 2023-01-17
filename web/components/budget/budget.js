@@ -3,7 +3,7 @@ import { Button, Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Error } from 'components/error';
 import { BudgetItem } from './budget-item';
-import { addBudgetItem, deleteBudgetItem, getBudgetItems } from './data';
+import { addBudgetItem, deleteBudgetItem, getBudgetItems, updateBudgetItem } from './data';
 import { TagSelection } from './tagSelection';
 
 export default function Budget({ budgetId, name, totalLimit }) {
@@ -27,7 +27,6 @@ export default function Budget({ budgetId, name, totalLimit }) {
         const newItem = { l1: value, amount: 0 };
         addBudgetItem(budgetId, newItem)
             .then(newItem => {
-                console.log({ newItem });
                 setBudgetItems(originalItems => [...originalItems, newItem]);
             })
             .catch(setError);
@@ -38,6 +37,17 @@ export default function Budget({ budgetId, name, totalLimit }) {
         deleteBudgetItem(id, budgetId)
             .then(() =>
                 setBudgetItems(originalItems => originalItems.filter(item => item.id !== id))
+            )
+            .catch(setError);
+    }
+
+    function handleUpdate(id, value) {
+        updateBudgetItem(id, budgetId, value)
+            .then(updatedItem =>
+                setBudgetItems(oldItems => {
+                    oldItems.find(item => item.id === updatedItem.id).amount = updatedItem.amount;
+                    return [...oldItems];
+                })
             )
             .catch(setError);
     }
@@ -53,7 +63,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
     return (
         <Skeleton loading={loading}>
             <div>
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <BudgetTitle {...{ budgetId, name, totalLimit, handleReload }} />
                     <Divider style={{ marginTop: 8, marginBottom: 8 }} />
                     {budgetItems.map(item => (
@@ -66,9 +76,11 @@ export default function Budget({ budgetId, name, totalLimit }) {
                                 amount={item.amount}
                                 spent={-item.spent}
                                 onDelete={handleDelete}
+                                onUpdate={handleUpdate}
                             />
                         </div>
                     ))}
+                    <BudgetSum budgetItems={budgetItems} />
                     <TagSelection budgetId={budgetId} onAdd={handleAddBudgetItem} />
                 </div>
             </div>
@@ -96,5 +108,15 @@ function BudgetTitle({ budgetId, name, totalLimit, handleReload }) {
                 <ReloadOutlined />
             </Button>
         </div>
+    );
+}
+
+function BudgetSum({ budgetItems }) {
+    const totalSpent = budgetItems.reduce((last, curr) => last + curr.spent, 0);
+    const totalBudget = budgetItems.reduce((last, curr) => last + curr.amount, 0);
+    return (
+        <span>
+            Total: £{totalSpent.toFixed(2)} / £{totalBudget.toFixed(2)}
+        </span>
     );
 }

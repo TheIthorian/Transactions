@@ -44,7 +44,11 @@ export async function updateBudgetItem(budgetItemId, budgetId, amount) {
         defaultRequest({ id: budgetItemId, budget_id: budgetId, amount })
     );
 
-    await handleResponse(response);
+    const data = await handleResponse(response);
+    return {
+        ...data,
+        key: data.id,
+    };
 }
 
 export async function deleteBudgetItem(budgetItemId, budgetId) {

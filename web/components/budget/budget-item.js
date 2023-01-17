@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Input, Progress } from 'antd';
 
-import { Error } from 'components/error';
-
-import { updateBudgetItem } from './data';
-
-export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelete }) {
+export function BudgetItem({ id, tag, tagColor, amount, spent, onDelete, onUpdate }) {
     let t;
     const spentAmount = spent ?? 0;
     const spentPercent = Math.max(spentAmount, 0) / amount;
@@ -15,19 +11,16 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelet
 
     function handleChangeAmount(event) {
         clearTimeout(t);
-        if (event.target.value) {
+        const newAmount = event.target.value;
+        if (newAmount) {
             t = setTimeout(() => {
-                updateBudgetItem(id, budgetId, event.target.value).catch(setError);
+                onUpdate(id, newAmount);
             }, 300);
         }
     }
 
     function handleDelete() {
         onDelete(id);
-    }
-
-    if (error) {
-        return <Error error={error} />;
     }
 
     return (
