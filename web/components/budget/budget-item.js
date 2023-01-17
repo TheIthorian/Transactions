@@ -4,6 +4,8 @@ import { updateBudgetItem } from './data';
 
 export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelete }) {
     let t;
+    const spentAmount = spent ?? 0;
+    const spentPercent = Math.max(spentAmount, 0) / amount;
 
     function handleChangeAmount(event) {
         clearTimeout(t);
@@ -23,7 +25,7 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelet
                 <br />
                 <div style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}>
                     <span>
-                        {spent ?? 0} /{' '}
+                        {spentAmount} /{' '}
                         <Input
                             defaultValue={amount}
                             style={{ padding: 2, width: 'fit-content' }}
@@ -33,7 +35,7 @@ export function BudgetItem({ id, budgetId, tag, tagColor, amount, spent, onDelet
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}>
                     <Progress
-                        percent={100 * (10 / amount)}
+                        percent={100 * spentPercent}
                         strokeColor={tagColor}
                         showInfo={false}
                     />
