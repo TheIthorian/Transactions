@@ -1,6 +1,9 @@
 import { Card } from 'antd';
 import { useEffect, useState } from 'react';
-import Budget from '../budget/budget';
+
+import { Error } from 'components/error';
+import Budget from 'components/budget';
+
 import { getBudgets } from './data';
 
 export default function Budgets() {
@@ -8,7 +11,7 @@ export default function Budgets() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        getBudgets().then(setBudgets).catch(console.warn);
+        getBudgets().then(setBudgets).catch(setError);
     }, []);
 
     if (error) {

@@ -1,6 +1,7 @@
 import { ReloadOutlined } from '@ant-design/icons';
 import { Button, Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
+import { Error } from 'components/error';
 import { BudgetItem } from './budget-item';
 import { addBudgetItem, deleteBudgetItem, getBudgetItems } from './data';
 import { TagSelection } from './tagSelection';
@@ -12,7 +13,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        getBudgetItems(budgetId).then(setBudgetItems).catch(console.warn);
+        getBudgetItems(budgetId).then(setBudgetItems).catch(setError);
         setLoading(false);
     }, [budgetId, reload]);
 
@@ -24,12 +25,15 @@ export default function Budget({ budgetId, name, totalLimit }) {
         // This produces NaN and does not provide the new id
         const newItem = { l1: value, amount: 0 };
         setBudgetItems(originalItems => [...originalItems, newItem]);
-        addBudgetItem(budgetId, newItem);
+        addBudgetItem(budgetId, newItem).catch(setError);
     }
 
     function handleDelete(id) {
-        deleteBudgetItem(id, budgetId);
-        setBudgetItems(originalItems => originalItems.filter(item => item.id !== id));
+        deleteBudgetItem(id, budgetId)
+            .then(() =>
+                setBudgetItems(originalItems => originalItems.filter(item => item.id !== id))
+            )
+            .catch(setError);
     }
 
     if (error) {
