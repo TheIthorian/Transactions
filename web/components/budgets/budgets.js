@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { Error } from 'components/error';
-import Budget from 'components/budget';
+import { Budget } from 'components/budget';
 
 import { getBudgets } from './data';
 
