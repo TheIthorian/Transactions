@@ -12,9 +12,15 @@ export default function Budget({ budgetId, name, totalLimit }) {
     const [budgetItems, setBudgetItems] = useState([]);
     const [error, setError] = useState(null);
 
+    function setSafeError(error) {
+        error.safe = true;
+        setError(error);
+    }
+
     useEffect(() => {
-        getBudgetItems(budgetId).then(setBudgetItems).catch(setError);
+        getBudgetItems(budgetId).then(setBudgetItems);
         setLoading(false);
+        setError(null);
     }, [budgetId, reload]);
 
     function handleReload() {
@@ -29,7 +35,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
             .then(newItem => {
                 setBudgetItems(originalItems => [...originalItems, newItem]);
             })
-            .catch(setError);
+            .catch(setSafeError);
     }
 
     function handleDelete(id) {
@@ -38,7 +44,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
             .then(() =>
                 setBudgetItems(originalItems => originalItems.filter(item => item.id !== id))
             )
-            .catch(setError);
+            .catch(setSafeError);
     }
 
     function handleUpdate(id, value) {
@@ -49,10 +55,10 @@ export default function Budget({ budgetId, name, totalLimit }) {
                     return [...oldItems];
                 })
             )
-            .catch(setError);
+            .catch(setSafeError);
     }
 
-    if (error) {
+    if (error && !error.safe) {
         return <Error error={error} />;
     }
 
@@ -65,6 +71,7 @@ export default function Budget({ budgetId, name, totalLimit }) {
             <div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <BudgetTitle {...{ budgetId, name, totalLimit, handleReload }} />
+                    {error ? <Error error={error} /> : null}
                     <Divider style={{ marginTop: 8, marginBottom: 8 }} />
                     {budgetItems.map(item => (
                         <div key={item.l1} style={{ marginTop: 10 }}>
