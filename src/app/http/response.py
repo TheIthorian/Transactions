@@ -29,7 +29,7 @@ class Response:
         """Creates an authentication error response"""
         response = make_response()
 
-        response.set_data(json.dumps({"Error": "Authentication Error"}))
+        response.set_data(json.dumps({"error": "Authentication Error"}))
         response.status_code = 401
         response.content_type = cls.content_type
         return response
@@ -40,7 +40,7 @@ class Response:
 
         print(request.errors)
         response_body = {
-            "errors: ": [error.to_json() for error in request.errors],
+            "error": [error.to_json() for error in request.errors],
         }
         response.set_data(json.dumps(response_body))
         response.status_code = request.errors[0].code
@@ -58,7 +58,9 @@ def register_after_request(app):
 def add_cors(response):
     response.headers["Access-Control-Allow-Origin"] = CONFIG.REQUEST_ORIGIN
     response.headers["Access-Control-Allow-Request-Headers"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS, POST"
+    response.headers[
+        "Access-Control-Allow-Methods"
+    ] = "GET, HEAD, OPTIONS, POST, DELETE"
     # response.headers.add("Access-Control-Allow-Headers", "Access-Control-Allow-Headers")
     # response.headers.add("Access-Control-Allow-Headers", "Origin")
     # response.headers.add("Access-Control-Allow-Headers", "Content-Type")
