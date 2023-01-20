@@ -12,11 +12,13 @@ async function handleHTTPError(response) {
             detail: '',
         });
     } else if (response.status < 500) {
-        error = makeCustomError({
-            title: responseData.error?.name,
-            message: responseData.error?.message,
-            detail: responseData,
-        });
+        error = responseData.error.map(e =>
+            makeCustomError({
+                title: e?.title,
+                message: e?.message,
+                detail: e,
+            })
+        );
     } else {
         error = makeCustomError({
             title: 'Error',
