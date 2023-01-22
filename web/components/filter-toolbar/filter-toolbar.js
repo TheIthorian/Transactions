@@ -26,6 +26,7 @@ export function FilterToolbar({
                         display: 'flex',
                         justifyItems: 'end',
                         justifyContent: 'space-around',
+                        alignItems: 'center',
                     }}
                 >
                     <DatePicker

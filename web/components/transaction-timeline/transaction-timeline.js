@@ -1,4 +1,4 @@
-import { Card, Divider, Skeleton, Empty } from 'antd';
+import { Card, Divider, Skeleton, Empty, Switch } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -27,13 +27,18 @@ export function TransactionTimeline() {
     const [data, setData] = useState(null);
     const [reload, setReload] = useState(false);
     const [error, setError] = useState(null);
+    const [groupTags, setGroupTags] = useState(true);
 
     useEffect(() => {
-        getTimeline(filter).then(setData).catch(setError);
-    }, [filter, reload]);
+        getTimeline(filter, groupTags).then(setData).catch(setError);
+    }, [filter, reload, groupTags]);
 
     function handleReload() {
         setReload(reload => !reload);
+    }
+
+    function handleChangeGroupTags(checked) {
+        setGroupTags(checked);
     }
 
     function isLoading() {
@@ -62,7 +67,9 @@ export function TransactionTimeline() {
                     defaultDateTo,
                     handleReload,
                 }}
-            />
+            >
+                <GroupSwitch onChange={handleChangeGroupTags} />
+            </FilterToolbar>
             <Divider style={{ margin: '0 0 10px' }} />
             <Skeleton loading={isLoading()}>
                 {isEmpty() ? (
@@ -74,5 +81,21 @@ export function TransactionTimeline() {
                 )}
             </Skeleton>
         </Card>
+    );
+}
+
+function GroupSwitch({ onChange }) {
+    return (
+        <div
+            style={{
+                margin: '0 15px 0px 15px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+        >
+            <label>Group tags</label>
+            <Switch style={{ width: 'fit-content' }} defaultChecked onChange={onChange} />
+        </div>
     );
 }

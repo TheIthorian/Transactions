@@ -102,8 +102,9 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
         "labels": [d.month_start_date for d in data_sets],
         "datasets": [
             {
+                "label": "Total",
                 "data": [d.amount / 100 for d in data_sets],
-                "backgroundColor": ["blue" for _ in data_sets],
+                "backgroundColor": "blue",
             }
         ],
     }
