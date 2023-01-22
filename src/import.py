@@ -44,7 +44,7 @@ def get_parser(register: Register) -> ArgumentParser:
     )
 
     parser.add_argument(
-        "-a", "--account", help="Sets the account name", type=str, default=""
+        "-a", "--account", help="Sets which account to use", type=str, default=""
     )
 
     return parser
