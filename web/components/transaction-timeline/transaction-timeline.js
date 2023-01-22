@@ -37,11 +37,11 @@ export function TransactionTimeline() {
     }
 
     function isLoading() {
-        return (!allTags.length || !data) && !error;
+        return (!allTags || !data) && !error;
     }
 
     function isEmpty() {
-        return data?.data?.datasets[0]?.data?.length == 0;
+        return data?.data?.datasets[0]?.data?.length ?? 0 == 0;
     }
 
     if (error) {

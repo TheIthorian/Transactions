@@ -35,8 +35,8 @@ export default function Breakdown() {
     useEffect(() => {
         getBreakdown(filter, mode)
             .then(setData)
-            .then(() => setLoaded(true))
-            .catch(setError);
+            .catch(setError)
+            .finally(() => setLoaded(true));
     }, [filter, reload, mode]);
 
     function handleReload() {
@@ -50,7 +50,7 @@ export default function Breakdown() {
     }
 
     function isLoading() {
-        return (!allTags.length || !data || !loaded) && !error;
+        return (!allTags || !data || !loaded) && !error;
     }
 
     function isEmpty() {
