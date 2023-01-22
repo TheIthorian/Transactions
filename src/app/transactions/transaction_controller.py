@@ -95,34 +95,13 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
 
         all_data_sets = []
         for data_set in l1_new_data_sets:
-            if len(data_set):
-                all_data_sets.append(
-                    {
-                        "label": data_set[0].l1,
-                        "data": [d.amount / 100 for d in data_set],
-                        "backgroundColor": get_color_for_tag(data_set[0].l1),
-                    }
-                )
+            add_data_set(all_data_sets, data_set, lambda d: d.l1)
 
         for data_set in l2_new_data_sets:
-            if len(data_set):
-                all_data_sets.append(
-                    {
-                        "label": data_set[0].l2,
-                        "data": [d.amount / 100 for d in data_set],
-                        "backgroundColor": get_color_for_tag(data_set[0].l1),
-                    }
-                )
+            add_data_set(all_data_sets, data_set, lambda d: d.l2)
 
         for data_set in l3_new_data_sets:
-            if len(data_set):
-                all_data_sets.append(
-                    {
-                        "label": data_set[0].l3,
-                        "data": [d.amount / 100 for d in data_set],
-                        "backgroundColor": get_color_for_tag(data_set[0].l1),
-                    }
-                )
+            add_data_set(all_data_sets, data_set, lambda d: d.l3)
 
         return {
             "labels": list_util.unique(
@@ -141,3 +120,14 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
             }
         ],
     }
+
+
+def add_data_set(all_data_sets, data_set, label):
+    if len(data_set):
+        all_data_sets.append(
+            {
+                "label": label(data_set[0]),
+                "data": [d.amount / 100 for d in data_set],
+                "backgroundColor": get_color_for_tag(data_set[0].l1),
+            }
+        )
