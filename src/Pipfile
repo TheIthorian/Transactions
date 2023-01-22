@@ -8,6 +8,7 @@ flask = "*"
 flask-cors = "*"
 black = "*"
 marshmallow = "*"
+pandas = "*"
 
 [dev-packages]
 pytest = "*"
@@ -24,3 +25,4 @@ build_demo = "py demo.py"
 migrate = "py migrate.py"
 import = "py import.py"
 test = "pytest"
+merger = "py merger.py"
