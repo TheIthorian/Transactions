@@ -21,6 +21,7 @@ I found their app isn't great at exploring transaction data in depth, so I creat
 -   Display all transactions.
 -   Display a monthly breakdown of transactions by tag.
 -   Display monthly timeline of total in / out by tag.
+-   Add a budget and track spending by tag for the current month.
 
 # Contents
 
@@ -66,13 +67,12 @@ On Widnows, you'll need to add the following to your PATH environment variable a
 cd src
 pip install --user pipenv
 pipenv install
-pipenv run migrate
 ```
 
 4.  Install node modules
 
 ```sh
-cd web/transactions
+cd web
 npm install
 ```
 
@@ -88,7 +88,7 @@ pipenv run serve
 2. Start the node server
 
 ```sh
-cd web/transactions
+cd web
 npm run start
 ```
 
@@ -101,11 +101,42 @@ This is where all the config for the application is stored. See below for an exp
 -   `API_KEY `- All requests use this key to validate access to the api.
 -   `REQUEST_ORIGIN` - List of allowed request origins. Use `*` to allow all.
 -   `HOST` - Which ip the backend server will be hosted on.
--   `PRINT_QUERIES_IN_TESTS` - Log each query when running tests.
+-   `PRINT_QUERIES` - Log each query for debugging.
+-   `PASSWORD` - The password used to log in (for basic security).
+
+## CLI Arguments
+
+Additional arguments can be passed to the dev and serve commands.
+
+```-h, --help           show this help message and exit
+  -d, --dev             Runs in development mode
+  --demo                Runs in demo mode which uses fake data
+  -a ACCOUNT, --account ACCOUNT
+                        Sets which account to use
+```
+
+Using a different account creates a new database to store transactions. This is useful if you need to separate accounts.
 
 ## Loading transactions
 
 To load transactions, go to [https://www.moneydashboard.com](https://www.moneydashboard.com) and download all transactions to a csv file. Save this file to the root of the project directory and run `pipenv run import`. This saves all the transactions to the persistent database.
+
+`import` can be run with the following arguments:
+
+```-h, --help show this help message and exit.
+-f FILENAME, --filename FILENAME
+    Sets the filename of the transactions csv to import.
+
+-s {moneydashboard,metro}, --source {moneydashboard,metro}
+    Sets the source of the transactions. Supported options depend automatically on which readers are registered in import.py.
+
+-a ACCOUNT, --account ACCOUNT
+    Sets which account to use.
+```
+
+### Other sources
+
+It is possible to define your own `Reader` to map different csv formats by registering it with `register.add()`. See `metro_reader.py` for an example.
 
 ## Transaction List
 
