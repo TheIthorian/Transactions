@@ -2,10 +2,12 @@
 
 from datetime import datetime
 import os
-from app.config import CONFIG
+from app.config import CONFIG, init as init_config
 
 from app.transactions.transaction_model import Transaction
-from app.file_handler.reader import read_data
+
+from app.importer import md_reader
+from app.importer.reader import read_data
 
 from app.tags.data import get_all_tags
 
@@ -76,7 +78,8 @@ def examples():
     """Function to demonstrate functionality."""
     file_path = os.path.join(CONFIG.ROOT_DIR, "Transactions.csv")
 
-    transactions, _ = read_data(file_path)
+    transactions, _ = read_data(md_reader.md_reader(), file_path)
+
     aggregate_example(transactions)
     queries()
     filters()
@@ -84,4 +87,5 @@ def examples():
 
 
 if __name__ == "__main__":
+    init_config()
     examples()
