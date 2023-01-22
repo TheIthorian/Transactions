@@ -23,10 +23,15 @@ def add_arguments(parser: ArgumentParser):
         help="Runs in development mode",
         action="store_true",
     )
+
     parser.add_argument(
         "--demo",
         help="Runs in demo mode which uses fake data",
         action="store_true",
+    )
+
+    parser.add_argument(
+        "-a", "--account", help="Sets the account name", type=str, default=""
     )
 
 
@@ -58,7 +63,9 @@ class Config:
         self.REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
 
         self.ROOT_DIR: str = get_root_directory()
-        self.PROD_DATABASE_PATH: str = get_database_path(DATABASE_NAME)
+
+        account = args.account if args.account else ""
+        self.PROD_DATABASE_PATH: str = get_database_path(account + DATABASE_NAME)
         self.MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
         self.DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
         self.DATABASE_PATH: str = self.PROD_DATABASE_PATH
@@ -69,16 +76,20 @@ class Config:
 CONFIG = Config()
 
 
-def init(ignore_parser: bool = False):
+def init(ignore_parser: bool = False, account: str = None):
     class DefaultArgs:
         dev = False
         demo = False
+        account = ""
 
     args = DefaultArgs()
     if not ignore_parser:
         args = get_arguments()
         if args.demo:
             print("Currently running on demo environment")
+
+    if account is not None:
+        args.account = account
 
     config = get_config()
     CONFIG.set_values(args, config)

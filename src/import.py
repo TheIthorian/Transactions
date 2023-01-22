@@ -43,6 +43,10 @@ def get_parser(register: Register) -> ArgumentParser:
         required=False,
     )
 
+    parser.add_argument(
+        "-a", "--account", help="Sets the account name", type=str, default=""
+    )
+
     return parser
 
 
@@ -59,5 +63,5 @@ if __name__ == "__main__":
     filename = os.path.normpath(os.path.join(get_root_directory(), args.filename))
     new_transactions, _ = read_data(reader, filename)
 
-    config.init(True)
+    config.init(True, args.account)
     insert_transactions(new_transactions)
