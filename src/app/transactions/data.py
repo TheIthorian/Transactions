@@ -44,7 +44,7 @@ def get_transactions_for_tags(tag_lists: TagLists = None) -> list[Transaction]:
     tag_lists = tag_lists or TagLists()
 
     query = "SELECT rowid, * FROM transactions "
-    conditions = []  # Query consitions
+    conditions = []  # Query conditions
     inputs = []  # Query inputs
 
     if tag_lists.l1 is not None:
