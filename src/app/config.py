@@ -36,11 +36,6 @@ def get_database_path(db_name: str):
     )
 
 
-def get_root_directory():
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    return os.path.normpath(os.path.join(dir_path, "..", ".."))
-
-
 def get_config():
     file_path = os.path.join(get_root_directory(), "config.json")
     config = {}
@@ -49,26 +44,41 @@ def get_config():
     return config
 
 
-args = get_arguments()
-if args.demo:
-    print("Currently running on demo environment")
+class Config:
+    def __init__(self):
+        pass
 
-config = get_config()
+    def set_values(self, args, config):
+        self.DEV: bool = args.dev or False
+        self.DEMO: bool = args.demo or False
+
+        self.API_KEY: str = config["API_KEY"]
+        self.PASSWORD: str = config["PASSWORD"]
+        self.HOST: str = config["HOST"] if not args.dev else None
+        self.REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
+
+        self.ROOT_DIR: str = get_root_directory()
+        self.PROD_DATABASE_PATH: str = get_database_path(DATABASE_NAME)
+        self.MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
+        self.DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
+        self.DATABASE_PATH: str = self.PROD_DATABASE_PATH
+
+        self.PRINT_QUERIES: bool = config["PRINT_QUERIES"]
 
 
-class CONFIG:
-    DEV: bool = args.dev
-    DEMO: bool = args.demo
+CONFIG = Config()
 
-    API_KEY: str = config["API_KEY"]
-    PASSWORD: str = config["PASSWORD"]
-    HOST: str = config["HOST"] if not args.dev else None
-    REQUEST_ORIGIN: str = config["REQUEST_ORIGIN"]
 
-    ROOT_DIR: str = get_root_directory()
-    PROD_DATABASE_PATH: str = get_database_path(DATABASE_NAME)
-    MOCK_DATABASE_PATH: str = get_database_path(MOCK_DATABASE_NAME)
-    DEMO_DATABASE_PATH: str = get_database_path(DEMO_DATABASE_NAME)
-    DATABASE_PATH = PROD_DATABASE_PATH
+def init(ignore_parser: bool = False):
+    class DefaultArgs:
+        dev = False
+        demo = False
 
-    PRINT_QUERIES: bool = config["PRINT_QUERIES"]
+    args = DefaultArgs()
+    if not ignore_parser:
+        args = get_arguments()
+        if args.demo:
+            print("Currently running on demo environment")
+
+    config = get_config()
+    CONFIG.set_values(args, config)
