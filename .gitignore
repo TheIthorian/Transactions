@@ -38,9 +38,7 @@ __pycache__
 .pytest_cache
 **transactions**.csv
 **Transactions**.csv
-**/transactions.db
-**/mock_transactions.db
-**/demo_transactions.db
+**.db
 
 # virtual environment
 src/venv
