@@ -41,7 +41,7 @@ export function TransactionTimeline() {
     }
 
     function isEmpty() {
-        return data?.data?.datasets[0]?.data?.length ?? 0 == 0;
+        return (data?.data?.datasets[0]?.data?.length ?? 0) == 0;
     }
 
     if (error) {
