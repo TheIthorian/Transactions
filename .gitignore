@@ -36,8 +36,8 @@ config.json
 # src
 __pycache__
 .pytest_cache
-Transactions.csv
-new_Transactions.csv
+**transactions**.csv
+**Transactions**.csv
 **/transactions.db
 **/mock_transactions.db
 **/demo_transactions.db
