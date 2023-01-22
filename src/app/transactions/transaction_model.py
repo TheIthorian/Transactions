@@ -190,25 +190,29 @@ class Query(QueryBuilder):
         if tag_filter is None:
             return self
 
-        if tag_filter.l1 is not None:
+        if is_not_empty(tag_filter.l1):
             self._conditions.append(
                 f"{self.alias}l1 IN (%s)" % ",".join("?" for _ in tag_filter.l1)
             )
             self._inputs.extend(tag_filter.l1)
 
-        if tag_filter.l2 is not None:
+        if is_not_empty(tag_filter.l2):
             self._conditions.append(
                 f"{self.alias}l2 IN (%s)" % ",".join("?" for _ in tag_filter.l2)
             )
             self._inputs.extend(tag_filter.l2)
 
-        if tag_filter.l3 is not None:
+        if is_not_empty(tag_filter.l3):
             self._conditions.append(
                 f"{self.alias}l3 IN (%s)" % ",".join("?" for _ in tag_filter.l3)
             )
             self._inputs.extend(tag_filter.l3)
 
         return self
+
+
+def is_not_empty(list):
+    return list is not None and len(list) > 0
 
 
 @dataclass
