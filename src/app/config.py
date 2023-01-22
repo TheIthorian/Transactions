@@ -2,6 +2,8 @@ import json
 import os
 from argparse import ArgumentParser
 
+from util.dir import get_root_directory
+
 DATABASE_NAME = "transactions.db"
 MOCK_DATABASE_NAME = "mock_transactions.db"
 DEMO_DATABASE_NAME = "demo_transactions.db"
