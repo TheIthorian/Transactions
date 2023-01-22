@@ -57,14 +57,16 @@ def _format_breakdown_output(l1_data, l2_data, l3_data, total_amount):
                 "labels": [t[0] for t in l2_data],
                 "data": [t[1] / 100 for t in l2_data],
                 "backgroundColor": [
-                    "#096dd9" if len(t[0]) > 0 else "transparent" for t in l2_data
+                    "#096dd9" if t[0] is None or len(t[0]) > 0 else "transparent"
+                    for t in l2_data
                 ],
             },
             {
                 "labels": [t[0] for t in l3_data],
                 "data": [t[1] / 100 for t in l3_data],
                 "backgroundColor": [
-                    "#096dd9" if len(t[0]) > 0 else "transparent" for t in l3_data
+                    "#096dd9" if t[0] is None or len(t[0]) > 0 else "transparent"
+                    for t in l3_data
                 ],
             },
         ],
