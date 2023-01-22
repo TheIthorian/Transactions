@@ -76,7 +76,7 @@ def examples():
     """Function to demonstrate functionality."""
     file_path = os.path.join(CONFIG.ROOT_DIR, "Transactions.csv")
 
-    _, transactions = read_data(file_path)
+    transactions, _ = read_data(file_path)
     aggregate_example(transactions)
     queries()
     filters()

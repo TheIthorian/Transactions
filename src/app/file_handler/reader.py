@@ -1,8 +1,3 @@
-"""Functions to read and write data to the os.
-
-(C) 2022, TheIthorian, United Kingdom
-"""
-
 import csv
 from io import TextIOWrapper
 from typing import Tuple
@@ -23,7 +18,7 @@ def read_data(filename: str) -> Tuple[dict, list[Transaction]]:
             else:
                 transactions.append(Transaction.from_row(row))
 
-    return header, transactions  # Swap these
+    return transactions, header
 
 
 def make_dict_reader(csv_file: TextIOWrapper) -> csv.DictReader:
