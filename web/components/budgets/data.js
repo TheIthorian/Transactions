@@ -1,15 +1,10 @@
-import { API_URL, API_KEY } from 'config';
-import { handleResponse } from 'util/rest';
-import { makeStore } from 'util/store';
+import { API_URL } from 'config';
+import { handleResponse, defaultRequest } from 'util/rest';
 
 export async function getBudgets() {
     const response = await fetch(API_URL + '/getBudgets', {
+        ...defaultRequest(),
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Api-Key': API_KEY,
-            session_id: makeStore('user').get('session_id'),
-        },
     });
 
     const data = await handleResponse(response);
@@ -22,4 +17,14 @@ function convertBudgetFromApi(budget) {
         totalLimit: budget.total_limit,
         key: budget.id,
     };
+}
+
+export async function addBudget(name, limit) {
+    console.log({ name, limit });
+    const response = await fetch(
+        API_URL + '/addBudget',
+        defaultRequest({ name, total_limit: limit })
+    );
+
+    await handleResponse(response);
 }
