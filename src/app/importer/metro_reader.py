@@ -13,6 +13,9 @@ def metro_reader():
         "In",
         "Out",
         "Balance",
+        "l1",
+        "l2",
+        "l3",
     ]
 
     reader.mapping = convert_to_md_format
@@ -30,8 +33,8 @@ def convert_to_md_format(row: dict[str, str]):
     new_row["CurrentDescription"] = ""
     new_row["OriginalDescription"] = row["Details"]
     new_row["Amount"] = row["In"] if row["In"] != "" else "-" + row["Out"]
-    new_row["L1Tag"] = ""
-    new_row["L2Tag"] = ""
-    new_row["L3Tag"] = ""
+    new_row["L1Tag"] = row["l1"]
+    new_row["L2Tag"] = row["l2"]
+    new_row["L3Tag"] = row["l3"]
 
     return new_row
