@@ -31,6 +31,7 @@ def get_transaction_timeline(
         .by_account(filter.account)
         .amount_from(filter.min_value)
         .amount_to(filter.max_value)
+        .by_tag_filter(filter.tags)
     )
     conditions = qb.build_conditions(query="", include_where=False)
 
@@ -39,6 +40,7 @@ def get_transaction_timeline(
 
     tag_qb = Query(alias="tr.").by_tag_filter(filter.tags)
     tag_conditions = tag_qb.build()
+    print(tag_conditions, tag_qb.get_inputs())
 
     include_l1 = group_by_tag and len(filter.tags.l1 or [])
     include_l2 = group_by_tag and len(filter.tags.l2 or [])
@@ -69,6 +71,8 @@ def get_transaction_timeline(
         tag_join_conditions.append("t.l3 = tags.l3")
     tag_join_conditions.append("strftime('%Y-%m', t.date, 'unixepoch') = months.month")
 
+    group_by = f"{l1_column} {l2_column} {l3_column}" if group_by_tag else ""
+
     query = f"""SELECT 
             SUM(COALESCE(t.amount, 0)) as total, 
             months.month
@@ -83,14 +87,10 @@ def get_transaction_timeline(
             {conditions}
         GROUP BY 
             months.month
-            {l1_column}
-            {l2_column}
-            {l3_column}
+            {group_by}
         ORDER BY 
             months.month
-            {l1_column}
-            {l2_column}
-            {l3_column}"""
+            {group_by}"""
 
     print(query)
 
