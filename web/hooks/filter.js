@@ -29,7 +29,13 @@ export function useFilter(storeId) {
     const [filter, setFilter] = useState({
         date_from: store.get('dateFrom'),
         date_to: store.get('dateTo'),
-        tags: store.get('tagFilter')?.length ? { l1: store.get('tagFilter') } : {},
+        tags: store.get('tagFilter')?.length
+            ? {
+                  l1: store.get('tagFilter'),
+                  l2: store.get('l2TagFilter'),
+                  l3: store.get('l3TagFilter'),
+              }
+            : {},
     });
     const [allTags, setAllTags] = useState([]);
 
@@ -39,6 +45,8 @@ export function useFilter(storeId) {
         : undefined;
     const defaultDateTo = store.get('dateTo') ? moment(store.get('dateTo'), dateFormat) : undefined;
     const defaultSelectedTags = store.get('tagFilter');
+    const defaultSelectedL2Tags = store.get('l2TagFilter');
+    const defaultSelectedL3Tags = store.get('l3TagFilter');
 
     useEffect(() => {
         getAllTags().then(res => {
@@ -50,9 +58,29 @@ export function useFilter(storeId) {
         console.log('handleChangeTagFilter');
         store.set('tagFilter', values);
         if (values.length) {
-            setFilter(filter => ({ ...filter, tags: { l1: values } }));
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l1: values } }));
         } else {
-            setFilter(filter => ({ ...filter, tags: {} }));
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l1: [] } }));
+        }
+    }
+
+    function handleChangeL2TagFilter(values) {
+        console.log('handleChangeL2TagFilter');
+        store.set('l2TagFilter', values);
+        if (values.length) {
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l2: values } }));
+        } else {
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l2: [] } }));
+        }
+    }
+
+    function handleChangeL3TagFilter(values) {
+        console.log('handleChangeL3TagFilter');
+        store.set('l3TagFilter', values);
+        if (values.length) {
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l3: values } }));
+        } else {
+            setFilter(filter => ({ ...filter, tags: { ...filter.tags, l3: [] } }));
         }
     }
 
@@ -72,10 +100,14 @@ export function useFilter(storeId) {
 
     return {
         handleChangeTagFilter,
+        handleChangeL2TagFilter,
+        handleChangeL3TagFilter,
         handleChangeDateFrom,
         handleChangeDateTo,
         allTags,
         defaultSelectedTags,
+        defaultSelectedL2Tags,
+        defaultSelectedL3Tags,
         defaultDateFrom,
         defaultDateTo,
         filter,

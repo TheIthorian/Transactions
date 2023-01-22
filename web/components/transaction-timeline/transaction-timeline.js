@@ -8,17 +8,22 @@ import { useFilter } from 'hooks/filter';
 import { LABELS } from 'components/i18n';
 import { Error } from 'components/error';
 import { FilterToolbar } from 'components/filter-toolbar';
+import { TagFilter } from 'components/tag-filter';
 
 import { STORE_ID } from './constants';
-import { getTimeline } from './data';
+import { getAllL2Tags, getAllL3Tags, getTimeline } from './data';
 
 export function TransactionTimeline() {
     const {
         handleChangeTagFilter,
+        handleChangeL2TagFilter,
+        handleChangeL3TagFilter,
         handleChangeDateFrom,
         handleChangeDateTo,
         allTags,
         defaultSelectedTags,
+        defaultSelectedL2Tags,
+        defaultSelectedL3Tags,
         defaultDateFrom,
         defaultDateTo,
         filter,
@@ -28,9 +33,13 @@ export function TransactionTimeline() {
     const [reload, setReload] = useState(false);
     const [error, setError] = useState(null);
     const [groupTags, setGroupTags] = useState(true);
+    const [l2Tags, setL2Tags] = useState([]);
+    const [l3Tags, setL3Tags] = useState([]);
 
     useEffect(() => {
         getTimeline(filter, groupTags).then(setData).catch(setError);
+        getAllL2Tags().then(setL2Tags).catch(setError);
+        getAllL3Tags().then(setL3Tags).catch(setError);
     }, [filter, reload, groupTags]);
 
     function handleReload() {
@@ -68,6 +77,16 @@ export function TransactionTimeline() {
                     handleReload,
                 }}
             >
+                <TagFilter
+                    allTags={l2Tags}
+                    defaultValue={defaultSelectedL2Tags}
+                    onChange={handleChangeL2TagFilter}
+                />
+                <TagFilter
+                    allTags={l3Tags}
+                    defaultValue={defaultSelectedL3Tags}
+                    onChange={handleChangeL3TagFilter}
+                />
                 <GroupSwitch onChange={handleChangeGroupTags} />
             </FilterToolbar>
             <Divider style={{ margin: '0 0 10px' }} />

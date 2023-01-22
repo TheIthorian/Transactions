@@ -1,18 +1,10 @@
-import { API_URL, API_KEY } from 'config';
-import { handleResponse } from 'util/rest';
-import { makeStore } from 'util/store';
+import { API_URL } from 'config';
+import { handleResponse, defaultRequest } from 'util/rest';
 
 export async function getTimeline(filter, group_by_tags = true) {
     const url = '/getTransactionTimeline';
-    const response = await fetch(API_URL + url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Api-Key': API_KEY,
-            session_id: makeStore('user').get('session_id'),
-        },
-        body: JSON.stringify({ filter, group_by_tags }),
-    });
+    console.log({ filter });
+    const response = await fetch(API_URL + url, defaultRequest({ filter, group_by_tags }));
 
     const data = await handleResponse(response);
 
@@ -43,4 +35,32 @@ export async function getTimeline(filter, group_by_tags = true) {
             maintainAspectRatio: false,
         },
     };
+}
+
+export async function getAllL2Tags() {
+    const url = '/getAllTags';
+    const response = await fetch(API_URL + url, defaultRequest());
+
+    let data;
+    try {
+        data = await handleResponse(response);
+    } catch {
+        data = [];
+    }
+
+    return Array.from(new Set(data.map(t => t.l2)));
+}
+
+export async function getAllL3Tags() {
+    const url = '/getAllTags';
+    const response = await fetch(API_URL + url, defaultRequest());
+
+    let data;
+    try {
+        data = await handleResponse(response);
+    } catch {
+        data = [];
+    }
+
+    return Array.from(new Set(data.map(t => t.l3)));
 }
