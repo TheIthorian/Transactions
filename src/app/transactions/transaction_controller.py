@@ -15,6 +15,7 @@ from app.transactions.transaction_model import Transaction
 from app.transactions.filter import TransactionFilter
 from app.transactions.transaction_schema import TimelineRequest
 from app.util import list as list_util
+from app.util.color import rand_color
 
 
 def get_transactions(
@@ -95,13 +96,22 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
 
         all_data_sets = []
         for data_set in l1_new_data_sets:
-            add_data_set(all_data_sets, data_set, lambda d: d.l1)
+            add_data_set(
+                all_data_sets,
+                data_set,
+                lambda d: d.l1,
+                lambda d: get_color_for_tag(d.l1),
+            )
 
         for data_set in l2_new_data_sets:
-            add_data_set(all_data_sets, data_set, lambda d: d.l2)
+            add_data_set(
+                all_data_sets, data_set, lambda d: d.l2, lambda d: rand_color(d.l2)
+            )
 
         for data_set in l3_new_data_sets:
-            add_data_set(all_data_sets, data_set, lambda d: d.l3)
+            add_data_set(
+                all_data_sets, data_set, lambda d: d.l3, lambda d: rand_color(d.l2)
+            )
 
         return {
             "labels": list_util.unique(
@@ -122,12 +132,12 @@ def get_transaction_timeline(input: TimelineRequest, request: Request = None):
     }
 
 
-def add_data_set(all_data_sets, data_set, label):
+def add_data_set(all_data_sets, data_set, label, color):
     if len(data_set):
         all_data_sets.append(
             {
                 "label": label(data_set[0]),
                 "data": [d.amount / 100 for d in data_set],
-                "backgroundColor": get_color_for_tag(data_set[0].l1),
+                "backgroundColor": color(data_set[0]),
             }
         )
