@@ -19,12 +19,10 @@ def read_data(reader: Reader, filename: str) -> Tuple[list[Transaction], dict]:
         dict_reader = make_dict_reader(csv_file, reader)
 
         for index, row in enumerate(dict_reader):
-            print(row)
             if index == 0:
                 header = row
             else:
                 row = reader.mapping(row)
-                print(row)
                 transactions.append(Transaction.from_row(row))
 
     return transactions, header
