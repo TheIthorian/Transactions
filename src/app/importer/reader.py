@@ -6,9 +6,9 @@ from app.transactions.transaction_model import Transaction
 
 
 class Reader:
-    source: str
-    csv_headers: list[str]
-    mapping: Callable
+    source: str  # Name of the csv source
+    csv_headers: list[str]  # List of the headers in the csv file
+    mapping: Callable  # Function which maps the csv object to one with a known format
 
 
 def read_data(reader: Reader, filename: str) -> Tuple[list[Transaction], dict]:
