@@ -16,7 +16,7 @@ I found their app isn't great at exploring transaction data in depth, so I creat
 
 [![Next][next.js]][next-url] [![Python][python]][python-url]
 
-## Features
+## Feature Summary
 
 -   Display all transactions.
 -   Display a monthly breakdown of transactions by tag.
@@ -26,16 +26,16 @@ I found their app isn't great at exploring transaction data in depth, so I creat
 # Contents
 
 -   [Installation](#installation)
-    -   [Running](##running)
+-   [Running](##running)
 -   [How to use](#how-to-use)
     -   [Config.json](#config.json)
     -   [Loading transactions](#loading-transactions)
-    -   [Filtering](#filtering)
+-   [Features](#features)
 -   [License](#license)
 
 # Installation
 
-To install this application, clone the repo and following these steps.
+To install this application, clone the repo and follow these steps.
 
 1. Clone the repo
 
@@ -43,7 +43,7 @@ To install this application, clone the repo and following these steps.
 git clone https://github.com/TheIthorian/Transactions.git
 ```
 
-2.  Make sure python and node are installed.
+2.  Make sure `python` and `node.js` are installed.
 
 ```sh
 python --version
@@ -76,9 +76,17 @@ cd web
 npm install
 ```
 
+5. Rename the `config_example.json` file to `config.json`. In the file, set your password:
+
+```json
+"PASSWORD": "my_password"
+```
+
+Use this password when logging into your account.
+
 ## Running
 
-1. Start the flask server
+1. Start the python (flask) server
 
 ```sh
 cd src
@@ -89,33 +97,10 @@ pipenv run serve
 
 ```sh
 cd web
-npm run start
+npm run prod
 ```
 
-# How to use
-
-## Config.json
-
-This is where all the config for the application is stored. See below for an explanation of each property:
-
--   `API_KEY `- All requests use this key to validate access to the api.
--   `REQUEST_ORIGIN` - List of allowed request origins. Use `*` to allow all.
--   `HOST` - Which ip the backend server will be hosted on.
--   `PRINT_QUERIES` - Log each query for debugging.
--   `PASSWORD` - The password used to log in (for basic security).
-
-## CLI Arguments
-
-Additional arguments can be passed to the dev and serve commands.
-
-```-h, --help           show this help message and exit
-  -d, --dev             Runs in development mode
-  --demo                Runs in demo mode which uses fake data
-  -a ACCOUNT, --account ACCOUNT
-                        Sets which account to use
-```
-
-Using a different account creates a new database to store transactions. This is useful if you need to separate accounts.
+This will start the app, but by default there are no transactions.
 
 ## Loading transactions
 
@@ -134,9 +119,57 @@ To load transactions, go to [https://www.moneydashboard.com](https://www.moneyda
     Sets which account to use.
 ```
 
-### Other sources
+Using a different account creates a new database to store transactions. This is useful if you need to separate accounts.
 
-It is possible to define your own `Reader` to map different csv formats by registering it with `register.add()`. See `metro_reader.py` for an example.
+### Don't have moneydashboard?
+
+_No problem!_
+
+It is possible to define your own `Reader` to map different csv formats:
+
+1. Make a new reader file in `src/app/importer/`
+2. Define a function which returns a Reader instance
+    - Make sure to set the `source`, `csv_headers`, and `mapping` attributes
+    - `source`: The name of the source. E.g. `'metro bank'`
+    - `csv_headers`: A list of each header in the source csv file
+    - `mapping`: A function which takes in a csv row, and returns a `dict` containing the following values:
+        - Account
+        - Date
+        - CurrentDescription
+        - OriginalDescription
+        - Amount
+        - L1Tag
+        - L2Tag
+        - L3Tag
+3. In `src/import.py`, add your new reader function to the `register` in `register_readers()`
+4. See `src/importer/metro_reader.py` for an example on how to do this
+
+# Additional Info
+
+## Config.json
+
+This is where all the config for the application is stored. See below for an explanation of each property:
+
+-   `API_KEY `- All requests use this key to validate access to the api.
+-   `REQUEST_ORIGIN` - List of allowed request origins. Use `*` to allow all.
+-   `HOST` - Which ip the backend server will be hosted on.
+-   `PRINT_QUERIES` - Log each query for debugging.
+-   `PASSWORD` - The password used to log in (for basic security).
+
+## CLI Arguments
+
+Additional arguments can be passed to the `dev` and `serve` commands.
+
+```-h, --help           show this help message and exit
+  -d, --dev             Runs in development mode
+  --demo                Runs in demo mode which uses fake data
+  -a ACCOUNT, --account ACCOUNT
+                        Sets which account to use
+```
+
+Using a different account creates a new database to store transactions. This is useful if you need to separate accounts.
+
+# Features
 
 ## Transaction List
 
