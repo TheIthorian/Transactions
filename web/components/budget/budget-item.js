@@ -7,8 +7,6 @@ export function BudgetItem({ id, tag, tagColor, amount, spent, onDelete, onUpdat
     const spentAmount = spent ?? 0;
     const spentPercent = Math.max(spentAmount, 0) / amount;
 
-    const [error, setError] = useState(null);
-
     function handleChangeAmount(event) {
         clearTimeout(t);
         const newAmount = event.target.value;
