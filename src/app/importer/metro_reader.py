@@ -1,7 +1,7 @@
 from app.importer.reader import Reader
 
 
-def metro_reader():
+def metro_reader() -> Reader:
     reader = Reader()
 
     reader.source = "metro"
