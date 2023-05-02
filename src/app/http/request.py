@@ -32,7 +32,7 @@ class Request:
     def parse(self, schema: Schema) -> Union[dict, list]:
         """Returns the parsed request body."""
         data = self._get_data_from_request()
-        return schema.load(data, unknown=EXCLUDE)
+        return schema.load(data or {}, unknown=EXCLUDE)
 
     def set_cookie(self, key, value):
         if value is not None:
