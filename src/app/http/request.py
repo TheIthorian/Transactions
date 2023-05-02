@@ -1,4 +1,6 @@
 from typing import Callable, Union
+from werkzeug.datastructures import FileStorage, ImmutableMultiDict
+
 
 from dataclasses import dataclass, asdict
 from flask import Request as FlaskRequest, request
@@ -13,11 +15,13 @@ class Request:
 
     cookies: dict
     errors: list
+    files: ImmutableMultiDict[str, FileStorage]
 
     def __init__(self, request: FlaskRequest):
         self.request = request
         self.cookies = {}
         self.errors = []
+        self.files = request.files
 
     def check_api_key(self) -> bool:
         """Returns true if the request `Api-Key` header is valid."""
