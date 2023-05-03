@@ -16,10 +16,7 @@ def process_file(file_upload: Upload, reader_source: str = "moneydashboard"):
     filename = os.path.join(UPLOAD_FOLDER, file_upload.file_name)
     new_transactions, _ = read_data(reader, filename)
 
-    # insert_transactions(new_transactions)
-
-    # for t in new_transactions:
-    #     print(t)
+    insert_transactions(new_transactions)
 
     file_upload.status = "COMPLETE"
     file_upload.update()
