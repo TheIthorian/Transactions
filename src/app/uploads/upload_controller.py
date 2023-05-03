@@ -9,6 +9,7 @@ import app.database as database
 from app.uploads.filter import UploadFilter
 from app.uploads.upload_model import Upload, Query
 from app.uploads.config import UPLOAD_FOLDER
+from app.uploads.upload_processor import process_file
 
 BUF_SIZE = 64 * 1024
 
@@ -39,10 +40,16 @@ def add_upload(request: Request):
         request.errors.append(no_data_provided_error())
         return
 
+    uploads: list[Upload] = []
+
     for file_key in request.files:
         file = request.files[file_key]
         if file.filename != "":
-            save_file(file)
+            new_upload = save_file(file)
+            process_file(new_upload)
+            uploads.append(new_upload)
+
+    return uploads
 
 
 def save_file(file):
@@ -56,6 +63,8 @@ def save_file(file):
         file_name=safe_filename, size=size, date=dt.now(), md5=md5, status="UPLOADED"
     )
     new_upload.insert()
+
+    return new_upload
 
 
 def get_file_metadata(file_path):
