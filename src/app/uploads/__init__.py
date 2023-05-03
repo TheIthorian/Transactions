@@ -17,5 +17,5 @@ def register_routes(app):
         return request.invoke(
             upload.add_upload,
             None,
-            GetUploadsResponseSchema(many=False),
+            GetUploadsResponseSchema(many=True),
         )
