@@ -24,6 +24,7 @@ class GetUploadsResponseSchema(Schema):
     size = fields.Integer()
     date = fields.Date()
     md5 = fields.String()
+    status = fields.String()
 
     class Meta:
         ordered = True
