@@ -1,19 +1,32 @@
-from werkzeug.utils import secure_filename
 import os
 from datetime import datetime as dt
 import hashlib
+from werkzeug.utils import secure_filename
 
 from app.http.request import Request, Error
+import app.database as database
 
 from app.uploads.filter import UploadFilter
-from app.uploads.upload_model import Upload
+from app.uploads.upload_model import Upload, Query
 from app.uploads.config import UPLOAD_FOLDER
 
 BUF_SIZE = 64 * 1024
 
 
 def get_uploads(filter: UploadFilter, request: Request = None) -> list[Upload]:
-    return []
+    """Find all uploads which match the input filter."""
+    qb = (
+        Query("SELECT * FROM uploads ")
+        .date_from(filter.date_from)
+        .date_to(filter.date_to)
+        .order_by(["date"])
+    )
+
+    q = qb.build()
+    print(q)
+
+    uploads = database.select(q, {})
+    return [Upload.from_db(u) for u in uploads]
 
 
 def add_upload(request: Request):
