@@ -29,6 +29,11 @@ def get_uploads(filter: UploadFilter, request: Request = None) -> list[Upload]:
     return [Upload.from_db(u) for u in uploads]
 
 
+def get_upload(id: int):
+    uploads = database.select("SELECT * FROM Uploads", {"id": id})
+    return Upload.from_db(uploads)
+
+
 def add_upload(request: Request):
     if len(request.files) == 0:
         request.errors.append(no_data_provided_error())
