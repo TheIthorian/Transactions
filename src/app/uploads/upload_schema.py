@@ -35,7 +35,3 @@ class GetUploadsResponseSchema(Schema):
 
 class AddUploadSchema(Schema):
     pass
-
-
-class AddUploadResponseSchema(GetUploadsResponseSchema):
-    pass
