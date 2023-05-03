@@ -43,4 +43,15 @@ def migrate(conn: sqlite3.Connection):
                 )"""
     )
 
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS Uploads
+                (upload_id INTEGER PRIMARY KEY,
+                filename TEXT NOT NULL,
+                size INTEGER NOT NULL,
+                date Date NOT NULL,
+                md5 TEXT NOT NULL,
+                status TEXT NOT NULL
+                )"""
+    )
+
     conn.commit()

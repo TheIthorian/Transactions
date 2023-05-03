@@ -141,7 +141,7 @@ It is possible to define your own `Reader` to map different csv formats:
         - L1Tag
         - L2Tag
         - L3Tag
-3. In `src/import.py`, add your new reader function to the `register` in `register_readers()`
+3. In `src/app/importer/register.py`, add your new reader function to the `register` in `register_readers()`
 4. See `src/importer/metro_reader.py` for an example on how to do this
 
 You'll then be able to use this as a `--source` argument value when running `pipenv run import`.

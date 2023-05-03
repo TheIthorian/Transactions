@@ -1,4 +1,6 @@
 from typing import Callable, Union
+from werkzeug.datastructures import FileStorage, ImmutableMultiDict
+
 
 from dataclasses import dataclass, asdict
 from flask import Request as FlaskRequest, request
@@ -13,11 +15,13 @@ class Request:
 
     cookies: dict
     errors: list
+    files: ImmutableMultiDict[str, FileStorage]
 
     def __init__(self, request: FlaskRequest):
         self.request = request
         self.cookies = {}
         self.errors = []
+        self.files = request.files
 
     def check_api_key(self) -> bool:
         """Returns true if the request `Api-Key` header is valid."""
@@ -32,7 +36,7 @@ class Request:
     def parse(self, schema: Schema) -> Union[dict, list]:
         """Returns the parsed request body."""
         data = self._get_data_from_request()
-        return schema.load(data, unknown=EXCLUDE)
+        return schema.load(data or {}, unknown=EXCLUDE)
 
     def set_cookie(self, key, value):
         if value is not None:
