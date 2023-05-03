@@ -40,6 +40,8 @@ def add_upload(request: Request):
         request.errors.append(no_data_provided_error())
         return
 
+    print(f"{len(request.files)} file(s) to upload...")
+
     uploads: list[Upload] = []
 
     for file_key in request.files:
