@@ -74,7 +74,7 @@ class Upload:
             id=row[0],
             file_name=row[1],
             size=row[2],
-            date=dt.date.fromtimestamp(row[3]),
+            date=dt.datetime.strptime(row[3], "%Y-%m-%d %H:%M:%S.%f"),
             md5=row[4],
             status=row[5],
         )
