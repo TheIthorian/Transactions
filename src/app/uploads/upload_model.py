@@ -80,17 +80,6 @@ class Upload:
         )
 
     @staticmethod
-    def from_row(row):
-        """To load upload from csv."""
-        return Upload(
-            file_name=row["Filename"],
-            size=row["Size"],
-            date=dt.datetime.strptime(row["Date"], "%Y-%m-%d").date(),
-            md5=row["Md5"],
-            status=row["status"],
-        )
-
-    @staticmethod
     def get_earliest_upload() -> "Upload":
         return Upload.from_db(
             database.select("SELECT rowid, * FROM Uploads ORDER BY Date LIMIT 1")[0]
