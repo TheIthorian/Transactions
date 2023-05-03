@@ -3,20 +3,11 @@ import os
 
 from util.dir import get_root_directory
 from app import config
-from app.importer import md_reader, metro_reader
-from app.importer.register import Register
+from app.importer.register import Register, register_readers
 from app.importer.reader import read_data
 from app.importer.importer import insert_transactions
 
 MONEY_DASHBOARD = "moneydashboard"
-
-
-def register_readers() -> Register:
-    register = Register()
-    register.add(md_reader.md_reader())
-    register.add(metro_reader.metro_reader())
-
-    return register
 
 
 def get_parser(register: Register) -> ArgumentParser:

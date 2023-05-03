@@ -1,4 +1,5 @@
 from app.importer.reader import Reader
+from app.importer import md_reader, metro_reader
 
 
 class Register:
@@ -20,3 +21,11 @@ class Register:
                 reader = r
 
         return reader
+
+
+def register_readers() -> Register:
+    register = Register()
+    register.add(md_reader.md_reader())
+    register.add(metro_reader.metro_reader())
+
+    return register
