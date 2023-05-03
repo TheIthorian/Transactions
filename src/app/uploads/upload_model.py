@@ -67,18 +67,18 @@ class Upload:
         self.id = database.insert(query, inputs, conn)
         return self.id
 
-    def update(self, conn=None) -> int:
-        query = """UPDATE uploads SET (
-            filename=:filename, 
+    def update(self, conn=None) -> "Upload":
+        query = """UPDATE uploads SET
+            filename=:file_name, 
             size=:size, 
             date=:date, 
             md5=:md5,
-            status=:status)
+            status=:status
             WHERE upload_id = :id"""
 
         inputs = self.to_dict()
-        self.id = database.insert(query, inputs, conn)
-        return self.id
+        database.update(query, inputs, conn)
+        return self
 
     @staticmethod
     def from_db(row):
