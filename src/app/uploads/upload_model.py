@@ -13,6 +13,7 @@ class Upload:
     size: int
     date: dt.date
     md5: str
+    status: str
     id: int = None
 
     def __eq__(self, other: "Upload") -> bool:
@@ -25,6 +26,7 @@ class Upload:
             "size": self.size,
             "date": self.date,
             "md5": self.md5,
+            "status": self.status,
         }
 
     def to_json(self) -> str:
@@ -36,6 +38,7 @@ class Upload:
         size: int = None,
         date: dt.date = None,
         md5: str = None,
+        status: str = None,
         id: int = None,
     ) -> "Upload":
         return Upload(
@@ -43,19 +46,22 @@ class Upload:
             size=size,
             date=date,
             md5=md5,
+            status=status,
             id=id,
         )
 
     def insert(self, conn=None) -> int:
         query = """INSERT INTO uploads (
-            file_name, 
+            filename, 
             size, 
             date, 
-            md5) VALUES 
+            md5,
+            status) VALUES 
             (:file_name, 
             :size, 
             :date, 
-            :md5)"""
+            :md5,
+            :status)"""
 
         inputs = self.to_dict()
         self.id = database.insert(query, inputs, conn)
@@ -70,6 +76,7 @@ class Upload:
             size=row[2],
             date=dt.date.fromtimestamp(row[3]),
             md5=row[4],
+            status=row[5],
         )
 
     @staticmethod
@@ -80,6 +87,7 @@ class Upload:
             size=row["Size"],
             date=dt.datetime.strptime(row["Date"], "%Y-%m-%d").date(),
             md5=row["Md5"],
+            status=row["status"],
         )
 
     @staticmethod
