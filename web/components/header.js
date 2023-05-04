@@ -13,7 +13,7 @@ function Nav() {
                 items={[
                     { key: 'Home', label: <Link href='/'>Home</Link> },
                     { key: 'Budget', label: <Link href='/budget'>Budget</Link> },
-                    { key: 'Settings', label: <Link href='/'>Settings</Link> },
+                    { key: 'Settings', label: <Link href='/upload'>Upload Transactions</Link> },
                 ]}
             />
         </>
