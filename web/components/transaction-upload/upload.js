@@ -24,8 +24,6 @@ export default function TransactionUpload() {
     async function handleFinish(e) {
         const formData = new FormData();
         formData.append('file', files);
-        formData.append('format', e.format);
-
         await addUpload(formData);
     }
 
@@ -99,9 +97,6 @@ export default function TransactionUpload() {
                             </Dragger>
                         </div>
                     </div>
-                </Form.Item>
-                <Form.Item name='format' label='some number'>
-                    <input type='number' />
                 </Form.Item>
                 <Form.Item
                     wrapperCol={{
