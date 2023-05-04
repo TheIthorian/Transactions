@@ -17,6 +17,7 @@ export function FilterToolbar({
     defaultDateTo,
     children,
     handleReload,
+    excludeTagFilter = false,
 }) {
     return (
         <Toolbar title={title}>
@@ -39,11 +40,13 @@ export function FilterToolbar({
                         style={{ marginRight: '5px' }}
                         defaultValue={defaultDateTo && moment(defaultDateTo)}
                     />
-                    <TagFilter
-                        allTags={allTags}
-                        defaultValue={defaultSelectedTags}
-                        onChange={handleChangeTagFilter}
-                    />
+                    {!excludeTagFilter && (
+                        <TagFilter
+                            allTags={allTags}
+                            defaultValue={defaultSelectedTags}
+                            onChange={handleChangeTagFilter}
+                        />
+                    )}
                     <>{children}</>
                     <Button onClick={handleReload}>
                         <ReloadOutlined />
