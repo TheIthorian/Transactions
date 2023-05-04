@@ -13,13 +13,7 @@ import { LABELS } from '../i18n';
 const { Dragger } = Upload;
 
 export default function TransactionUpload() {
-    const [error, setError] = useState(null);
     const [files, setFiles] = useState(null);
-
-    function setSafeError(error) {
-        error.safe = true;
-        setError(error);
-    }
 
     async function handleFinish(e) {
         const formData = new FormData();
@@ -47,10 +41,6 @@ export default function TransactionUpload() {
 
     function handleDrop(e) {
         console.log('Dropped files', e.dataTransfer.files);
-    }
-
-    if (error && !error.safe) {
-        return <Error error={error} />;
     }
 
     return (
