@@ -75,6 +75,8 @@ def save_file(file):
         file_name=safe_filename, size=size, date=dt.now(), md5=md5, status="UPLOADED"
     )
 
+    new_upload.insert()
+
     return new_upload
 
 
