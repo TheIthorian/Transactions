@@ -90,7 +90,7 @@ export default function TransactionUpload() {
                 </Form.Item>
                 <Form.Item>
                     <Button type='primary' htmlType='submit'>
-                        Submit
+                        {LABELS.submit}
                     </Button>
                 </Form.Item>
             </Form>

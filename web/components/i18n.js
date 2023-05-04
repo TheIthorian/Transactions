@@ -30,4 +30,6 @@ export const LABELS = {
     uploadDragAreaTitle: 'Click or drag file to this area to upload',
     uploadDragAreaSubtitle:
         ' Support for a single or bulk upload. Please ensure your csv file matches the correct format.',
+
+    submit: 'Submit',
 };
