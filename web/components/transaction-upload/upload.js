@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { Button, Form, message, Space, Upload } from 'antd';
 
-import { Error } from 'components/error';
 import { UploadHistory } from 'components/upload-history';
-import { makeStore } from 'util/store';
-import { API_URL, API_KEY } from 'config';
 
 import { addUpload } from './data';
 import { LABELS } from '../i18n';
@@ -14,13 +11,14 @@ const { Dragger } = Upload;
 
 export default function TransactionUpload() {
     const [files, setFiles] = useState(null);
+    const [form] = Form.useForm();
 
     async function handleFinish(e) {
         const formData = new FormData();
         formData.append('file', files);
-        await addUpload(formData).catch(error =>
-            message.error(`Unable to upload file: ${error.title}`)
-        );
+        await addUpload(formData)
+            .then(form.resetFields())
+            .catch(error => message.error(`Unable to upload file: ${error.title}`));
     }
 
     function handleFinishFailed(e) {
@@ -51,12 +49,13 @@ export default function TransactionUpload() {
                 <h1>{LABELS.uploadPageTitle}</h1>
             </div>
             <Form
+                form={form}
                 name='file-upload'
                 onFinish={handleFinish}
                 onFinishFailed={handleFinishFailed}
                 autoComplete='off'
             >
-                <Form.Item name='newFiles'>
+                <Form.Item name='newFiles' valuePropName='fileList'>
                     <div
                         style={{
                             display: 'flex',
@@ -90,13 +89,13 @@ export default function TransactionUpload() {
                         </div>
                     </div>
                 </Form.Item>
-                <Form.Item>
+                <Space>
                     <Button type='primary' htmlType='submit' disabled={!files}>
                         {LABELS.submit}
                     </Button>
-                </Form.Item>
+                    <Button htmlType='reset'>reset</Button>
+                </Space>
             </Form>
-            <span>{files?.name}</span>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <UploadHistory />
             </div>
