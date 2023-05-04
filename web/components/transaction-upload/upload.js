@@ -26,18 +26,7 @@ export default function TransactionUpload() {
         formData.append('file', files);
         formData.append('format', e.format);
 
-        const response = await fetch(API_URL + '/addUpload', {
-            method: 'POST',
-            headers: {
-                'Api-Key': API_KEY,
-                session_id: makeStore('user').get('session_id'),
-            },
-            body: formData,
-        });
-
-        // addUpload(files, e.format).catch(err =>
-        //     message.error(`File upload failed: ${err.title}. ${err.detail}`)
-        // );
+        await addUpload(formData);
     }
 
     function handleFinishFailed(e) {
