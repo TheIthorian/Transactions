@@ -10,12 +10,16 @@ import { LABELS } from '../i18n';
 const { Dragger } = Upload;
 
 export default function TransactionUpload() {
-    const [files, setFiles] = useState(null);
+    const [files, setFiles] = useState([]);
     const [form] = Form.useForm();
 
     async function handleFinish(e) {
         const formData = new FormData();
-        formData.append('file', files);
+
+        for (const file of files) {
+            formData.append('files[]', file, file.name);
+        }
+
         await addUpload(formData)
             .then(form.resetFields())
             .catch(error => message.error(`Unable to upload file: ${error.title}`));
@@ -36,7 +40,7 @@ export default function TransactionUpload() {
             message.error(`${info.file.name} file upload failed.`);
         }
 
-        setFiles(originFileObj);
+        setFiles(info.fileList.map(f => f.originFileObj));
     }
 
     function handleDrop(e) {
@@ -90,7 +94,7 @@ export default function TransactionUpload() {
                     </div>
                 </Form.Item>
                 <Space>
-                    <Button type='primary' htmlType='submit' disabled={!files}>
+                    <Button type='primary' htmlType='submit' disabled={!files.length}>
                         {LABELS.submit}
                     </Button>
                     <Button htmlType='reset'>reset</Button>
