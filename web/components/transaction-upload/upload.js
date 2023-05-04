@@ -1,7 +1,6 @@
+import { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload, Button, Divider, Skeleton } from 'antd';
-
-import { useEffect, useState } from 'react';
+import { message, Upload } from 'antd';
 
 import { Error } from 'components/error';
 import { UploadHistory } from 'components/upload-history';
