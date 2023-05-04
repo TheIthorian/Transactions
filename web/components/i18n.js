@@ -25,6 +25,7 @@ export const LABELS = {
         unknown: 'Unknown',
         complete: 'Complete',
         pending: 'Pending',
+        error: 'Error',
     },
 
     uploadDragAreaTitle: 'Click or drag file to this area to upload',
