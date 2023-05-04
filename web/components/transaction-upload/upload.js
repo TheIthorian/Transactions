@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { message, Space, Upload } from 'antd';
 
 import { Error } from 'components/error';
 import { UploadHistory } from 'components/upload-history';
@@ -54,13 +54,29 @@ export default function TransactionUpload() {
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h1>{LABELS.uploadPageTitle}</h1>
             </div>
-            <Dragger {...props}>
-                <p className='ant-upload-drag-icon'>
-                    <InboxOutlined />
-                </p>
-                <p className='ant-upload-text'>{LABELS.uploadDragAreaTitle}</p>
-                <p className='ant-upload-hint'>{LABELS.uploadDragAreaSubtitle}</p>
-            </Dragger>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <div
+                    style={{
+                        width: '100%',
+                        maxWidth: 1200,
+                    }}
+                >
+                    <Dragger {...props} style={{ padding: 30 }}>
+                        <p className='ant-upload-drag-icon'>
+                            <InboxOutlined />
+                        </p>
+                        <p className='ant-upload-text'>{LABELS.uploadDragAreaTitle}</p>
+                        <p className='ant-upload-hint'>{LABELS.uploadDragAreaSubtitle}</p>
+                    </Dragger>
+                </div>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <UploadHistory />
             </div>
