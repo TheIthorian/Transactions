@@ -24,7 +24,6 @@ def get_uploads(filter: UploadFilter, request: Request = None) -> list[Upload]:
     )
 
     q = qb.build()
-    print(q)
 
     uploads = database.select(q, {})
     return [Upload.from_db(u) for u in uploads]
@@ -36,19 +35,30 @@ def get_upload(id: int):
 
 
 def add_upload(request: Request):
-    if len(request.files) == 0:
+    # If the files are not sent with the key `files[]`, then only the first file can be used
+    # In this case, we fall back to using the request.files ImmutableDict
+    uploaded_files = request.files.getlist("files[]")
+    if uploaded_files == None or len(uploaded_files) == 0:
+        uploaded_files = [request.files[file_key] for file_key in request.files]
+
+    if len(request.files) == 0 or len(uploaded_files) == 0:
         request.errors.append(no_data_provided_error())
         return
 
-    print(f"{len(request.files)} file(s) to upload...")
+    print(f"{len(uploaded_files)} file(s) to upload...")
 
     uploads: list[Upload] = []
 
-    for file_key in request.files:
-        file = request.files[file_key]
+    for file in uploaded_files:
         if file.filename != "":
             new_upload = save_file(file)
-            process_file(new_upload)
+
+            try:
+                process_file(new_upload)
+            except:
+                new_upload.status = "ERROR"
+                new_upload.update()
+
             uploads.append(new_upload)
 
     return uploads
@@ -64,7 +74,6 @@ def save_file(file):
     new_upload = Upload(
         file_name=safe_filename, size=size, date=dt.now(), md5=md5, status="UPLOADED"
     )
-    new_upload.insert()
 
     return new_upload
 

@@ -6,11 +6,21 @@ async function handleHTTPError(response) {
     const responseData = await response.json();
     let error;
     if (response.status === 400) {
-        error = makeCustomError({
-            title: 'Bad request',
-            message: responseData._schema,
-            detail: '',
-        });
+        if (Array.isArray(responseData.error)) {
+            console.error(responseData.error[0]);
+            const fullError = responseData.error[0];
+            error = makeCustomError({
+                title: fullError.title,
+                message: fullError.message,
+                detail: fullError.detail ?? '',
+            });
+        } else {
+            error = makeCustomError({
+                title: 'Bad request',
+                message: responseData._schema,
+                detail: '',
+            });
+        }
     } else if (response.status < 500) {
         error = responseData.error.map(e =>
             makeCustomError({
