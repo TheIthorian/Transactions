@@ -18,7 +18,9 @@ export default function TransactionUpload() {
     async function handleFinish(e) {
         const formData = new FormData();
         formData.append('file', files);
-        await addUpload(formData);
+        await addUpload(formData).catch(error =>
+            message.error(`Unable to upload file: ${error.title}`)
+        );
     }
 
     function handleFinishFailed(e) {
@@ -89,7 +91,7 @@ export default function TransactionUpload() {
                     </div>
                 </Form.Item>
                 <Form.Item>
-                    <Button type='primary' htmlType='submit'>
+                    <Button type='primary' htmlType='submit' disabled={!files}>
                         {LABELS.submit}
                     </Button>
                 </Form.Item>
