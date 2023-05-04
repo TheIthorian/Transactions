@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card } from 'antd';
+import { Card, Skeleton, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import { useFilter } from 'hooks/filter';
 import { DataGrid } from 'components/data-grid';
@@ -23,13 +24,18 @@ export function UploadHistory() {
     } = useFilter(UPLOAD_HISTORY_GRID_STORE_ID);
 
     const [reload, setReload] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [uploads, setUploads] = useState(null);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [error, setError] = useState(null);
     const [columns, setColumns] = useState([]);
 
     useEffect(() => {
-        getUploads(filter).then(setUploads).catch(setError);
+        setLoading(true);
+        getUploads(filter)
+            .then(setUploads)
+            .catch(setError)
+            .finally(() => setLoading(false));
         setColumns(buildColumns({}));
     }, [filter, reload]);
 
@@ -45,27 +51,48 @@ export function UploadHistory() {
         return <Error error={error} />;
     }
 
+    if (loading) {
+        return (
+            <Card
+                style={{ marginTop: 10 }}
+                bodyStyle={{
+                    padding: 5,
+                    minHeight: 300,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <div style={{ textAlign: 'center' }}>
+                    <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+                </div>
+            </Card>
+        );
+    }
+
     return (
         <Card style={{ marginTop: 10 }} bodyStyle={{ padding: 5 }}>
-            <DataGrid
-                dataSource={uploads}
-                columns={columns}
-                onSelectRow={handleSelectRow}
-                store={store}
-            >
-                <FilterToolbar
-                    title={LABELS.uploadHistoryGridTitle}
-                    {...{
-                        handleChangeTagFilter,
-                        handleChangeDateFrom,
-                        handleChangeDateTo,
-                        defaultDateFrom,
-                        defaultDateTo,
-                        handleReload,
-                        excludeTagFilter: true,
-                    }}
-                ></FilterToolbar>
-            </DataGrid>
+            <Skeleton loading={loading}>
+                <DataGrid
+                    dataSource={uploads}
+                    columns={columns}
+                    onSelectRow={handleSelectRow}
+                    store={store}
+                >
+                    <FilterToolbar
+                        title={LABELS.uploadHistoryGridTitle}
+                        {...{
+                            handleChangeTagFilter,
+                            handleChangeDateFrom,
+                            handleChangeDateTo,
+                            defaultDateFrom,
+                            defaultDateTo,
+                            handleReload,
+                            excludeTagFilter: true,
+                        }}
+                    ></FilterToolbar>
+                </DataGrid>
+            </Skeleton>
         </Card>
     );
 }
