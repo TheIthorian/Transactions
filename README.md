@@ -58,7 +58,7 @@ npm --version
 It is optional, but recommended to install `pipenv`, a python package manager which makes managing virtual environments easier.
 If you chose not to install this, the corresponding commands can be found in `src/Pipfile`.
 
-On Widnows, you'll need to add the following to your PATH environment variable and restart your PC:
+On Windows, you'll need to add the following to your PATH environment variable and restart your PC:
 
 -   c:\users\\<username\>\appdata\roaming\python\python310\site-packages
 -   c:\users\\<username\>\appdata\roaming\python\python310\scripts
@@ -104,6 +104,22 @@ This will start the app, but by default there are no transactions.
 
 ## Loading transactions
 
+You can import import transactions either using the UI or with the CLI.
+
+<details>
+<summary>With UI</summary>
+
+Go to the `Upload Transactions` tab in the UI. Upload on or more csv files which contain the transactions and hit submit. This will save all **new** transactions to the database.
+
+Below the upload field, there is a grid which shows all past upload attempts.
+
+At the moment you cannot yet switch accounts or formats from this page. For that, you will need to use the CLI...
+
+</details>
+
+<details>
+<summary>With CLI</summary>
+
 To load transactions, go to [https://www.moneydashboard.com](https://www.moneydashboard.com) and download all transactions to a csv file. Save this file to the root of the project directory and run `pipenv run import`. This saves all the transactions to the persistent database.
 
 `import` can be run with the following arguments:
@@ -121,7 +137,7 @@ To load transactions, go to [https://www.moneydashboard.com](https://www.moneyda
 
 Using a different account creates a new database to store transactions. This is useful if you need to separate accounts.
 
-### Don't have moneydashboard?
+#### Don't have moneydashboard?
 
 _No problem!_
 
@@ -145,6 +161,8 @@ It is possible to define your own `Reader` to map different csv formats:
 4. See `src/importer/metro_reader.py` for an example on how to do this
 
 You'll then be able to use this as a `--source` argument value when running `pipenv run import`.
+
+</details>
 
 # Additional Info
 
