@@ -98,12 +98,7 @@ export default function TransactionUpload() {
                         </div>
                     </div>
                 </Form.Item>
-                <Form.Item
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
+                <Form.Item>
                     <Button type='primary' htmlType='submit'>
                         Submit
                     </Button>
