@@ -24,7 +24,6 @@ def get_uploads(filter: UploadFilter, request: Request = None) -> list[Upload]:
     )
 
     q = qb.build()
-    print(q)
 
     uploads = database.select(q, {})
     return [Upload.from_db(u) for u in uploads]
@@ -44,17 +43,27 @@ def add_upload(request: Request):
 
     uploads: list[Upload] = []
 
+    conn = database.connect()
+
     for file_key in request.files:
         file = request.files[file_key]
         if file.filename != "":
-            new_upload = save_file(file)
-            process_file(new_upload)
+            new_upload = save_file(file, conn)
+
+            try:
+                process_file(new_upload)
+            except:
+                new_upload.status = "ERROR"
+                new_upload.update(conn)
+
             uploads.append(new_upload)
+
+    conn.commit()
 
     return uploads
 
 
-def save_file(file):
+def save_file(file, conn):
     safe_filename = secure_filename(file.filename)
 
     file_path = os.path.join(UPLOAD_FOLDER, safe_filename)
@@ -64,7 +73,8 @@ def save_file(file):
     new_upload = Upload(
         file_name=safe_filename, size=size, date=dt.now(), md5=md5, status="UPLOADED"
     )
-    new_upload.insert()
+
+    new_upload.insert(conn)
 
     return new_upload
 
