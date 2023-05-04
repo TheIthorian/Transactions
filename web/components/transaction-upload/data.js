@@ -13,8 +13,5 @@ export async function addUpload(formData) {
     });
 
     const data = await handleResponse(response);
-    return {
-        ...data,
-        key: data.id,
-    };
+    return data.map(upload => ({ key: upload.id, ...upload }));
 }
