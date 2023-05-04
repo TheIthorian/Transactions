@@ -49,26 +49,22 @@ def add_upload(request: Request):
 
     uploads: list[Upload] = []
 
-    conn = database.connect()
-
     for file in uploaded_files:
         if file.filename != "":
-            new_upload = save_file(file, conn)
+            new_upload = save_file(file)
 
             try:
                 process_file(new_upload)
             except:
                 new_upload.status = "ERROR"
-                new_upload.update(conn)
+                new_upload.update()
 
             uploads.append(new_upload)
-
-    conn.commit()
 
     return uploads
 
 
-def save_file(file, conn):
+def save_file(file):
     safe_filename = secure_filename(file.filename)
 
     file_path = os.path.join(UPLOAD_FOLDER, safe_filename)
@@ -78,8 +74,6 @@ def save_file(file, conn):
     new_upload = Upload(
         file_name=safe_filename, size=size, date=dt.now(), md5=md5, status="UPLOADED"
     )
-
-    new_upload.insert(conn)
 
     return new_upload
 
