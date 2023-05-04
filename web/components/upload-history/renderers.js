@@ -3,6 +3,7 @@ import { LABELS } from 'components/i18n';
 const STATUS_MAP = {
     COMPLETE: LABELS.uploadStatuses.complete,
     PENDING: LABELS.uploadStatuses.pending,
+    ERROR: LABELS.uploadStatuses.error,
 };
 
 export function makeFilenameRenderer() {
